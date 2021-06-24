@@ -18,6 +18,7 @@ var game = new Phaser.Game(config);
 
 function preload ()
 {
+    game.canvas.style = "margin: auto; display: block; margin-top: 5%;";
     this.load.setBaseURL('http://labs.phaser.io');
 
     this.load.image('sky', 'assets/skies/space3.png');
