@@ -16,8 +16,7 @@ var config = {
 
 var game = new Phaser.Game(config);
 
-function preload ()
-{
+function preload() {
     game.canvas.style = "margin: auto; display: block; margin-top: 5%;";
     this.load.setBaseURL('http://labs.phaser.io');
 
@@ -26,8 +25,7 @@ function preload ()
     this.load.image('red', 'assets/particles/red.png');
 }
 
-function create ()
-{
+function create() {
     this.add.image(400, 300, 'sky');
 
     var particles = this.add.particles('red');
