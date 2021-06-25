@@ -12,6 +12,7 @@ export class load extends Phaser.Scene{
         this.game.canvas.style = "margin: auto; display: block;";
         this.load.image("menubackground", "../assets/menubackground.png");
         this.load.image("title", "../assets/title.png");
+        this.load.image("playbutton", "../assets/playbutton.png");
         var loadingBar = this.add.graphics({
             fillStyle: {
                 color: 0xffffff
