@@ -16,8 +16,20 @@ export class menu extends Phaser.Scene {
         var options = this.add.image(this.game.renderer.width / 2, 400, "optionbutton").setDepth(1);
         var quit = this.add.image(this.game.renderer.width / 2, 500, "quitbutton").setDepth(1);
         playbutton.setInteractive();
-        playbutton.on("pointerup", ()=>{
+        playbutton.on("pointerup", () => {
             this.scene.start(final.SCENES.PLAY);
+        })
+        controls.setInteractive();
+        controls.on("pointerup", () => {
+            this.scene.start(final.SCENES.PLAY);
+        })
+        options.setInteractive();
+        options.on("pointerup", () => {
+            this.scene.start(final.SCENES.PLAY);
+        })
+        quit.setInteractive();
+        quit.on("pointerup", () => {
+            window.close()
         })
     }
 }

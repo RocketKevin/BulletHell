@@ -1,10 +1,11 @@
-import {load} from "./scenes/load.js";
-import {menu} from "./scenes/menu.js";
-import {play} from "./scenes/play.js";
+import { load } from "./scenes/load.js";
+import { menu } from "./scenes/menu.js";
+import { play } from "./scenes/play.js";
+import { quit } from "./scenes/quit.js";
 var game = new Phaser.Game({
     width: 800,
     height: 600,
-    scene: [load, menu, play]
+    scene: [load, menu, play, quit]
 });
 // function preload() {
 //     game.canvas.style = "margin: auto; display: block; margin-top: 5%;";
