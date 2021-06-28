@@ -17,7 +17,13 @@ export class load extends Phaser.Scene {
         this.load.image("playbutton", "../assets/playbutton.png");
         this.load.image("controlbutton", "../assets/controlbutton.png")
         this.load.image("optionbutton", "../assets/optionbutton.png")
-        this.load.image("quitbutton", "../assets/quitbutton.png")
+        this.load.image("yes", "../assets/yes.png");
+        this.load.image("no", "../assets/no.png");
+        this.load.image("confirmation", "../assets/confirmation.png");
+        this.load.image("creditsbutton", "../assets/credits.png");
+        this.load.image("controlmenu", "../assets/controlmenu.png");
+        this.load.image("backbutton", "../assets/back.png");
+        this.load.image("okaybutton", "../assets/okay.png");
         var loadingBar = this.add.graphics({
             fillStyle: {
                 color: 0xffffff
