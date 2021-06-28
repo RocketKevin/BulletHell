@@ -1,6 +1,7 @@
 export const final = {
     SCENES: {
         LOAD: "LOAD",
-        MENU: "MENU"
+        MENU: "MENU",
+        PLAY: "PLAY"
     }
 }
