@@ -21,15 +21,15 @@ export class menu extends Phaser.Scene {
         })
         controls.setInteractive();
         controls.on("pointerup", () => {
-            this.scene.start(final.SCENES.PLAY);
+            this.scene.start(final.SCENES.CONTROLS);
         })
         options.setInteractive();
         options.on("pointerup", () => {
-            this.scene.start(final.SCENES.PLAY);
+            this.scene.start(final.SCENES.OPTIONS);
         })
         quit.setInteractive();
         quit.on("pointerup", () => {
-            window.close()
+            this.scene.start(final.SCENES.QUIT);
         })
     }
 }
