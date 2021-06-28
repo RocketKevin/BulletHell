@@ -10,7 +10,7 @@ export class load extends Phaser.Scene {
     }
     preload() {
         this.game.canvas.style = "margin: auto; display: block;";
-        this.load.image("menubackground", "../assets/menubackground.png");
+        this.load.image("menubackground", "../assets/menubackground.jpg");
         this.load.image("title", "../assets/title.png");
         this.load.image("playbutton", "../assets/playbutton.png");
         this.load.image("controlbutton", "../assets/controlbutton.png")
