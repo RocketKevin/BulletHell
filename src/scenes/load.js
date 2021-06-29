@@ -10,8 +10,8 @@ export class load extends Phaser.Scene {
     }
     preload() {
         this.game.canvas.style = "margin: auto; display: block;";
-        this.load.spritesheet("Generic Male NPCs", "../assets/Generic Male NPCs.png", { frameHeight: 64, frameWidth: 64 });
-        this.load.atlas("Generic Male NPCs", "../assets/Generic Male NPCs.png", "../assets/Generic Male NPCs.json")
+        //this.load.spritesheet("dude", "../assets/dude.png", { frameHeight: 64, frameWidth: 64 });
+        this.load.atlas("dude", "../assets/dude.png", "../assets/dude.json")
         this.load.image("menubackground", "../assets/menubackground.jpg");
         this.load.image("title", "../assets/title.png");
         this.load.image("playbutton", "../assets/playbutton.png");
