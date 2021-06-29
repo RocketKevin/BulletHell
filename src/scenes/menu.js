@@ -9,15 +9,27 @@ export class menu extends Phaser.Scene {
         console.log(data);
     }
     create() {
-        this.add.image(this.game.renderer.width / 2, this.game.renderer.height * 0.1, "title").setDepth(1);
+        this.add.image(this.game.renderer.width / 2, 100, "title").setDepth(1);
         this.add.image(0, 0, "menubackground").setOrigin(0).setDepth(0);
-        var playbutton = this.add.image(this.game.renderer.width / 2, 200, "playbutton").setDepth(1);
-        var controls = this.add.image(this.game.renderer.width / 2, 300, "controlbutton").setDepth(1);
-        var options = this.add.image(this.game.renderer.width / 2, 400, "optionbutton").setDepth(1);
-        var quit = this.add.image(this.game.renderer.width / 2, 500, "quitbutton").setDepth(1);
+        var playbutton = this.add.image(this.game.renderer.width / 2, 220, "playbutton").setDepth(1);
+        var controls = this.add.image(this.game.renderer.width / 2, 320, "controlbutton").setDepth(1);
+        var options = this.add.image(this.game.renderer.width / 2, 420, "optionbutton").setDepth(1);
+        var credits = this.add.image(this.game.renderer.width / 2, 520, "creditsbutton").setDepth(1);
         playbutton.setInteractive();
-        playbutton.on("pointerup", ()=>{
+        playbutton.on("pointerup", () => {
             this.scene.start(final.SCENES.PLAY);
+        })
+        controls.setInteractive();
+        controls.on("pointerup", () => {
+            this.scene.start(final.SCENES.CONTROLS);
+        })
+        options.setInteractive();
+        options.on("pointerup", () => {
+            this.scene.start(final.SCENES.OPTIONS);
+        })
+        credits.setInteractive();
+        credits.on("pointerup", () => {
+            this.scene.start(final.SCENES.CREDITS);
         })
     }
 }
