@@ -6,7 +6,13 @@ import { credits } from "./scenes/credits.js"
 var game = new Phaser.Game({
     width: 800,
     height: 600,
-    scene: [load, menu, play, controls, credits]
+    scene: [load, menu, play, controls, credits],
+    physics: {
+        default: "arcade",
+        arcade: {
+            debug: true
+        }
+    }
 });
 // function preload() {
 //     game.canvas.style = "margin: auto; display: block; margin-top: 5%;";
