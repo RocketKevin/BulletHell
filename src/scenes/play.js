@@ -56,25 +56,36 @@ export class play extends Phaser.Scene {
         if(dude.active === true) {
             if(this.keyboard.D.isDown === true) {
                 dude.setVelocityX(64);
-                dude.play("right", true);
+                //dude.play("right", true);
             }
             if(this.keyboard.A.isDown === true) {
                 dude.setVelocityX(-64);
-                dude.play("left", true);
+                //dude.play("left", true);
             }
             if(this.keyboard.W.isDown === true) {
                 dude.setVelocityY(-64);
-                dude.play("up", true);
+                //dude.play("up", true);
             }
             if(this.keyboard.S.isDown === true) {
                 dude.setVelocityY(64);
-                dude.play("down", true);
+                //dude.play("down", true);
             }
             if(this.keyboard.A.isUp && this.keyboard.D.isUp) {
                 dude.setVelocityX(0);
             }
             if(this.keyboard.W.isUp && this.keyboard.S.isUp) {
                 dude.setVelocityY(0);
+            }
+            console.log(dude.body.velocity.x);
+            if (dude.body.velocity.x > 0) {
+                dude.play("right", true);
+                console.log("true");
+            } else if (dude.body.velocity.x < 0) {
+                dude.play("left", true);
+            } else if (dude.body.velocity.y < 0) {
+                dude.play("up", true);
+            } else if (dude.body.velocity.y > 0) {
+                dude.play("down", true);
             }
         }
     }
