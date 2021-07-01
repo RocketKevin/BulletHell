@@ -46,7 +46,7 @@ export class play extends Phaser.Scene {
         })
     }
     create() {
-        var dude = (this.imageDude = this.physics.add.sprite(50, 100, "dude").setScale(2));
+        var dude = (this.imageDude = this.physics.add.sprite(50, 100, "dude").setScale(0.5));
         //dude.play("right");
         window.dude = dude;
         dude.setCollideWorldBounds(true);
