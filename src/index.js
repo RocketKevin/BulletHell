@@ -4,14 +4,18 @@ import { play } from "./scenes/play.js";
 import { controls } from "./scenes/controls.js"
 import { credits } from "./scenes/credits.js"
 var game = new Phaser.Game({
-    width: 800,
-    height: 600,
     scene: [load, menu, play, controls, credits],
     physics: {
         default: "arcade",
         arcade: {
             debug: true
         }
+    },
+    scale: {
+        mode: Phaser.Scale.ENVELOP,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: '100%',
+        height: '100%',
     }
 });
 // function preload() {

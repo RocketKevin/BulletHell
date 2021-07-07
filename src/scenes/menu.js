@@ -10,7 +10,7 @@ export class menu extends Phaser.Scene {
     }
     create() {
         this.add.image(this.game.renderer.width / 2, 100, "title").setDepth(1);
-        this.add.image(0, 0, "menubackground").setOrigin(0).setDepth(0);
+        this.add.image(0, 0, "menubackground").setOrigin(0).setDepth(0).setScale(2, 1.25);
         var playbutton = this.add.image(this.game.renderer.width / 2, 220, "playbutton").setDepth(1);
         var controls = this.add.image(this.game.renderer.width / 2, 320, "controlbutton").setDepth(1);
         var options = this.add.image(this.game.renderer.width / 2, 420, "optionbutton").setDepth(1);
