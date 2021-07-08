@@ -7,6 +7,9 @@ export class play extends Phaser.Scene {
         })
     }
     preload() {
+        this.load.image("Ground", "../assets/tilesets/A2_Ground.png");
+        this.load.image("Nature", "../assets/tilesets/C_OutSide_Nature.png");
+        this.load.tilemapTiledJSON("lab", "../assets/maps/lab.json");
         this.anims.create({
             key: "right",
             framesRate: 10,
@@ -45,7 +48,13 @@ export class play extends Phaser.Scene {
         })
     }
     create() {
-        this.Player = new Player(this, 50, 100, "dude");
+        var lab = this.add.tilemap("lab");
+        //console.log(lab);
+        var terrain = lab.addTilesetImage("A2_Ground", "Ground");
+        var terrainTop = lab.addTilesetImage("C_OutSide_Nature", "Nature");
+        var bottomLayer = lab.createLayer("Ground", [terrain], 0, 0);
+        var aboveLayer = lab.createLayer("Above", [terrainTop], 0, 0);
+        this.Player = new Player(this, 50, 100, "dude", aboveLayer);
     }
     update(time, delta) {
         this.Player.update();

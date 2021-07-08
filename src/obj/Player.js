@@ -1,12 +1,17 @@
 import { Status } from './Status.js'
 export class Player{
 
-    constructor(scene,x, y, texture) {
-        this.sprite = scene.physics.add.sprite(x, y, texture).setScale(0.5);
+    constructor(scene,x, y, texture, collidables) {
+        this.sprite = scene.physics.add.sprite(x, y, texture);
         this.status = new Status();
         this.keyboard = scene.input.keyboard.addKeys("W, A, S, D");
         this.sprite.setCollideWorldBounds(true);
-        //this.sprite.immovable(true);
+        this.sprite.setScale(0.5);
+        this.sprite.setOrigin(0,0);
+        this.sprite.setFrame("dude1.png");
+        this.sprite.setImmovable(true);
+        scene.physics.add.collider(this.sprite, collidables);
+        collidables.setCollisionByProperty({collides:true});
     }
     update() {
         if(this.sprite.active === true) {
