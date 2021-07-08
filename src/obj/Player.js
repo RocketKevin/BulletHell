@@ -1,4 +1,5 @@
-import { Status } from './Status.js'
+import { Status } from './Status.js';
+import { HitBox } from './HitBox.js';
 export class Player{
 
     constructor(scene,x, y, texture, collidables) {
@@ -10,8 +11,11 @@ export class Player{
         this.sprite.setOrigin(0,0);
         this.sprite.setFrame("dude1.png");
         this.sprite.setImmovable(true);
+        this.sprite.setSize(30,40);
+        this.sprite.setOffset(10,60);
         scene.physics.add.collider(this.sprite, collidables);
         collidables.setCollisionByProperty({collides:true});
+        this.hitbox = new HitBox(scene, x, y, this.sprite);
     }
     update() {
         if(this.sprite.active === true) {
@@ -40,13 +44,16 @@ export class Player{
             console.log(this.sprite.body.velocity.x);
             if (this.sprite.body.velocity.x > 0) {
                 this.sprite.play("right", true);
-                console.log("true");
+                this.hitbox.update();
             } else if (this.sprite.body.velocity.x < 0) {
                 this.sprite.play("left", true);
+                this.hitbox.update();
             } else if (this.sprite.body.velocity.y < 0) {
                 this.sprite.play("up", true);
+                this.hitbox.update();
             } else if (this.sprite.body.velocity.y > 0) {
                 this.sprite.play("down", true);
+                this.hitbox.update();
             }
         }
     }
