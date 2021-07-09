@@ -2,7 +2,7 @@ import { Status } from './Status.js';
 import { HitBox } from './HitBox.js';
 export class Player{
 
-    constructor(scene,x, y, texture, collidables) {
+    constructor(scene,x, y, texture, collidables, location) {
         this.sprite = scene.physics.add.sprite(x, y, texture);
         this.status = new Status();
         this.keyboard = scene.input.keyboard.addKeys("W, A, S, D");
@@ -16,6 +16,8 @@ export class Player{
         scene.physics.add.collider(this.sprite, collidables);
         collidables.setCollisionByProperty({collides:true});
         this.hitbox = new HitBox(scene, x, y, this.sprite);
+        scene.cameras.main.startFollow(this.sprite);
+        scene.physics.world.setBounds(0,0, location.widthInPixels,location.heightInPixels);
     }
     update() {
         if(this.sprite.active === true) {
