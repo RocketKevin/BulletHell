@@ -23,19 +23,15 @@ export class Player{
         if(this.sprite.active === true) {
             if(this.keyboard.D.isDown === true) {
                 this.sprite.setVelocityX(64);
-                //dude.play("right", true);
             }
             if(this.keyboard.A.isDown === true) {
                 this.sprite.setVelocityX(-64);
-                //dude.play("left", true);
             }
             if(this.keyboard.W.isDown === true) {
                 this.sprite.setVelocityY(-64);
-                //dude.play("up", true);
             }
             if(this.keyboard.S.isDown === true) {
                 this.sprite.setVelocityY(64);
-                //dude.play("down", true);
             }
             if(this.keyboard.A.isUp && this.keyboard.D.isUp) {
                 this.sprite.setVelocityX(0);
