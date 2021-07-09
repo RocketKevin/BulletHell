@@ -49,14 +49,13 @@ export class play extends Phaser.Scene {
     }
     create() {
         var lab = this.add.tilemap("lab");
-        //console.log(lab);
         var terrain = lab.addTilesetImage("A2_Ground", "Ground");
         var terrainTop = lab.addTilesetImage("C_OutSide_Nature", "Nature");
         var terrainPassable = lab.addTilesetImage("C_OutSide_Nature", "Nature");
         var bottomLayer = lab.createLayer("Ground", [terrain], 0, 0);
         var passableLayer = lab.createLayer("Ground2", [terrainPassable], 0, 0);
         var aboveLayer = lab.createLayer("Above", [terrainTop], 0, 0).setDepth(2);
-        this.Player = new Player(this, 50, 100, "dude", passableLayer);
+        this.Player = new Player(this, 50, 100, "dude", passableLayer, lab);
     }
     update(time, delta) {
         this.Player.update();
