@@ -1,8 +1,8 @@
 import { Status } from './Status.js';
 import { HitBox } from './HitBox.js';
-export class Player{
+export class Player {
 
-    constructor(scene,x, y, texture, collidables, location) {
+    constructor(scene, x, y, texture, collidables, location) {
         this.sprite = scene.physics.add.sprite(x, y, texture);
         this.status = new Status();
         this.keyboard = scene.input.keyboard.addKeys("W, A, S, D");
@@ -10,13 +10,13 @@ export class Player{
         scene.physics.world.bounds.width = location.widthInPixels;
         scene.physics.world.bounds.height = location.heightInPixels;
         this.sprite.setScale(0.5);
-        this.sprite.setOrigin(0,0);
+        this.sprite.setOrigin(0, 0);
         this.sprite.setFrame("dude1.png");
         this.sprite.setImmovable(true);
-        this.sprite.setSize(30,40);
-        this.sprite.setOffset(10,60);
+        this.sprite.setSize(30, 40);
+        this.sprite.setOffset(10, 60);
         scene.physics.add.collider(this.sprite, collidables);
-        collidables.setCollisionByProperty({collides:true});
+        collidables.setCollisionByProperty({ collides: true });
         this.hitbox = new HitBox(scene, x, y, this.sprite);
         scene.cameras.main.startFollow(this.sprite);
         scene.cameras.main.setBounds(0,0, location.widthInPixels,location.heightInPixels);
@@ -72,7 +72,6 @@ export class Player{
                 this.sprite.play("down", true);
                 this.hitbox.update();
             }
-
         }
     }
 }
