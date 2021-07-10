@@ -1,10 +1,12 @@
 import { final } from "../final.js";
 import { Player } from "../obj/Player.js";
+import { Hub } from "../obj/Hub.js";
 export class play extends Phaser.Scene {
     constructor() {
         super({
             key: final.SCENES.PLAY
         })
+        this.hubState = false;
     }
     preload() {
         this.load.image("Ground", "../assets/tilesets/A2_Ground.png");
@@ -47,6 +49,7 @@ export class play extends Phaser.Scene {
             })
         })
     }
+
     create() {
         var lab = this.add.tilemap("lab");
         var terrain = lab.addTilesetImage("A2_Ground", "Ground");
@@ -55,8 +58,13 @@ export class play extends Phaser.Scene {
         var bottomLayer = lab.createLayer("Ground", [terrain], 0, 0);
         var passableLayer = lab.createLayer("Ground2", [terrainPassable], 0, 0);
         var aboveLayer = lab.createLayer("Above", [terrainTop], 0, 0).setDepth(2);
-        var hubIcon = this.add.image(10, 10, "HubIcon").setOrigin(-22.7,0).setInteractive().setScrollFactor(0);
+        var hubIcon = this.add.image(1462, 10, "HubIcon").setOrigin(0,0).setInteractive().setScrollFactor(0);
+        this.Hub = new Hub(this, "Hub", "BackpackIcon", "Backpack");
         this.Player = new Player(this, 50, 100, "dude", passableLayer, lab);
+        hubIcon.on("pointerup", () => {
+            this.hubState = !this.hubState;
+            this.Hub.setVisible(this.hubState);
+        })
     }
     update(time, delta) {
         this.Player.update();
