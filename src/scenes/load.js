@@ -10,8 +10,10 @@ export class load extends Phaser.Scene {
     }
     preload() {
         this.game.canvas.style = "margin: auto; display: block;";
-        //this.load.spritesheet("dude", "../assets/dude.png", { frameHeight: 64, frameWidth: 64 });
         this.load.image("HubIcon", "../assets/HubIcon.png");
+        this.load.image("Backpack", "../assets/Backpack.png");
+        this.load.image("BackpackIcon", "../assets/BackpackIcon.png");
+        this.load.image("Hub", "../assets/Hub.png");
         this.load.atlas("dude", "../assets/dude.png", "../assets/dude.json")
         this.load.image("menubackground", "../assets/menubackground.jpg");
         this.load.image("title", "../assets/title.png");
