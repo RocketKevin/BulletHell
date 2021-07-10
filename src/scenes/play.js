@@ -55,6 +55,7 @@ export class play extends Phaser.Scene {
         var bottomLayer = lab.createLayer("Ground", [terrain], 0, 0);
         var passableLayer = lab.createLayer("Ground2", [terrainPassable], 0, 0);
         var aboveLayer = lab.createLayer("Above", [terrainTop], 0, 0).setDepth(2);
+        var hubIcon = this.add.image(10, 10, "HubIcon").setOrigin(-22.7,0).setInteractive().setScrollFactor(0);
         this.Player = new Player(this, 50, 100, "dude", passableLayer, lab);
     }
     update(time, delta) {

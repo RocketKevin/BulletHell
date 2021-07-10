@@ -5,6 +5,7 @@ export const final = {
         PLAY: "PLAY",
         CONTROLS: "CONTROLS",
         OPTIONS: "OPTIONS",
-        CREDITS: "CREDITS"
+        CREDITS: "CREDITS",
+        UI: "UI"
     }
 }

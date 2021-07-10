@@ -6,7 +6,7 @@ export class menu extends Phaser.Scene {
         })
     }
     init(data) {
-        console.log(data);
+        //console.log(data);
     }
     create() {
         this.add.image(this.game.renderer.width / 2, 100, "title").setDepth(1);
