@@ -1,6 +1,5 @@
 export class HitBox{
     constructor(scene, x, y, player) {
-        this.keyboard = scene.input.keyboard.addKeys("W, A, S, D");
         this.sprite = scene.physics.add.sprite(x, y);
         this.sprite.setSize(40,100);
         this.sprite.setScale(0.5);

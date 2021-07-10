@@ -7,6 +7,8 @@ export class Player {
         this.status = new Status();
         this.keyboard = scene.input.keyboard.addKeys("W, A, S, D");
         this.sprite.setCollideWorldBounds(true);
+        scene.physics.world.bounds.width = location.widthInPixels;
+        scene.physics.world.bounds.height = location.heightInPixels;
         this.sprite.setScale(0.5);
         this.sprite.setOrigin(0, 0);
         this.sprite.setFrame("dude1.png");
@@ -17,8 +19,9 @@ export class Player {
         collidables.setCollisionByProperty({ collides: true });
         this.hitbox = new HitBox(scene, x, y, this.sprite);
         scene.cameras.main.startFollow(this.sprite);
-        scene.physics.world.setBounds(0, 0, location.widthInPixels, location.heightInPixels);
+        scene.cameras.main.setBounds(0,0, location.widthInPixels,location.heightInPixels);
     }
+
     update() {
         if (this.sprite.active === true) {
             if (this.keyboard.D.isDown === true) {
@@ -69,12 +72,6 @@ export class Player {
                 this.sprite.play("down", true);
                 this.hitbox.update();
             }
-            // var pointer = this.scene.input.activePointer;
-            // if (pointer.isDown) {
-            //     console.log(pointer.x);
-            //     console.log(pointer.y);
-
-            // }
         }
     }
 }
