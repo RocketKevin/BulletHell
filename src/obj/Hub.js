@@ -8,11 +8,18 @@ export class Hub{
         this.backpack = new Backpack(scene, hubItemOne);
         this.hubIcon = scene.add.image(1462, 10, hubIcon).setOrigin(0,0).setInteractive().setScrollFactor(0);
         this.hubBox = scene.add.image(window.innerWidth - 118 - 10, 155 + 84, hub);
-        this.backpackIcon = scene.add.image(window.innerWidth - 202, 128, hubItemIconOne).setInteractive();
+        this.backpackIcon = scene.add.image(window.innerWidth - 202, 128, hubItemIconOne).setInteractive()
+
         this.hubContainer = scene.add.container(0,0, [this.hubBox, this.backpackIcon]);
+        this.setStyle(this.hubContainer);
         this.hubContainer.setScrollFactor(0);
         this.hubContainer.setDepth(3);
         this.hubContainer.setVisible(false);
+    }
+    setStyle(container) {
+        for(var i = 0; i < container.list.length; i++) {
+            container.list[i].setScrollFactor(0);
+        }
     }
     button(scene) {
         this.hubIcon.on("pointerup", () => {
