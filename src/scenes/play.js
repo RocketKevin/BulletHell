@@ -2,6 +2,7 @@ import { final } from "../final.js";
 import { Player } from "../obj/Player.js";
 import { Hub } from "../obj/Hub.js";
 import { Backpack } from "../obj/Backpack.js";
+import { Gun } from "../obj/Gun.js";
 export class play extends Phaser.Scene {
     constructor() {
         super({
@@ -62,8 +63,16 @@ export class play extends Phaser.Scene {
         this.Hub = new Hub(this, "HubIcon", "Hub", "BackpackIcon", "Backpack");
         this.Player = new Player(this, 50, 100, "dude", passableLayer, lab);
         this.Hub.button(this);
+
+        //gun/bullet
+        //constructor(bulletSpeed, bulletRange, fireRate, imageName, dude, input, physics, scene)
+        this.pistol = new Gun(100,3000,500, 'dude', this.Player.sprite, this.input, this.physics, this)
+        this.ak = new Gun(1000,100000,50, 'dude', this.Player.sprite, this.input, this.physics, this)
     }
     update(time, delta) {
+        //console.log("s"+this.cameras)
+        //console.log(this.Player.sprite.x)
         this.Player.update();
+        this.ak.update(time, delta);
     }
 }
