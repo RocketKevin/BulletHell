@@ -3,6 +3,7 @@ import { Player } from "../obj/Player.js";
 import { Hub } from "../obj/Hub.js";
 import { Backpack } from "../obj/Backpack.js";
 import { Gun } from "../obj/Gun.js";
+import { Shop } from "../obj/Shop.js"
 export class play extends Phaser.Scene {
     constructor() {
         super({
@@ -19,7 +20,7 @@ export class play extends Phaser.Scene {
             frames: this.anims.generateFrameNames("dude", {
                 prefix: "dude",
                 suffix: ".png",
-                frames: [6,7,8,7]
+                frames: [6, 7, 8, 7]
             })
         })
         this.anims.create({
@@ -28,7 +29,7 @@ export class play extends Phaser.Scene {
             frames: this.anims.generateFrameNames("dude", {
                 prefix: "dude",
                 suffix: ".png",
-                frames: [5,4,3,4]
+                frames: [5, 4, 3, 4]
             })
         })
         this.anims.create({
@@ -37,7 +38,7 @@ export class play extends Phaser.Scene {
             frames: this.anims.generateFrameNames("dude", {
                 prefix: "dude",
                 suffix: ".png",
-                frames: [9,10,11,10]
+                frames: [9, 10, 11, 10]
             })
         })
         this.anims.create({
@@ -46,7 +47,7 @@ export class play extends Phaser.Scene {
             frames: this.anims.generateFrameNames("dude", {
                 prefix: "dude",
                 suffix: ".png",
-                frames: [0,1,2,1]
+                frames: [0, 1, 2, 1]
             })
         })
     }
@@ -59,8 +60,8 @@ export class play extends Phaser.Scene {
         var bottomLayer = lab.createLayer("Ground", [terrain], 0, 0);
         var passableLayer = lab.createLayer("Ground2", [terrainPassable], 0, 0);
         var aboveLayer = lab.createLayer("Above", [terrainTop], 0, 0).setDepth(2);
-        
-        this.Hub = new Hub(this, "HubIcon", "Hub", "BackpackIcon", "Backpack");
+
+        this.Hub = new Hub(this, "HubIcon", "Hub", "BackpackIcon", "Backpack", "Shop");
         this.Player = new Player(this, 50, 100, "dude", passableLayer, lab);
         this.Hub.button(this);
 
@@ -70,8 +71,6 @@ export class play extends Phaser.Scene {
         this.ak = new Gun(1000,100000,50, 'dude', this.Player.sprite, this.input, this.physics, this)
     }
     update(time, delta) {
-        //console.log("s"+this.cameras)
-        //console.log(this.Player.sprite.x)
         this.Player.update();
         this.ak.update(time, delta);
     }
