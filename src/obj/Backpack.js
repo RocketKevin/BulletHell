@@ -1,8 +1,10 @@
 export class Backpack {
     constructor(scene, texture) {
         this.array = [];
+
         this.backpack = scene.add.image(window.innerWidth - 105 - 310, 165, texture).setScrollFactor(0);
         this.backpackContainer = scene.add.container(0, 0, [this.backpack]);
+
         this.backpackContainer.setScrollFactor(0);
         this.backpackContainer.setDepth(3);
         this.backpackContainer.setVisible(false);
@@ -10,7 +12,7 @@ export class Backpack {
         this.backpackContainer.setName("backpack container");
         this.backpack.setName("backpack");
         //this.backpackContainer.setSize(this.backpack.width, this.backpack.height);
-        console.log(this.backpack.width);
+        //console.log(this.backpack.width);
     }
     setVisible(state) {
         this.backpackContainer.setVisible(state);
