@@ -64,10 +64,10 @@ export class play extends Phaser.Scene {
         var passableLayer = lab.createLayer("Ground2", [terrainPassable], 0, 0);
         var aboveLayer = lab.createLayer("Above", [terrainTop], 0, 0).setDepth(2);
 
-        this.Hub = new Hub(this, "HubIcon", "Hub", "BackpackIcon", "Backpack", "Shop");
+        this.Hub = new Hub(this, "HubIcon", "Hub", "BackpackIcon", "Backpack", "ShopIcon", "Shop");
         this.Player = new Player(this, 50, 100, "dude", passableLayer, lab);
         this.Hub.button(this);
-
+        
         //gun/bullet
         //constructor(bulletSpeed, bulletRange, fireRate, imageName, dude, input, physics, scene)
         this.pistol = new Gun(100,3000,500, 'dude', this.Player.sprite, this.input, this.physics, this)
@@ -82,7 +82,7 @@ export class play extends Phaser.Scene {
         this.mobDude.setBounce(-1);
         this.mobAlive = true;
         //collisions
-        this.physics.add.collider(this.mobArray, this.ak.bullets, this.handleBulletMobCollision, undefined, this);
+        this.physics.add.overlap(this.mobArray, this.ak.bullets, this.handleBulletMobCollision, undefined, this);
     }
     handleBulletMobCollision(obj1, obj2){//obj1 is the mob obj 2 is the bullets
         obj2.visible = false;
@@ -99,6 +99,7 @@ export class play extends Phaser.Scene {
     }
     update(time, delta) {
         this.Player.update();
+        console.log(this.Player.getX());
         this.ak.update(time, delta);
         this.mobArray.children.iterate(child=>{
             child.update();

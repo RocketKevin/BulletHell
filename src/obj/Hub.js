@@ -1,14 +1,14 @@
 import { Backpack } from "./Backpack.js";
 import { Shop } from "./Shop.js";
 export class Hub {
-    constructor(scene, hubIcon, hub, hubItemIconOne, hubItemOne, hubItemIconTwo) {
+    constructor(scene, hubIcon, hub, hubItemIconOne, hubItemOne, hubItemIconTwo, hubItemTwo) {
         this.state = {
             hub: false,
             backpack: false,
             shop: false,
         };
         //310 x 162
-        this.shop = new Shop(scene, hubItemOne);
+        this.shop = new Shop(scene, hubItemTwo);
         this.backpack = new Backpack(scene, hubItemOne);
         this.hubIcon = scene.add.image(1462, 10, hubIcon).setOrigin(0, 0).setInteractive().setScrollFactor(0);
         this.hubBox = scene.add.image(window.innerWidth - 118 - 10, 155 + 84, hub);

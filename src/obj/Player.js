@@ -20,6 +20,9 @@ export class Player {
         scene.cameras.main.startFollow(this.sprite);
         scene.cameras.main.setBounds(0,0, location.widthInPixels,location.heightInPixels);
     }
+    getX() {
+        return this.sprite.x;
+    }
     update() {
         if (this.sprite.active === true) {
             if (this.keyboard.D.isDown === true) {
