@@ -21,6 +21,9 @@ export class load extends Phaser.Scene {
             "../assets/items/items.png", 
             "../assets/items/map_items.json"
         );
+        var atlasTexture = this.textures.get('projectiles');
+        var frames = atlasTexture.getFrameNames();
+        this.load.image("bullet",'projectiles', frames[0]);
         this.load.atlas(
             "projectiles", 
             "../assets/projectiles/projectiles.png", 

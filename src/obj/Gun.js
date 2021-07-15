@@ -14,7 +14,7 @@ export class Gun {
             classType: test
         });
         this.camera = scene.cameras.main;
-    
+        this.physics = physics;
     }
     create() {
     }
@@ -33,14 +33,14 @@ export class Gun {
                 bullet.spawnX = this.dude.x;
                 bullet.spawnY = this.dude.y;
                 this.coolDown = this.fireRate;
-                console.log("id: " + bullet.id);
+               // console.log("id: " + bullet.id);
             }
         }
         this.coolDown = this.coolDown - delta;
         //hide bullets when outof range
         this.bullets.children.iterate(child=>{
-            child.visible = true;
-            child.active = true;
+            //child.visible = true;
+            //child.active = true;
             var dx = child.x-child.spawnX;
             var dy = child.y-child.spawnY
             var dist = dx*dx+dy*dy; 
@@ -51,12 +51,13 @@ export class Gun {
         })
     }
 }
-class test extends Phaser.GameObjects.Sprite{
+class test extends Phaser.Physics.Arcade.Sprite{
     static increase = 1;
     constructor(scene, x, y, texture){
         super(scene, x, y, texture);
         this.spawnX = x;
         this.spawnY = y;
         this.id = test.increase++;
+        this.damage = 100;
     }
 }

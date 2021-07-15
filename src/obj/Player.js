@@ -1,7 +1,6 @@
 import { Status } from './Status.js';
 import { HitBox } from './HitBox.js';
 export class Player {
-
     constructor(scene, x, y, texture, collidables, location) {
         this.sprite = scene.physics.add.sprite(x, y, texture);
         this.status = new Status();
@@ -21,7 +20,6 @@ export class Player {
         scene.cameras.main.startFollow(this.sprite);
         scene.cameras.main.setBounds(0,0, location.widthInPixels,location.heightInPixels);
     }
-
     update() {
         if (this.sprite.active === true) {
             if (this.keyboard.D.isDown === true) {
@@ -58,7 +56,7 @@ export class Player {
                 this.sprite.setVelocityY(90);
                 this.sprite.setVelocityX(-90);
             }
-            console.log(this.sprite.body.velocity.x);
+            //console.log(this.sprite.body.velocity.x);
             if (this.sprite.body.velocity.x > 0) {
                 this.sprite.play("right", true);
                 this.hitbox.update();
