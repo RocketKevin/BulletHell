@@ -18,7 +18,13 @@ export class Player {
         collidables.setCollisionByProperty({ collides: true });
         this.hitbox = new HitBox(scene, x, y, this.sprite);
         scene.cameras.main.startFollow(this.sprite);
-        scene.cameras.main.setBounds(0,0, location.widthInPixels,location.heightInPixels);
+        scene.cameras.main.setBounds(0, 0, location.widthInPixels, location.heightInPixels);
+    }
+    getX() {
+        return this.sprite.body.x
+    }
+    getY() {
+        return this.sprite.body.y
     }
     getX() {
         return this.sprite.x;
