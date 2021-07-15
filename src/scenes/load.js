@@ -26,6 +26,11 @@ export class load extends Phaser.Scene {
             "../assets/projectiles/projectiles.png", 
             "../assets/projectiles/map_projectiles.json"
         );
+        this.load.atlas(
+            "slime", 
+            "../assets/monsters/slime.png", 
+            "../assets/monsters/map_slime.json"
+        );
         this.load.image("menubackground", "../assets/menubackground.jpg");
         this.load.image("title", "../assets/title.png");
         this.load.image("playbutton", "../assets/playbutton.png");
