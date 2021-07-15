@@ -80,6 +80,7 @@ export class play extends Phaser.Scene {
         //spawn a dude mob
         this.mobDude = this.mobArray.get(250, 250, 'dude').setScale(5);
         this.mobDude.setBounce(-1);
+        this.mobAlive = true;
         //collisions
         this.physics.add.collider(this.mobArray, this.ak.bullets, this.handleBulletMobCollision, undefined, this);
     }
@@ -89,10 +90,11 @@ export class play extends Phaser.Scene {
         obj2.destroy();
         console.log("abc")
         obj1.health = obj1.health - obj2.damage;
-        if(obj1.health<=0){
+        if(obj1.health<=0&&this.mobAlive){
             obj1.visible = false;
             obj1.active = false;
             console.log("mob killed!")
+            this.mobAlive = false;
         }
     }
     update(time, delta) {
