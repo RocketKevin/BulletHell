@@ -45,14 +45,49 @@ export class play extends Phaser.Scene {
         })
         this.anims.create({
             key: "down",
-            framesRate: 10,
+            framesRate: 3,
             frames: this.anims.generateFrameNames("dude", {
                 prefix: "dude",
                 suffix: ".png",
                 frames: [0, 1, 2, 1]
             })
         })
-        
+        this.anims.create({
+            key: "slime_up",
+            framesRate: 1,
+            frames: this.anims.generateFrameNames("slime", {
+                prefix: "slime",
+                suffix: ".png",
+                frames: [10, 11, 12]
+            })
+        })
+        this.anims.create({
+            key: "slime_down",
+            framesRate: 1,
+            frames: this.anims.generateFrameNames("slime", {
+                prefix: "slime",
+                suffix: ".png",
+                frames: [4, 5, 6]
+            })
+        })
+        this.anims.create({
+            key: "slime_left",
+            framesRate: 1,
+            frames: this.anims.generateFrameNames("slime", {
+                prefix: "slime",
+                suffix: ".png",
+                frames: [1, 2, 3]
+            })
+        })
+        this.anims.create({
+            key: "slime_right",
+            framesRate: 1,
+            frames: this.anims.generateFrameNames("slime", {
+                prefix: "slime",
+                suffix: ".png",
+                frames: [7, 8, 9]
+            })
+        })
     }
 
     create() {
@@ -70,27 +105,33 @@ export class play extends Phaser.Scene {
 
         //gun/bullet
         //constructor(bulletSpeed, bulletRange, fireRate, imageName, dude, input, physics, scene)
-        this.pistol = new Gun(100,3000,500, 'dude', this.Player.sprite, this.input, this.physics, this)
-        this.ak = new Gun(1000,100000,200, 'bullet', this.Player.sprite, this.input, this.physics, this)
+        this.pistol = new Gun(100, 3000, 500, 'dude', this.Player.sprite, this.input, this.physics, this)
+        this.ak = new Gun(1000, 100000, 200, 'bullet', this.Player.sprite, this.input, this.physics, this)
 
         //mob array
         this.mobArray = this.physics.add.group({
             classType: Mob//constructor(scene, x, y, texture)
         });
         //spawn a dude mob
-        this.mobDude = this.mobArray.get(250, 250, 'dude').setScale(5);
-        this.mobDude.setBounce(-1);
+        // this.mobDude = this.mobArray.get(250, 250, 'slime').setScale(.75);
+        this.mobArray.add(new Mob(this, 500, 500, this.Player, 'slime'))
+        // this.mobDude.setBounce(-1);
         this.mobAlive = true;
         //collisions
-        this.physics.add.collider(this.mobArray, this.ak.bullets, this.handleBulletMobCollision, undefined, this);
+        this.physics.add.overlap(this.mobArray, this.ak.bullets, this.handleBulletMobCollision, null, this);
     }
-    handleBulletMobCollision(obj1, obj2){//obj1 is the mob obj 2 is the bullets
+    handleBulletMobCollision(obj1, obj2) {//obj1 is the mob obj 2 is the bullets
         obj2.visible = false;
         obj2.active = false;
         obj2.destroy();
         console.log("abc")
         obj1.health = obj1.health - obj2.damage;
-        if(obj1.health<=0&&this.mobAlive){
+        if (obj1.health <= 0 && this.mobAlive) {
+            console.log(obj1)
+
+            obj1.body.velocity.x = 0
+            obj1.body.velocity.y = 0
+
             obj1.visible = false;
             obj1.active = false;
             console.log("mob killed!")
@@ -100,7 +141,7 @@ export class play extends Phaser.Scene {
     update(time, delta) {
         this.Player.update();
         this.ak.update(time, delta);
-        this.mobArray.children.iterate(child=>{
+        this.mobArray.children.iterate(child => {
             child.update();
         })
     }
