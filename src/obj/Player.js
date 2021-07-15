@@ -26,6 +26,9 @@ export class Player {
     getY() {
         return this.sprite.body.y
     }
+    getX() {
+        return this.sprite.x;
+    }
     update() {
         if (this.sprite.active === true) {
             if (this.keyboard.D.isDown === true) {

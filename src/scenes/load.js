@@ -13,7 +13,8 @@ export class load extends Phaser.Scene {
         this.load.image("HubIcon", "../assets/HubIcon.png");
         this.load.image("Backpack", "../assets/Backpack.png");
         this.load.image("BackpackIcon", "../assets/BackpackIcon.png");
-        this.load.image("Shop", "../assets/ShopIcon.png");
+        this.load.image("ShopIcon", "../assets/ShopIcon.png");
+        this.load.image("Shop", "../assets/Shop.png");
         this.load.image("Hub", "../assets/Hub.png");
         this.load.atlas("dude", "../assets/dude.png", "../assets/dude.json");
         this.load.atlas(
