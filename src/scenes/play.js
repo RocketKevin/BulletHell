@@ -114,21 +114,53 @@ export class play extends Phaser.Scene {
         });
         //spawn a dude mob
         // this.mobDude = this.mobArray.get(250, 250, 'slime').setScale(.75);
-        this.mobArray.add(new Mob(this, 500, 500, this.Player, 'slime'))
+        this.time.addEvent({
+            delay: 500,
+            callback: () => {
+                // spawn a new apple
+                if (this.mobArray.getLength() == 0) {
+                    this.mobArray.add(new Mob(this, 500, 500, this.Player, 'slime'))
+                    console.log(this.mobArray.getLength())
+                }
+            },
+            loop: true
+        })
         // this.mobDude.setBounce(-1);
         this.mobAlive = true;
         //collisions
         this.physics.add.overlap(this.mobArray, this.ak.bullets, this.handleBulletMobCollision, null, this);
+        this.physics.add.overlap(this.mobArray, this.Player.hitbox.sprite, this.handleDamage, null, this);
     }
+
+    handleDamage(player, monster) {
+        if (this.Player.sprite.alpha == 0.5) return;
+        // console.log("hello")
+        this.Player.status.hp = this.Player.status.hp - monster.damage
+        // console.log(monster)
+        // console.log(player)
+        if (this.Player.status.hp <= 0) {
+            this.Player.killPlayer();
+            this.ak = null
+        }
+        this.invulnerable()
+    }
+
+    invulnerable() {
+        this.Player.sprite.alpha = 0.5;
+        this.time.addEvent({
+            delay: 1000,
+            callback: () => { this.Player.sprite.alpha = 1 },
+            callbackScope: this,
+            loop: false
+        });
+    }
+
     handleBulletMobCollision(obj1, obj2) {//obj1 is the mob obj 2 is the bullets
         obj2.visible = false;
         obj2.active = false;
         obj2.destroy();
-        console.log("abc")
         obj1.health = obj1.health - obj2.damage;
         if (obj1.health <= 0 && this.mobAlive) {
-            console.log(obj1)
-
             obj1.body.velocity.x = 0
             obj1.body.velocity.y = 0
 
@@ -139,11 +171,15 @@ export class play extends Phaser.Scene {
         }
     }
     update(time, delta) {
+
         this.Player.update();
-        console.log(this.Player.getX());
-        this.ak.update(time, delta);
+        if (this.ak != null) {
+            this.ak.update(time, delta);
+        }
         this.mobArray.children.iterate(child => {
             child.update();
         })
     }
+
+
 }

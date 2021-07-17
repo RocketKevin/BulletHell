@@ -26,8 +26,13 @@ export class Player {
     getY() {
         return this.sprite.body.y
     }
-    getX() {
-        return this.sprite.x;
+    killPlayer() {
+        this.visible = false;
+        this.sprite.setVisible(false);
+        this.sprite.active = false;
+        this.sprite.setVelocityX(0);
+        this.sprite.setVelocityY(0);
+        console.log("you have been slain!");
     }
     update() {
         if (this.sprite.active === true) {
