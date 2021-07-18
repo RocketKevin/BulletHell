@@ -6,6 +6,8 @@ import { Gun } from "../obj/Gun.js";
 import { Shop } from "../obj/Shop.js"
 import { Mob } from "../obj/Mob.js"
 import { Slime } from "../obj/Mobs/Slime.js"
+import DialogBox from "../obj/DialogBox.js";
+import FloatText from "../obj/FloatText.js";
 export class play extends Phaser.Scene {
     constructor() {
         super({
@@ -102,6 +104,9 @@ export class play extends Phaser.Scene {
         this.Hub = new Hub(this, "HubIcon", "Hub", "BackpackIcon", "Backpack", "ShopIcon", "Shop");
         this.Player = new Player(this, 50, 100, "dude", passableLayer, lab);
         this.Hub.button(this);
+
+        this.textBox = new DialogBox(this, 0, 0);
+        this.floatText = new FloatText(this);
         
         //gun/bullet
         //constructor(bulletSpeed, bulletRange, fireRate, imageName, dude, input, physics, scene)
@@ -114,14 +119,16 @@ export class play extends Phaser.Scene {
         });
         //spawn a dude mob
         // this.mobDude = this.mobArray.get(250, 250, 'slime').setScale(.75);
-        this.mobArray.add(new Mob(this, 500, 500, this.Player, 'slime'))
+        //this.mobArray.add(new Mob(this, 500, 500, this.Player, 'slime'))
+        //this.mobArray.get(500, 500, "slime");
         this.time.addEvent({
             delay: 3000,
             callback: () => {
                 // spawn a new apple
-                if (this.mobArray.getLength() != 4) {
-                    this.mobArray.add(new Mob(this, 500, 500, this.Player, 'slime'))
-                    console.log(this.mobArray.getLength())
+                if (this.mobArray.getTotalUsed() != 4) {
+                    //this.mobArray.add(new Mob(this, 500, 500, this.Player, 'slime'))
+                    this.mobArray.get(500, 500, "slime").active = true;
+                    //console.log(this.mobArray.getLength())
                 }
             },
             loop: true
@@ -160,16 +167,18 @@ export class play extends Phaser.Scene {
         obj2.active = false;
         obj2.destroy();
         obj1.health = obj1.health - obj2.damage;
+        this.floatText.showText(obj1.x, obj1.y, `${obj2.damage}`);
         if (obj1.health <= 0 && obj1.getMobAlive()) {
             console.log(obj1)
-            obj1.sprite.body.velocity.x = 0
-            obj1.sprite.body.velocity.y = 0
+            obj1.body.velocity.x = 0
+            obj1.body.velocity.y = 0
             obj1.setMobDead();
-            obj1.setVisible(false);
-            obj1.sprite.visible = false;
+            //obj1.setVisible(false);
+            obj1.visible = false;
             obj1.active = false;
             console.log("mob killed!")
-            obj1.destroy();
+            this.textBox.showFor("mob was killed, \n good job!!!!", 1000);
+            // obj1.destroy();
         }
     }
     update(time, delta) {
@@ -179,7 +188,8 @@ export class play extends Phaser.Scene {
             this.ak.update(time, delta);
         }
         this.mobArray.children.iterate(child => {
-            child.update();
+            if(child.active)
+                child.update();
         })
     }
 
