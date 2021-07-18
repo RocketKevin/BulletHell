@@ -4,7 +4,6 @@ import { Hub } from "../obj/Hub.js";
 import { Backpack } from "../obj/Backpack.js";
 import { Gun } from "../obj/Gun.js";
 import { Shop } from "../obj/Shop.js"
-import { Mob } from "../obj/Mob.js"
 import { Slime } from "../obj/Mobs/Slime.js"
 import DialogBox from "../obj/DialogBox.js";
 import FloatText from "../obj/FloatText.js";
@@ -115,7 +114,7 @@ export class play extends Phaser.Scene {
 
         //mob array
         this.mobArray = this.physics.add.group({
-            classType: Mob//constructor(scene, x, y, texture)
+            classType: Slime//constructor(scene, x, y, texture)
         });
         //spawn a dude mob
         // this.mobDude = this.mobArray.get(250, 250, 'slime').setScale(.75);
