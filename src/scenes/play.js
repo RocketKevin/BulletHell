@@ -124,9 +124,10 @@ export class play extends Phaser.Scene {
             delay: 3000,
             callback: () => {
                 // spawn a new apple
-                if (this.mobArray.getTotalUsed() != 4) {
+                if (this.mobArray.getTotalUsed() < 4) { //if the total number that is active is less than 4.
                     //this.mobArray.add(new Mob(this, 500, 500, this.Player, 'slime'))
-                    this.mobArray.get(500, 500, "slime").active = true;
+                    let mob = this.mobArray.get(500, 500, "slime");
+                    mob.reset();
                     //console.log(this.mobArray.getLength())
                 }
             },
@@ -162,22 +163,27 @@ export class play extends Phaser.Scene {
     }
 
     handleBulletMobCollision(obj1, obj2) {//obj1 is the mob obj 2 is the bullets
-        obj2.visible = false;
-        obj2.active = false;
-        obj2.destroy();
-        obj1.health = obj1.health - obj2.damage;
-        this.floatText.showText(obj1.x, obj1.y, `${obj2.damage}`);
-        if (obj1.health <= 0 && obj1.getMobAlive()) {
-            console.log(obj1)
-            obj1.body.velocity.x = 0
-            obj1.body.velocity.y = 0
-            obj1.setMobDead();
-            //obj1.setVisible(false);
-            obj1.visible = false;
-            obj1.active = false;
-            console.log("mob killed!")
-            this.textBox.showFor("mob was killed, \n good job!!!!", 1000);
-            // obj1.destroy();
+        console.log(obj1)
+        console.log(obj2)
+        if(obj1.active && obj2.active)
+        {
+            obj2.visible = false;
+            obj2.active = false;
+            obj2.destroy();
+            obj1.health = obj1.health - obj2.damage;
+            this.floatText.showText(obj1.x, obj1.y, `${obj2.damage}`);
+            if (obj1.health <= 0 && obj1.getMobAlive()) {
+                
+                obj1.body.velocity.x = 0
+                obj1.body.velocity.y = 0
+                obj1.setMobDead();
+                //obj1.setVisible(false);
+                obj1.visible = false;
+                obj1.active = false;
+                console.log("mob killed!")
+                this.textBox.showFor("mob was killed, \n good job!!!!", 1000);
+                // obj1.destroy();
+            }
         }
     }
     update(time, delta) {
