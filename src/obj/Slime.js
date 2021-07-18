@@ -1,4 +1,6 @@
 export class Slime extends Phaser.Physics.Arcade.Sprite {
+    defaultHealth = 500;
+
     constructor(scene, x, y, player, sprite) {
         super(scene, x, y, sprite);
         scene.add.existing(this);
@@ -8,7 +10,7 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
         //this = scene.physics.add.sprite(x, y, sprite);
         //this.spawnX = x;
         //this.spawnY = y;
-        this.health = 500;
+        this.health = this.defaultHealth;
         this.damage = 100;
     }
 
@@ -18,6 +20,14 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
     setMobDead() {
         this.mobAlive = false;
     }
+    
+    reset() {
+        this.mobAlive = true;
+        this.visible = true;
+        this.active = true;
+        this.health = this.defaultHealth;
+    }
+
     update() {//movement and stuff
         //super.preUpdate();
         //console.log("This mob is updating")
