@@ -1,10 +1,11 @@
 export class Mob extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y, player, sprite) {
+    constructor(scene, x, y, sprite) {
         super(scene, x, y, sprite);
+        scene.add.existing(this);
         this.mobAlive = true;
-        this.player = player
+        this.player = scene.Player;
         console.log("here")
-        this.sprite = scene.physics.add.sprite(x, y, sprite);
+        //this = scene.physics.add.sprite(x, y, sprite);
         //this.spawnX = x;
         //this.spawnY = y;
         this.health = 500;
@@ -18,46 +19,47 @@ export class Mob extends Phaser.Physics.Arcade.Sprite {
         this.mobAlive = false;
     }
     update() {//movement and stuff
-        // console.log(this.player.getX())
+        //super.preUpdate();
+        //console.log("This mob is updating")
         if (this.active) {
-            if (this.sprite.body.x < this.player.getX()) {
-                this.sprite.setVelocityX(40)
-                this.setVelocityX(this.sprite.body.velocity.x)
+            if (this.body.x < this.player.getX()) {
+                this.setVelocityX(40)
+                this.setVelocityX(this.body.velocity.x)
             }
-            if (this.sprite.body.x >= this.player.getX()) {
-                this.sprite.setVelocityX(-40)
-                this.setVelocityX(this.sprite.body.velocity.x)
+            if (this.body.x >= this.player.getX()) {
+                this.setVelocityX(-40)
+                this.setVelocityX(this.body.velocity.x)
             }
-            if (this.sprite.body.y < this.player.getY()) {
-                this.sprite.setVelocityY(40)
-                this.setVelocityY(this.sprite.body.velocity.y)
+            if (this.body.y < this.player.getY()) {
+                this.setVelocityY(40)
+                this.setVelocityY(this.body.velocity.y)
             }
-            if (this.sprite.body.y > this.player.getY()) {
-                this.sprite.setVelocityY(-40)
-                this.setVelocityY(this.sprite.body.velocity.y)
+            if (this.body.y > this.player.getY()) {
+                this.setVelocityY(-40)
+                this.setVelocityY(this.body.velocity.y)
             }
 
-            if (this.sprite.body.velocity.x > 0) {
-                this.sprite.play("slime_right", true);
-                this.setVelocityX(this.sprite.body.velocity.x)
-            } else if (this.sprite.body.velocity.x < 0) {
-                this.sprite.play("slime_left", true);
-                this.setVelocityX(this.sprite.body.velocity.x)
-            } else if (this.sprite.body.velocity.y < 0) {
-                this.sprite.play("slime_up", true);
-                this.setVelocityY(this.sprite.body.velocity.y)
-            } else if (this.sprite.body.velocity.y > 0) {
-                this.sprite.play("slime_down", true);
-                this.setVelocityY(this.sprite.body.velocity.y)
+            if (this.body.velocity.x > 0) {
+                this.play("slime_right", true);
+                this.setVelocityX(this.body.velocity.x)
+            } else if (this.body.velocity.x < 0) {
+                this.play("slime_left", true);
+                this.setVelocityX(this.body.velocity.x)
+            } else if (this.body.velocity.y < 0) {
+                this.play("slime_up", true);
+                this.setVelocityY(this.body.velocity.y)
+            } else if (this.body.velocity.y > 0) {
+                this.play("slime_down", true);
+                this.setVelocityY(this.body.velocity.y)
             }
             if (this.health <= 0) {
-                this.sprite.setVelocityX(0);
-                this.sprite.setVelocityY(0);
+                this.setVelocityX(0);
+                this.setVelocityY(0);
                 this.setVelocityX(0);
                 this.setVelocityY(0);
 
-                this.sprite.setVisible(false)
-                this.destroy()
+                //this.setVisible(false)
+                //this.destroy()
             }
         }
     }
