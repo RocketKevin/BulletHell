@@ -1,4 +1,4 @@
-export class Mob extends Phaser.Physics.Arcade.Sprite {
+export class Slime extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, player, sprite) {
         super(scene, x, y, sprite);
         this.mobAlive = true;
