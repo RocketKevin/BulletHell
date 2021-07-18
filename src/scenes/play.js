@@ -114,11 +114,12 @@ export class play extends Phaser.Scene {
         });
         //spawn a dude mob
         // this.mobDude = this.mobArray.get(250, 250, 'slime').setScale(.75);
+        this.mobArray.add(new Mob(this, 500, 500, this.Player, 'slime'))
         this.time.addEvent({
-            delay: 500,
+            delay: 3000,
             callback: () => {
                 // spawn a new apple
-                if (this.mobArray.getLength() == 0) {
+                if (this.mobArray.getLength() != 4) {
                     this.mobArray.add(new Mob(this, 500, 500, this.Player, 'slime'))
                     console.log(this.mobArray.getLength())
                 }
@@ -126,7 +127,6 @@ export class play extends Phaser.Scene {
             loop: true
         })
         // this.mobDude.setBounce(-1);
-        this.mobAlive = true;
         //collisions
         this.physics.add.overlap(this.mobArray, this.ak.bullets, this.handleBulletMobCollision, null, this);
         this.physics.add.overlap(this.mobArray, this.Player.hitbox.sprite, this.handleDamage, null, this);
@@ -160,14 +160,16 @@ export class play extends Phaser.Scene {
         obj2.active = false;
         obj2.destroy();
         obj1.health = obj1.health - obj2.damage;
-        if (obj1.health <= 0 && this.mobAlive) {
-            obj1.body.velocity.x = 0
-            obj1.body.velocity.y = 0
-
-            obj1.visible = false;
+        if (obj1.health <= 0 && obj1.getMobAlive()) {
+            console.log(obj1)
+            obj1.sprite.body.velocity.x = 0
+            obj1.sprite.body.velocity.y = 0
+            obj1.setMobDead();
+            obj1.setVisible(false);
+            obj1.sprite.visible = false;
             obj1.active = false;
             console.log("mob killed!")
-            this.mobAlive = false;
+            obj1.destroy();
         }
     }
     update(time, delta) {
