@@ -1,7 +1,8 @@
 export class Slime extends Phaser.Physics.Arcade.Sprite {
     defaultHealth = 500;
+    defaultSpeed = 60;
 
-    constructor(scene, x, y, player, sprite) {
+    constructor(scene, x, y, sprite) {
         super(scene, x, y, sprite);
         scene.add.existing(this);
         this.mobAlive = true;
@@ -12,6 +13,7 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
         //this.spawnY = y;
         this.health = this.defaultHealth;
         this.damage = 100;
+        this.speed = this.defaultSpeed;
     }
 
     getMobAlive() {
@@ -28,26 +30,37 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
         this.health = this.defaultHealth;
     }
 
-    update() {//movement and stuff
-        //super.preUpdate();
+    preUpdate(time, deltaT) {//movement and stuff
+        super.preUpdate(time, deltaT);
         //console.log("This mob is updating")
         if (this.active) {
-            if (this.body.x < this.player.getX()) {
-                this.setVelocityX(40)
-                this.setVelocityX(this.body.velocity.x)
-            }
-            if (this.body.x >= this.player.getX()) {
-                this.setVelocityX(-40)
-                this.setVelocityX(this.body.velocity.x)
-            }
-            if (this.body.y < this.player.getY()) {
-                this.setVelocityY(40)
-                this.setVelocityY(this.body.velocity.y)
-            }
-            if (this.body.y > this.player.getY()) {
-                this.setVelocityY(-40)
-                this.setVelocityY(this.body.velocity.y)
-            }
+            // if (this.body.x < this.player.getX()) {
+            //     this.setVelocityX(40)
+            //     this.setVelocityX(this.body.velocity.x)
+            // }
+            // if (this.body.x >= this.player.getX()) {
+            //     this.setVelocityX(-40)
+            //     this.setVelocityX(this.body.velocity.x)
+            // }
+            // if (this.body.y < this.player.getY()) {
+            //     this.setVelocityY(40)
+            //     this.setVelocityY(this.body.velocity.y)
+            // }
+            // if (this.body.y > this.player.getY()) {
+            //     this.setVelocityY(-40)
+            //     this.setVelocityY(this.body.velocity.y)
+            // }
+
+            let velocityX = this.player.getX() - this.body.x;
+            let velocityY = this.player.getY() - this.body.y;
+
+            let distance = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
+            velocityX = velocityX / distance * this.speed;
+            velocityY = velocityY / distance * this.speed;
+
+            this.setVelocityX(velocityX);
+            this.setVelocityY(velocityY);
+
 
             if (this.body.velocity.x > 0) {
                 this.play("slime_right", true);
@@ -55,13 +68,19 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
             } else if (this.body.velocity.x < 0) {
                 this.play("slime_left", true);
                 this.setVelocityX(this.body.velocity.x)
-            } else if (this.body.velocity.y < 0) {
-                this.play("slime_up", true);
-                this.setVelocityY(this.body.velocity.y)
-            } else if (this.body.velocity.y > 0) {
-                this.play("slime_down", true);
-                this.setVelocityY(this.body.velocity.y)
             }
+            
+            if(Math.abs(velocityX) < this.speed / 2)
+            {
+                if (this.body.velocity.y < 0) {
+                    this.play("slime_up", true);
+                    this.setVelocityY(this.body.velocity.y)
+                } else if (this.body.velocity.y > 0) {
+                    this.play("slime_down", true);
+                    this.setVelocityY(this.body.velocity.y)
+                }
+            }
+
             if (this.health <= 0) {
                 this.setVelocityX(0);
                 this.setVelocityY(0);

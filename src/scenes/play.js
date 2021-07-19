@@ -171,7 +171,9 @@ export class play extends Phaser.Scene {
             obj2.active = false;
             obj2.destroy();
             obj1.health = obj1.health - obj2.damage;
-            this.floatText.showText(obj1.x, obj1.y, `${obj2.damage}`);
+            
+            this.floatText.showText(obj1.x - obj1.width/4, obj1.y - obj1.height/2, `${obj2.damage}`);
+
             if (obj1.health <= 0 && obj1.getMobAlive()) {
                 
                 obj1.body.velocity.x = 0
@@ -192,10 +194,10 @@ export class play extends Phaser.Scene {
         if (this.ak != null) {
             this.ak.update(time, delta);
         }
-        this.mobArray.children.iterate(child => {
-            if(child.active)
-                child.update();
-        })
+        // this.mobArray.children.iterate(child => {
+        //     if(child.active)
+        //         child.update();
+        // })
     }
 
 
