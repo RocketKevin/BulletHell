@@ -22,7 +22,6 @@ export class Backpack {
         scene.input.on('drag', function (pointer, gameObject, dragX, dragY) {
             gameObject.setX(dragX);
             gameObject.setY(dragY);
-
         });
     }
     addObjectToBackpack(object) {

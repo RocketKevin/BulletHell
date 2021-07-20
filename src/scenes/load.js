@@ -10,6 +10,8 @@ export class load extends Phaser.Scene {
     }
     preload() {
         this.game.canvas.style = "margin: auto; display: block;";
+        this.load.json("shopItems", "../assets/items/property_items.json");
+        this.load.image("BuyButton", "../assets/shopUI_buyButton.png");
         this.load.image("HubIcon", "../assets/HubIcon.png");
         this.load.image("Backpack", "../assets/Backpack.png");
         this.load.image("BackpackIcon", "../assets/BackpackIcon.png");

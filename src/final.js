@@ -6,6 +6,7 @@ export const final = {
         CONTROLS: "CONTROLS",
         OPTIONS: "OPTIONS",
         CREDITS: "CREDITS",
-        UI: "UI"
+        UI: "UI",
+        ITEMINTERACT: "ITEMINTERACT"
     }
 }
