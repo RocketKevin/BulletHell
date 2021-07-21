@@ -10,7 +10,7 @@ export class load extends Phaser.Scene {
     }
     preload() {
         this.game.canvas.style = "margin: auto; display: block;";
-        this.load.json("shopItems", "../assets/items/property_items.json");
+        this.load.json("ItemProperty", "../assets/items/property_items.json");
         this.load.image("BuyButton", "../assets/shopUI_buyButton.png");
         this.load.image("HubIcon", "../assets/HubIcon.png");
         this.load.image("Backpack", "../assets/Backpack.png");
@@ -21,7 +21,7 @@ export class load extends Phaser.Scene {
         this.load.atlas("dude", "../assets/dude.png", "../assets/dude.json");
         this.load.atlas(
             "items", 
-            "../assets/items/items.png", 
+            "../assets/items/items2.png", 
             "../assets/items/map_items.json"
         );
         var atlasTexture = this.textures.get('projectiles');
