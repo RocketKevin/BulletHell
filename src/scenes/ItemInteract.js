@@ -60,6 +60,12 @@ export class ShopItemInteract {
 }
 export class BackpackItemInteract {
     constructor(item, scene, x, y) {
-
+        this.panel = scene.add.image(x, y, "BuyButton").setOrigin(0);
+        this.setConfig(scene);
+    }
+    setConfig(scene) {
+        this.panel.setVisible(false);
+        this.panel.setScrollFactor(0);
+        this.panel.setDepth(0);
     }
 }
