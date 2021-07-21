@@ -32,7 +32,7 @@ export class Shop {
         );
     }
     self_defaultShopInventory(scene, shopInventory) {
-        var itemsFromJson = scene.cache.json.get("shopItems");
+        var itemsFromJson = scene.cache.json.get("ItemProperty");
         var items = itemsFromJson.object;
         var temp;
         var itemX = this.shopbag.x - 111;
@@ -42,14 +42,10 @@ export class Shop {
             if(items[i].type === "consumable") {
                 temp = new Consumable(scene, items[i], itemX, itemY, ShopItemInteract);
                 shopInventory.add(temp.image);
-                var buyImage = scene.add.image(itemX, itemY, "BuyButton").setVisible(false);
-                shopInventory.add(buyImage);
                 result.push(temp);
             } else if(items[i].type === "gun") {
                 temp = new Gun(scene, items[i], itemX, itemY, ShopItemInteract);  
-                shopInventory.add(temp.image); 
-                var buyImage = scene.add.image(itemX, itemY, "BuyButton").setVisible(false);
-                shopInventory.add(buyImage);
+                shopInventory.add(temp.image);
                 result.push(temp);
             }
             if((i+1) % 4 === 0) {
