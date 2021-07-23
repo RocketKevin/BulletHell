@@ -106,7 +106,7 @@ export class play extends Phaser.Scene {
 
         this.textBox = new DialogBox(this, 0, 0);
         this.floatText = new FloatText(this);
-        
+
         //gun/bullet
         //constructor(bulletSpeed, bulletRange, fireRate, imageName, dude, input, physics, scene)
         this.pistol = new Gun(100, 3000, 500, 'dude', this.Player.sprite, this.input, this.physics, this)
@@ -165,17 +165,16 @@ export class play extends Phaser.Scene {
     handleBulletMobCollision(obj1, obj2) {//obj1 is the mob obj 2 is the bullets
         console.log(obj1)
         console.log(obj2)
-        if(obj1.active && obj2.active)
-        {
+        if (obj1.active && obj2.active) {
             obj2.visible = false;
             obj2.active = false;
             obj2.destroy();
             obj1.health = obj1.health - obj2.damage;
-            
-            this.floatText.showText(obj1.x - obj1.width/4, obj1.y - obj1.height/2, `${obj2.damage}`);
+
+            this.floatText.showText(obj1.x - obj1.width / 4, obj1.y - obj1.height / 2, `${obj2.damage}`);
 
             if (obj1.health <= 0 && obj1.getMobAlive()) {
-                
+
                 obj1.body.velocity.x = 0
                 obj1.body.velocity.y = 0
                 obj1.setMobDead();

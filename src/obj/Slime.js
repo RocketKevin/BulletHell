@@ -22,7 +22,7 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
     setMobDead() {
         this.mobAlive = false;
     }
-    
+
     reset() {
         this.mobAlive = true;
         this.visible = true;
@@ -34,23 +34,6 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
         super.preUpdate(time, deltaT);
         //console.log("This mob is updating")
         if (this.active) {
-            // if (this.body.x < this.player.getX()) {
-            //     this.setVelocityX(40)
-            //     this.setVelocityX(this.body.velocity.x)
-            // }
-            // if (this.body.x >= this.player.getX()) {
-            //     this.setVelocityX(-40)
-            //     this.setVelocityX(this.body.velocity.x)
-            // }
-            // if (this.body.y < this.player.getY()) {
-            //     this.setVelocityY(40)
-            //     this.setVelocityY(this.body.velocity.y)
-            // }
-            // if (this.body.y > this.player.getY()) {
-            //     this.setVelocityY(-40)
-            //     this.setVelocityY(this.body.velocity.y)
-            // }
-
             let velocityX = this.player.getX() - this.body.x;
             let velocityY = this.player.getY() - this.body.y;
 
@@ -60,18 +43,18 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
 
             this.setVelocityX(velocityX);
             this.setVelocityY(velocityY);
-
-
-            if (this.body.velocity.x > 0) {
-                this.play("slime_right", true);
-                this.setVelocityX(this.body.velocity.x)
-            } else if (this.body.velocity.x < 0) {
-                this.play("slime_left", true);
-                this.setVelocityX(this.body.velocity.x)
+            if (Math.abs(velocityY) < Math.abs(velocityX)) {
+                if (this.body.velocity.x > 0) {
+                    this.play("slime_right", true);
+                    this.setVelocityX(this.body.velocity.x)
+                } else if (this.body.velocity.x < 0) {
+                    this.play("slime_left", true);
+                    this.setVelocityX(this.body.velocity.x)
+                }
             }
-            
-            if(Math.abs(velocityX) < this.speed / 2)
-            {
+
+            else if (Math.abs(velocityX) <= Math.abs(velocityY)) {
+                // if (Math.abs(velocityX) <= this.speed / 2) {
                 if (this.body.velocity.y < 0) {
                     this.play("slime_up", true);
                     this.setVelocityY(this.body.velocity.y)
