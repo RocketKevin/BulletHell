@@ -125,16 +125,12 @@ export class play extends Phaser.Scene {
             callback: () => {
                 // spawn a new apple
                 if (this.mobArray.getTotalUsed() < 4) { //if the total number that is active is less than 4.
-                    //this.mobArray.add(new Mob(this, 500, 500, this.Player, 'slime'))
                     let mob = this.mobArray.get(500, 500, "slime");
                     mob.reset();
-                    //console.log(this.mobArray.getLength())
                 }
             },
             loop: true
         })
-        // this.mobDude.setBounce(-1);
-        //collisions
         this.physics.add.overlap(this.mobArray, this.ak.bullets, this.handleBulletMobCollision, null, this);
         this.physics.add.overlap(this.mobArray, this.Player.hitbox.sprite, this.handleDamage, null, this);
     }

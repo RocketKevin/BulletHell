@@ -10,8 +10,6 @@ export class Backpack {
         this.backpackContainer.setInteractive(new Phaser.Geom.Rectangle(window.innerWidth - 105 - 310 - (this.backpack.width / 2), 165 - (this.backpack.height / 2), this.backpack.width, this.backpack.height), Phaser.Geom.Rectangle.Contains);
         this.backpackContainer.setName("backpack container");
         this.backpack.setName("backpack");
-        //this.backpackContainer.setSize(this.backpack.width, this.backpack.height);
-        //console.log(this.backpack.width);
         this.createAmountCount(scene);
     }
     createAmountCount(scene) {

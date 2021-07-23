@@ -4,32 +4,46 @@ export class menu extends Phaser.Scene {
         super({
             key: final.SCENES.MENU
         })
+        this.pictures = [];
+        this.members = [];
     }
     init(data) {
         //console.log(data);
     }
     create() {
-        this.add.image(this.game.renderer.width / 2, 100, "title").setDepth(1);
-        this.add.image(0, 0, "menubackground").setOrigin(0).setDepth(0).setScale(2, 1.25);
-        var playbutton = this.add.image(this.game.renderer.width / 2, 220, "playbutton").setDepth(1);
-        var controls = this.add.image(this.game.renderer.width / 2, 320, "controlbutton").setDepth(1);
-        var options = this.add.image(this.game.renderer.width / 2, 420, "optionbutton").setDepth(1);
-        var credits = this.add.image(this.game.renderer.width / 2, 520, "creditsbutton").setDepth(1);
-        playbutton.setInteractive();
-        playbutton.on("pointerup", () => {
-            this.scene.start(final.SCENES.PLAY);
-        })
-        controls.setInteractive();
-        controls.on("pointerup", () => {
-            this.scene.start(final.SCENES.CONTROLS);
-        })
-        options.setInteractive();
-        options.on("pointerup", () => {
-            this.scene.start(final.SCENES.OPTIONS);
-        })
-        credits.setInteractive();
-        credits.on("pointerup", () => {
-            this.scene.start(final.SCENES.CREDITS);
-        })
+        var components = this.cache.json.get("MainMenuProperty").component;
+        var scenes = [];
+        Object.assign(this.pictures, components);
+        for(var i = 0; i < components.length; i++) {
+            this.members.push(this.add.image(0, 0, "mainmenu", this.pictures[i].picture).setDepth(0));
+        }
+        for(var i = 1; i < components.length; i++) {
+            this.members[i].setX(this.game.renderer.width/2);
+            this.members[i].setY(this.members[i-1].y + (this.game.renderer.height/this.members.length));
+            this.members[i].setDepth(1);
+        }
+        this.members[0].setOrigin(0);
+        for(var j in final.SCENES) {
+            scenes.push(final.SCENES[j]);
+        }
+        for(var i = 2; i < components.length; i++) {
+            this.members[i].setInteractive();
+            this.members[i].myId = scenes[i];
+            this.members[i].on("pointerup", function () {
+                this.scene.scene.start(this.myId);
+            }, this.members[i])
+        }
+    }
+    update() {
+        this.members[0].setScale(
+            this.sys.canvas.width/this.members[0].width,
+            this.sys.canvas.height/this.members[0].height
+        );
+        for(var i = 1; i < this.members.length; i++) {
+            this.members[i].setScale(
+                (this.sys.canvas.width/this.members[0].width)/2,
+                this.sys.canvas.height/this.members[0].height
+            );
+        }
     }
 }
