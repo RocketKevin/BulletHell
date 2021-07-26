@@ -1,4 +1,4 @@
-import State from "../StateMachine/State.js";
+import State from "../../StateMachine/State.js";
 
 export default class Lunge extends State {
     onEnter() {

@@ -3,7 +3,7 @@ import HealthBar from "./UI/HealthBar.js";
 
 export class Slime extends Phaser.Physics.Arcade.Sprite {
     defaultHealth = 500;
-    defaultSpeed = 1000;
+    defaultSpeed = 60;
 
     constructor(scene, x, y, sprite) {
         super(scene, x, y, sprite);
@@ -19,13 +19,14 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
         this.health = this.defaultHealth;
         this.damage = 100;
 
-        this.ai = new EnemyController(this, {player: this.player,
-                                            animations: "",
-                                            });
-        this.scale = Math.random()*5 + 1;
-        this.speed = this.defaultSpeed/this.scale;
+        this.ai = new EnemyController(this, {
+            player: this.player,
+            animations: "",
+        });
+        this.scale = Math.random() + 1;
+        this.speed = this.defaultSpeed / this.scale;
         this.setScale(this.scale);
-                                        
+
     }
 
     getMobAlive() {

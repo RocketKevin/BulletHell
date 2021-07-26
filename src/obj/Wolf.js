@@ -1,4 +1,4 @@
-import EnemyController from "../AI/EnemyAI/EnemyController.js";
+import WolfController from "../AI/EnemyAI/WolfAI/WolfController.js";
 import HealthBar from "./UI/HealthBar.js";
 
 export class Wolf extends Phaser.Physics.Arcade.Sprite {
@@ -17,9 +17,10 @@ export class Wolf extends Phaser.Physics.Arcade.Sprite {
         this.damage = 250;
         this.speed = this.defaultSpeed;
 
-        this.ai = new EnemyController(this, {
+        this.ai = new WolfController(this, {
             player: this.player,
             animations: "",
+            isWolf: true,
         });
         this.cd = 4000;
         this.time = scene.time;
@@ -46,8 +47,10 @@ export class Wolf extends Phaser.Physics.Arcade.Sprite {
         super.preUpdate(time, deltaT);
         this.cd -= deltaT
         if ((this.cd - deltaT) <= 0) {
-            this.ai.changeState("lunge")
-            this.cd = 6000;
+            if (this.ai.getState().getStateName() == "follow") {
+                this.ai.changeState("lunge")
+            }
+            this.cd = 4000;
         }
 
         this.ai.update(deltaT);

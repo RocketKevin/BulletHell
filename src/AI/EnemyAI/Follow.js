@@ -1,17 +1,16 @@
 import State from "../StateMachine/State.js";
 
-export default class Follow extends State
-{
+export default class Follow extends State {
     onEnter() {
-        
+
     }
 
-    
+
     onExit() {
-        
+
     }
 
-    
+
     update(deltaT) {
         //when the player gets too far away stop following.
         //when the player gets out of visiion stop following.
@@ -52,13 +51,12 @@ export default class Follow extends State
 
         let distance2 = Math.sqrt(Math.pow(enemy.x - player.x, 2) + Math.pow(enemy.y - player.y, 2));
         //console.log(`slime is idle. Distance: ${distance}`);
-        if(distance2>600){
+        if (distance2 > 600) {
             this.getStateMachine().changeState("idle");
         }
-        if(distance2 < 300)
-        {
-            this.getStateMachine().changeState("DongRoam");
-        }
+        // if (distance2 < 300 && !this.getStateMachine().isWolf) {
+        //     this.getStateMachine().changeState("DongRoam");
+        // }
     }
 }
 
