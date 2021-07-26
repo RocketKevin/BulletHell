@@ -2,6 +2,7 @@ import StateMachine from "../StateMachine/StateMachine.js";
 import Follow from "./Follow.js";
 import Idle from "./Idle.js";
 import Roam from "./Roam.js";
+import DongRoam from "./DongRoam.js"
 
 export default class EnemyController extends StateMachine
 {
@@ -17,8 +18,9 @@ export default class EnemyController extends StateMachine
         this.addState(follow);
         let roam = new Roam("roam", this, sprite);
         this.addState(roam);
-
+        let dRoam = new DongRoam("DongRoam", this, sprite);
+        this.addState(dRoam);
         //set the starting state.
-        this.changeState("roam");
+        this.changeState("idle");
     }
 }

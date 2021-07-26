@@ -52,9 +52,12 @@ export default class Follow extends State
 
         let distance2 = Math.sqrt(Math.pow(enemy.x - player.x, 2) + Math.pow(enemy.y - player.y, 2));
         //console.log(`slime is idle. Distance: ${distance}`);
-        if(distance2 > 400)
+        if(distance2>600){
+            this.getStateMachine().changeState("idle");
+        }
+        if(distance2 < 300)
         {
-            this.getStateMachine().changeState("roam");
+            this.getStateMachine().changeState("DongRoam");
         }
     }
 }
