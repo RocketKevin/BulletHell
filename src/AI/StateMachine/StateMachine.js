@@ -5,8 +5,7 @@ import State from "./State.js";
  * methods to change the state, as well as revert to a previous state. The 
  * creator of this class will need to call update() to update the StateMachine.
  */
-export default class StateMachine
-{
+export default class StateMachine {
     /**
      * @type {State[]} - stores the states of this stateMachine.
      */
@@ -28,8 +27,7 @@ export default class StateMachine
      * @param {Phaser.GameObjects.Sprite} sprite - the sprite that will have this StateMachine.
      * @param {object} data - some extra data you can pass in for your convinence. This will be passed to the create method.
      */
-    constructor(sprite, data)
-    {
+    constructor(sprite, data) {
         this.#states = [];
         this.#currentState = null;
         this.#previousState = null;
@@ -42,24 +40,21 @@ export default class StateMachine
      * @param {Phaser.GameObjects.Sprite} sprite - The sprite.
      * @param {object} data - The data.
      */
-    create(sprite, data) {/* abstract method */}
+    create(sprite, data) {/* abstract method */ }
 
     /**
      * Add a state to the state machine.
      * @param {State} state - The state.
      */
-    addState(state)
-    {
+    addState(state) {
         this.#states.push(state);
     }
 
     /**
      * Clear all the states inside this StateMachine.
      */
-    clearStates()
-    {
-        while(this.#states.length > 0)
-        {
+    clearStates() {
+        while (this.#states.length > 0) {
             this.#states.pop();
         }
     }
@@ -69,22 +64,19 @@ export default class StateMachine
      * previous state.
      * @param {string} stateName - The state name, or "previous".
      */
-    changeState(stateName)
-    {
+    changeState(stateName) {
         let newState = null;
-        if(stateName === "previous" && this.#previousState)
+        if (stateName === "previous" && this.#previousState)
             newState = this.#previousState;
-        else
-        {
-            let matchingStates = this.#states.filter(state => {return state.getStateName() === stateName});
-            if(matchingStates.length > 0)
+        else {
+            let matchingStates = this.#states.filter(state => { return state.getStateName() === stateName });
+            if (matchingStates.length > 0)
                 newState = matchingStates[0];
         }
 
-        if(newState)
-        {
+        if (newState) {
             //calls exit on old state. During first call currentState is null.
-            if(this.#currentState)
+            if (this.#currentState)
                 this.#currentState.onExit();
             //calls switch states.
             let tempState = this.#currentState;
@@ -94,14 +86,16 @@ export default class StateMachine
             this.#currentState.onEnter();
         }
     }
+    getState() {
+        return this.#currentState;
+    }
 
     /**
      * Updates the StateMachine. This will call update on the current state.
      * @param {number} deltaT - Change in time.
      */
-    update(deltaT)
-    {
-        if(this.#currentState)
+    update(deltaT) {
+        if (this.#currentState)
             this.#currentState.update(deltaT);
     }
 }

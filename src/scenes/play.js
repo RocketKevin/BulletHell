@@ -7,6 +7,7 @@ import { Shop } from "../obj/Shop.js"
 import { Slime } from "../obj/Slime.js"
 import DialogBox from "../obj/UI/DialogBox.js";
 import FloatText from "../obj/UI/FloatText.js";
+import { Wolf } from "../obj/Wolf.js"
 export class play extends Phaser.Scene {
     constructor() {
         super({
@@ -116,6 +117,12 @@ export class play extends Phaser.Scene {
         this.mobArray = this.physics.add.group({
             classType: Slime//constructor(scene, x, y, texture)
         });
+
+        this.mobArray1 = this.physics.add.group({
+            classType: Wolf//constructor(scene, x, y, texture)
+        });
+        let mob1 = this.mobArray1.get(1000, 500, "slime");
+
         //spawn a dude mob
         // this.mobDude = this.mobArray.get(250, 250, 'slime').setScale(.75);
         //this.mobArray.add(new Mob(this, 500, 500, this.Player, 'slime'))
@@ -131,15 +138,18 @@ export class play extends Phaser.Scene {
             },
             loop: true
         })
+
         this.physics.add.overlap(this.mobArray, this.ak.bullets, this.handleBulletMobCollision, null, this);
         this.physics.add.overlap(this.mobArray, this.Player.hitbox.sprite, this.handleDamage, null, this);
+
+        this.physics.add.overlap(this.mobArray1, this.ak.bullets, this.handleBulletMobCollision, null, this);
+        this.physics.add.overlap(this.mobArray1, this.Player.hitbox.sprite, this.handleDamage, null, this);
     }
 
     handleDamage(player, monster) {
         if (this.Player.sprite.alpha == 0.5) return;
         // console.log("hello")
-        if(monster.active)
-        {
+        if (monster.active) {
             this.Player.status.hp = this.Player.status.hp - monster.damage
             // console.log(monster)
             // console.log(player)
@@ -149,7 +159,7 @@ export class play extends Phaser.Scene {
             }
             this.invulnerable()
         }
-            
+
     }
 
     invulnerable() {
