@@ -5,8 +5,8 @@ import { Backpack } from "../obj/Backpack.js";
 import { Gun } from "../obj/Gun.js";
 import { Shop } from "../obj/Shop.js"
 import { Slime } from "../obj/Slime.js"
-import DialogBox from "../obj/DialogBox.js";
-import FloatText from "../obj/FloatText.js";
+import DialogBox from "../obj/UI/DialogBox.js";
+import FloatText from "../obj/UI/FloatText.js";
 export class play extends Phaser.Scene {
     constructor() {
         super({
@@ -138,14 +138,18 @@ export class play extends Phaser.Scene {
     handleDamage(player, monster) {
         if (this.Player.sprite.alpha == 0.5) return;
         // console.log("hello")
-        this.Player.status.hp = this.Player.status.hp - monster.damage
-        // console.log(monster)
-        // console.log(player)
-        if (this.Player.status.hp <= 0) {
-            this.Player.killPlayer();
-            this.ak = null
+        if(monster.active)
+        {
+            this.Player.status.hp = this.Player.status.hp - monster.damage
+            // console.log(monster)
+            // console.log(player)
+            if (this.Player.status.hp <= 0) {
+                this.Player.killPlayer();
+                this.ak = null
+            }
+            this.invulnerable()
         }
-        this.invulnerable()
+            
     }
 
     invulnerable() {

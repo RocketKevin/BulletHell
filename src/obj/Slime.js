@@ -1,3 +1,6 @@
+import EnemyController from "../AI/EnemyAI/EnemyController.js";
+import HealthBar from "./UI/HealthBar.js";
+
 export class Slime extends Phaser.Physics.Arcade.Sprite {
     defaultHealth = 500;
     defaultSpeed = 60;
@@ -11,9 +14,16 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
         //this = scene.physics.add.sprite(x, y, sprite);
         //this.spawnX = x;
         //this.spawnY = y;
+        this.healthBar = new HealthBar(scene, 0, 0, this.defaultHealth);
+        this.healthBar.follow(this);
         this.health = this.defaultHealth;
         this.damage = 100;
         this.speed = this.defaultSpeed;
+
+        this.ai = new EnemyController(this, {player: this.player,
+                                            animations: "",
+                                            });
+                                        
     }
 
     getMobAlive() {
@@ -21,6 +31,8 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
     }
     setMobDead() {
         this.mobAlive = false;
+        this.healthBar.visible = false;
+        //this.ai.changeState("dead");
     }
 
     reset() {
@@ -28,41 +40,48 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
         this.visible = true;
         this.active = true;
         this.health = this.defaultHealth;
+        this.healthBar.visible = true;
+        this.ai.changeState("roam");
     }
 
     preUpdate(time, deltaT) {//movement and stuff
         super.preUpdate(time, deltaT);
+
+        this.ai.update(deltaT);
+
+        this.healthBar.currentHealth = this.health;
+        this.healthBar.update();
         //console.log("This mob is updating")
         if (this.active) {
-            let velocityX = this.player.getX() - this.body.x;
-            let velocityY = this.player.getY() - this.body.y;
+            // let velocityX = this.player.getX() - this.body.x;
+            // let velocityY = this.player.getY() - this.body.y;
 
-            let distance = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
-            velocityX = velocityX / distance * this.speed;
-            velocityY = velocityY / distance * this.speed;
+            // let distance = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
+            // velocityX = velocityX / distance * this.speed;
+            // velocityY = velocityY / distance * this.speed;
 
-            this.setVelocityX(velocityX);
-            this.setVelocityY(velocityY);
-            if (Math.abs(velocityY) < Math.abs(velocityX)) {
-                if (this.body.velocity.x > 0) {
-                    this.play("slime_right", true);
-                    this.setVelocityX(this.body.velocity.x)
-                } else if (this.body.velocity.x < 0) {
-                    this.play("slime_left", true);
-                    this.setVelocityX(this.body.velocity.x)
-                }
-            }
+            // this.setVelocityX(velocityX);
+            // this.setVelocityY(velocityY);
+            // if (Math.abs(velocityY) < Math.abs(velocityX)) {
+            //     if (this.body.velocity.x > 0) {
+            //         this.play("slime_right", true);
+            //         this.setVelocityX(this.body.velocity.x)
+            //     } else if (this.body.velocity.x < 0) {
+            //         this.play("slime_left", true);
+            //         this.setVelocityX(this.body.velocity.x)
+            //     }
+            // }
 
-            else if (Math.abs(velocityX) <= Math.abs(velocityY)) {
-                // if (Math.abs(velocityX) <= this.speed / 2) {
-                if (this.body.velocity.y < 0) {
-                    this.play("slime_up", true);
-                    this.setVelocityY(this.body.velocity.y)
-                } else if (this.body.velocity.y > 0) {
-                    this.play("slime_down", true);
-                    this.setVelocityY(this.body.velocity.y)
-                }
-            }
+            // else if (Math.abs(velocityX) <= Math.abs(velocityY)) {
+            //     // if (Math.abs(velocityX) <= this.speed / 2) {
+            //     if (this.body.velocity.y < 0) {
+            //         this.play("slime_up", true);
+            //         this.setVelocityY(this.body.velocity.y)
+            //     } else if (this.body.velocity.y > 0) {
+            //         this.play("slime_down", true);
+            //         this.setVelocityY(this.body.velocity.y)
+            //     }
+            // }
 
             if (this.health <= 0) {
                 this.setVelocityX(0);
