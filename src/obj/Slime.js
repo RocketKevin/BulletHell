@@ -3,7 +3,7 @@ import HealthBar from "./UI/HealthBar.js";
 
 export class Slime extends Phaser.Physics.Arcade.Sprite {
     defaultHealth = 500;
-    defaultSpeed = 60;
+    defaultSpeed = 250;
 
     constructor(scene, x, y, sprite) {
         super(scene, x, y, sprite);
@@ -24,7 +24,7 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
             animations: "",
         });
         this.scale = Math.random() + 1;
-        this.speed = this.defaultSpeed / this.scale;
+        this.speed = 2.0*this.defaultSpeed / this.scale;
         this.setScale(this.scale);
 
     }

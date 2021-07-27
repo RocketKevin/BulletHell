@@ -1,6 +1,5 @@
-import State from "../StateMachine/State.js";
-
-export default class Follow extends State {
+import State from "../../StateMachine/State.js";
+export default class BossFollow extends State {
     onEnter() {
 
     }
@@ -54,9 +53,8 @@ export default class Follow extends State {
         if (distance2 > 600) {
             this.getStateMachine().changeState("idle");
         }
-        if (distance2 < 300 && !this.getStateMachine().isWolf) {
+        if (distance2 < 300 ) {
             this.getStateMachine().changeState("DongRoam");
         }
     }
 }
-
