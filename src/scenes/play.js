@@ -8,6 +8,7 @@ import { Slime } from "../obj/Slime.js"
 import DialogBox from "../obj/UI/DialogBox.js";
 import FloatText from "../obj/UI/FloatText.js";
 import { Wolf } from "../obj/Wolf.js"
+import { Boss } from "../AI/EnemyAI/TestAI/Boss.js";
 export class play extends Phaser.Scene {
     constructor() {
         super({
@@ -122,7 +123,12 @@ export class play extends Phaser.Scene {
             classType: Wolf//constructor(scene, x, y, texture)
         });
         let mob1 = this.mobArray1.get(1000, 500, "slime");
-
+        this.BossArray = this.physics.add.group(
+            {
+                classType: Boss
+            }
+        )
+        this.BossArray.get(1000,250, "dude")
         //spawn a dude mob
         // this.mobDude = this.mobArray.get(250, 250, 'slime').setScale(.75);
         //this.mobArray.add(new Mob(this, 500, 500, this.Player, 'slime'))

@@ -1,7 +1,7 @@
 import Roam from "../Roam.js";
 import Idle from "../Idle.js";
 import StateMachine from "../../StateMachine/StateMachine.js";
-import DongRoam from "./DongRoam.js";
+import DongRoam from "./DongRoamBoss.js";
 import BossFollow from "./BossFollow.js";
 import BossLunge from "./BossLunge.js";
 export default class BossController extends StateMachine{

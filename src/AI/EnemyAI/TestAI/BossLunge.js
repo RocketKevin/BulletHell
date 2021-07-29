@@ -23,6 +23,7 @@ export default class BossLunge extends State {
 
 
     update(deltaT) {
+        console.log("lunge")
         this.lungetime -= deltaT
         if (this.lungetime <= 0) {
             this.getStateMachine().changeState("follow")

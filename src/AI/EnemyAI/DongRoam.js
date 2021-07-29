@@ -47,7 +47,7 @@ export default class DongRoam extends State
         }
 
         let distance = Math.sqrt(Math.pow(enemy.x - player.x, 2) + Math.pow(enemy.y - player.y, 2));
-        console.log(`slime is idle. Distance: ${distance}`);
+        //console.log(`slime is idle. Distance: ${distance}`);
         
         if(distance>600){
             this.getStateMachine().changeState("idle");

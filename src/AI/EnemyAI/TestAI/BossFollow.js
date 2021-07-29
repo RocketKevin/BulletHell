@@ -1,7 +1,7 @@
 import State from "../../StateMachine/State.js";
 export default class BossFollow extends State {
     onEnter() {
-
+        
     }
 
 
@@ -29,22 +29,22 @@ export default class BossFollow extends State {
         enemy.setVelocityY(velocityY);
         if (Math.abs(velocityY) < Math.abs(velocityX)) {
             if (enemy.body.velocity.x > 0) {
-                enemy.play("slime_right", true);
-                enemy.setVelocityX(enemy.body.velocity.x)
+                enemy.play("right", true);
+                //enemy.setVelocityX(enemy.body.velocity.x)
             } else if (enemy.body.velocity.x < 0) {
-                enemy.play("slime_left", true);
-                enemy.setVelocityX(enemy.body.velocity.x)
+                enemy.play("left", true);
+                //enemy.setVelocityX(enemy.body.velocity.x)
             }
         }
 
         else if (Math.abs(velocityX) <= Math.abs(velocityY)) {
             // if (Math.abs(velocityX) <= this.speed / 2) {
             if (enemy.body.velocity.y < 0) {
-                enemy.play("slime_up", true);
-                enemy.setVelocityY(enemy.body.velocity.y)
+                enemy.play("up", true);
+                //enemy.setVelocityY(enemy.body.velocity.y)
             } else if (enemy.body.velocity.y > 0) {
-                enemy.play("slime_down", true);
-                enemy.setVelocityY(enemy.body.velocity.y)
+                enemy.play("down", true);
+                //enemy.setVelocityY(enemy.body.velocity.y)
             }
         }
 
