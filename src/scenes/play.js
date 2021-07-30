@@ -123,11 +123,9 @@ export class play extends Phaser.Scene {
             classType: Wolf//constructor(scene, x, y, texture)
         });
         let mob1 = this.mobArray1.get(1000, 500, "slime");
-        this.BossArray = this.physics.add.group(
-            {
+        this.BossArray = this.physics.add.group({
                 classType: Boss
-            }
-        )
+        });
         this.BossArray.get(1000,250, "dude")
         //spawn a dude mob
         // this.mobDude = this.mobArray.get(250, 250, 'slime').setScale(.75);

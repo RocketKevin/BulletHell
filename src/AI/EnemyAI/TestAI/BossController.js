@@ -4,9 +4,11 @@ import StateMachine from "../../StateMachine/StateMachine.js";
 import DongRoam from "./DongRoamBoss.js";
 import BossFollow from "./BossFollow.js";
 import BossLunge from "./BossLunge.js";
+import GuardianShot from "./Skill.js/GuardianShot.js";
 export default class BossController extends StateMachine{
     create(sprite, data) {
         this.player = data.player;
+        this.scene = data.dscene;
         this.sprite = sprite;
         this.lungeCD = 2000;
 
@@ -21,6 +23,8 @@ export default class BossController extends StateMachine{
         this.addState(lunge);
         let dRoam = new DongRoam("DongRoam", this, sprite);
         this.addState(dRoam);
+        let gShot = new GuardianShot("guardianShot", this, sprite)
+        this.addState(gShot);
         //set the starting state.
         this.changeState("idle");
     }
