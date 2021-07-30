@@ -1,8 +1,8 @@
 import StateMachine from "../../StateMachine/StateMachine.js";
-import Follow from "../Follow.js";
-import Idle from "../Idle.js";
-import Lunge from "./Lunge.js";
-import Roam from "../Roam.js";
+import WolfFollow from "../WolfAI/WolfFollow.js";
+import WolfIdle from "../WolfAI/WolfIdle.js";
+import WolfLunge from "../WolfAI/WolfLunge.js"
+import WolfRoam from "../WolfAI/WolfRoam.js";
 export default class WolfController extends StateMachine {
     create(sprite, data) {
         this.player = data.player;
@@ -11,15 +11,15 @@ export default class WolfController extends StateMachine {
         this.isWolf = data.isWolf ? data.isWolf : false;
 
         //add the states.
-        let idle = new Idle("idle", this, sprite);
+        let idle = new WolfIdle("idle", this, sprite);
         this.addState(idle);
-        let follow = new Follow("follow", this, sprite);
+        let follow = new WolfFollow("follow", this, sprite);
         this.addState(follow);
-        let roam = new Roam("roam", this, sprite);
+        let roam = new WolfRoam("roam", this, sprite);
         this.addState(roam);
-        let lunge = new Lunge("lunge", this, sprite)
+        let lunge = new WolfLunge("lunge", this, sprite)
         this.addState(lunge);
         //set the starting state.
-        this.changeState("idle");
+        this.changeState("roam");
     }
 }

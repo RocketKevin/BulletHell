@@ -7,7 +7,7 @@ export class Wolf extends Phaser.Physics.Arcade.Sprite {
 
     constructor(scene, x, y, sprite) {
         super(scene, x, y, sprite);
-        this.setScale(2);
+        this.setScale(1);
         scene.add.existing(this);
         this.mobAlive = true;
         this.player = scene.Player;

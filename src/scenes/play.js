@@ -90,6 +90,24 @@ export class play extends Phaser.Scene {
                 frames: [7, 8, 9]
             })
         })
+        this.anims.create({
+            key: "wolf_right",
+            framesRate: 1,
+            frames: this.anims.generateFrameNames("wolf", {
+                prefix: "wolve",
+                suffix: ".png",
+                frames: [1, 2, 3, 4, 5, 6, 7]
+            })
+        })
+        this.anims.create({
+            key: "wolf_right_lunge",
+            framesRate: 1,
+            frames: this.anims.generateFrameNames("wolf", {
+                prefix: "wolve",
+                suffix: ".png",
+                frames: [8, 9, 10, 11]
+            })
+        })
     }
 
     create() {
@@ -121,7 +139,7 @@ export class play extends Phaser.Scene {
         this.mobArray1 = this.physics.add.group({
             classType: Wolf//constructor(scene, x, y, texture)
         });
-        let mob1 = this.mobArray1.get(1000, 500, "slime");
+        let mob1 = this.mobArray1.get(1000, 500, "wolf");
 
         //spawn a dude mob
         // this.mobDude = this.mobArray.get(250, 250, 'slime').setScale(.75);

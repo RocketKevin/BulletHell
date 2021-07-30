@@ -1,7 +1,7 @@
 import StateMachine from "../StateMachine/StateMachine.js";
 import Follow from "./Follow.js";
 import Idle from "./Idle.js";
-import Lunge from "./WolfAI/Lunge.js";
+import Lunge from "./Lunge.js";
 import Roam from "./Roam.js";
 import DongRoam from "./DongRoam.js"
 
