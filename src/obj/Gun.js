@@ -44,7 +44,7 @@ export class Gun {
             var dx = child.x - child.spawnX;
             var dy = child.y - child.spawnY
             var dist = dx * dx + dy * dy;
-            if (dist > this.bulletRange) {
+            if (dist > Math.pow(this.bulletRange, 2)) {
                 child.visible = false;
                 child.active = false;
             }

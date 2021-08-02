@@ -62,6 +62,11 @@ export class load extends Phaser.Scene {
             "../assets/monsters/wolve.png",
             "../assets/monsters/map_wolve.json"
         );
+        this.load.atlas(
+            "goblin",
+            "../assets/monsters/goblin.png",
+            "../assets/monsters/goblin.json"
+        );
         var loadingBar = this.add.graphics({
             fillStyle: {
                 color: 0xffffff

@@ -10,7 +10,6 @@ export default class EnemyController extends StateMachine {
                 this.player = data.player;
                 this.sprite = sprite;
                 this.lungeCD = 2000;
-                this.isWolf = data.isWolf?data.isWolf:false;
 
                 //add the states.
                 let idle = new Idle("idle", this, sprite);

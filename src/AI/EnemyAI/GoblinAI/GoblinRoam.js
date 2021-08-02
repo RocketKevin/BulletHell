@@ -1,6 +1,6 @@
 import State from "../../StateMachine/State.js";
 
-export default class WolfRoam extends State {
+export default class GoblinRoam extends State {
     onEnter() {
         this.timer = 3000;
         this.walkDir = this.getNewDirection();
@@ -59,20 +59,20 @@ export default class WolfRoam extends State {
         enemy.setVelocityY(velocityY);
 
         if (this.walkDir === "right") {
-            enemy.play("wolf_right", true);
+            enemy.play("goblin_right", true);
             enemy.flipX = false;
             //enemy.setVelocityX(enemy.body.velocity.x)
         } else if (this.walkDir === "left") {
             enemy.flipX = true;
-            enemy.play("wolf_right", true);
+            enemy.play("goblin_right", true);
             //enemy.setVelocityX(enemy.body.velocity.x)
         } else if (this.walkDir === "top") {
             enemy.flipX = true;
-            enemy.play("wolf_right", true);
+            enemy.play("goblin_right", true);
             //enemy.setVelocityY(enemy.body.velocity.y)
         } else if (this.walkDir === "bottom") {
             enemy.flipX = false;
-            enemy.play("wolf_right", true);
+            enemy.play("goblin_right", true);
             //enemy.setVelocityY(enemy.body.velocity.y)
         }
 
