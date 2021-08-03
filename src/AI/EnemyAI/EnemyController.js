@@ -3,7 +3,7 @@ import Follow from "./Follow.js";
 import Idle from "./Idle.js";
 import Lunge from "./Lunge.js";
 import Roam from "./Roam.js";
-import DongRoam from "./DongRoam.js"
+import DongRoam from "./DongRoam.js";
 
 export default class EnemyController extends StateMachine {
         create(sprite, data) {

@@ -26,7 +26,7 @@ export default class DialogBox extends Phaser.GameObjects.Container
     }
 
     showFor(text, time)
-    {
+    {   
         this.setText(text);
         this.visible = true;
         this.scene.time.addEvent({

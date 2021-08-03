@@ -1,10 +1,11 @@
 import { Status } from './Status.js';
 import { HitBox } from './HitBox.js';
+import GunController from '../GunManager/GunControllers/GunController.js';
 export class Player {
     constructor(scene, x, y, texture, collidables, location) {
         this.sprite = scene.physics.add.sprite(x, y, texture);
         this.status = new Status();
-        this.keyboard = scene.input.keyboard.addKeys("W, A, S, D");
+        this.keyboard = scene.input.keyboard.addKeys("W, A, S, D, E");
         this.sprite.setCollideWorldBounds(true);
         scene.physics.world.bounds.width = location.widthInPixels;
         scene.physics.world.bounds.height = location.heightInPixels;
@@ -20,6 +21,11 @@ export class Player {
         scene.cameras.main.startFollow(this.sprite);
         scene.cameras.main.setBounds(0, 0, location.widthInPixels, location.heightInPixels);
     }
+    updateScene(scene){
+        this.gunController = new GunController(scene, {player: this.sprite,});
+        this.switchGunCoolDown = 2000;
+        //console.log(this.gunController.scene.floatText);
+    }
     getX() {
         return this.sprite.body.x
     }
@@ -34,7 +40,18 @@ export class Player {
         this.sprite.setVelocityY(0);
         console.log("you have been slain!");
     }
-    update() {
+    update(deltaT) {
+        this.gunController.update(deltaT);
+        this.switchGunCoolDown -= deltaT;
+        if (this.keyboard.E.isDown === true){
+            if(this.switchGunCoolDown <=0 ){
+                this.gunController.nextGun();
+                this.switchGunCoolDown = 2000;
+            }
+            else{
+                console.log(this.switchGunCoolDown + " ms until gun can be swapped");
+            }
+        }
         if (this.sprite.active === true) {
             if (this.keyboard.D.isDown === true) {
                 this.sprite.setVelocityX(128);
