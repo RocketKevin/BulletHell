@@ -37,9 +37,52 @@
          "width":100,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":4,
+         "name":"Objects",
+         "objects":[
+                {
+                 "height":0,
+                 "id":5,
+                 "name":"Door",
+                 "properties":[
+                        {
+                         "name":"Link",
+                         "type":"string",
+                         "value":"HideOut"
+                        }, 
+                        {
+                         "name":"Lock",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"Message",
+                         "type":"string",
+                         "value":""
+                        }, 
+                        {
+                         "name":"OuterDoorId",
+                         "type":"string",
+                         "value":"59"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":800,
+                 "y":1344
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":4,
- "nextobjectid":1,
+ "nextlayerid":5,
+ "nextobjectid":6,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.7.0",

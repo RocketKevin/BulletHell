@@ -1,4 +1,4 @@
-import { final } from "../../final.js";
+import { final } from "../final.js";
 export class load extends Phaser.Scene {
     constructor() {
         super({
@@ -11,52 +11,83 @@ export class load extends Phaser.Scene {
     }
     preload() {
         this.game.canvas.style = "margin: auto; display: block;";
-        this.load.json("ItemProperty", "../assets/items/property_items.json");
-        this.load.json("MainMenuProperty", "../assets/mainmenu/property_MainMenuComponent.json");
-
-        this.load.image("BuyButton",    "../assets/shopUI_buyButton.png");
-        this.load.image("HubIcon",      "../assets/HubIcon.png");
-        this.load.image("Backpack",     "../assets/Backpack.png");
-        this.load.image("BackpackIcon", "../assets/BackpackIcon.png");
-        this.load.image("ShopIcon",     "../assets/ShopIcon.png");
-        this.load.image("Shop",         "../assets/Shop.png");
-        this.load.image("Hub",          "../assets/Hub.png");
-
-        this.load.image("menubackground", "../assets/mainmenu/menubackground.jpg");
-        this.load.image("title",          "../assets/mainmenu/title.png");
-        this.load.image("playbutton",     "../assets/mainmenu/button_play.png");
-        this.load.image("controlbutton",  "../assets/mainmenu/button_control.png");
-        this.load.image("optionbutton",   "../assets/mainmenu/button_option.png");
-        this.load.image("creditsbutton",  "../assets/mainmenu/button_credit.png");
-        this.load.atlas("mainmenu", "../assets/mainmenu/MainMenuComponents.png", "../assets/mainmenu/map_MainMenuComponents.json");
-
-        //this.load.image("yes", "../assets/yes.png");
-        //this.load.image("no", "../assets/no.png");
-        //this.load.image("confirmation", "../assets/confirmation.png");
-        
-        this.load.image("controlmenu", "../assets/controlmenu.png");
-        this.load.image("backbutton", "../assets/back.png");
-        this.load.image("okaybutton", "../assets/okay.png");
-        
-        this.load.atlas("dude", "../assets/dude.png", "../assets/dude.json");
+        //Unorganized
+        this.load.path = "../assets/";
+        this.load.image("controlmenu",  "controlmenu.png");
+        this.load.image("backbutton",   "back.png");
+        this.load.image("okaybutton",   "okay.png");
+        this.load.atlas(
+            "dude", 
+            "dude.png", 
+            "dude.json"
+        );
+        //UI
+        this.load.path = "../assets/userinterface/";
+        this.load.json("UIName", "map_userinterface.json");
+        this.load.image("BuyButton",    "shopUI_buyButton.png");
+        this.load.image("HubIcon",      "HubIcon.png");
+        this.load.image("Backpack",     "Backpack.png");
+        this.load.image("BackpackIcon", "BackpackIcon.png");
+        this.load.image("ShopIcon",     "ShopIcon.png");
+        this.load.image("Shop",         "Shop.png");
+        this.load.image("Hub",          "Hub.png");
+        //Items
+        this.load.path = "../assets/items/";
+        this.load.json("ItemProperty", "property_items.json");
         this.load.atlas(
             "items", 
-            "../assets/items/items2.png", 
-            "../assets/items/map_items.json"
+            "items2.png", 
+            "map_items.json"
         );
-        var atlasTexture = this.textures.get('projectiles');
-        var frames = atlasTexture.getFrameNames();
-        this.load.image("bullet",'projectiles', frames[0]);
+        //Main Menu
+        this.load.path = "../assets/mainmenu/";
+        this.load.json("MainMenuProperty", "property_MainMenuComponent.json");
         this.load.atlas(
-            "projectiles", 
-            "../assets/projectiles/projectiles.png", 
-            "../assets/projectiles/map_projectiles.json"
+            "mainmenu", 
+            "MainMenuComponents.png", 
+            "map_MainMenuComponents.json"
         );
+        //Map
+        this.load.path = "../assets/maps/";
+        this.load.json("IslandHideOut", "data_IslandHideOut.json");
+        this.load.json("HideOut", "data_HideOut.json");
+        this.load.tilemapTiledJSON("lab",   "lab.json");
+        this.load.tilemapTiledJSON("test",  "test.json");
+        //Monsters
+        this.load.path = "../assets/monsters/";
         this.load.atlas(
             "slime", 
-            "../assets/monsters/slime.png", 
-            "../assets/monsters/map_slime.json"
+            "slime.png", 
+            "map_slime.json"
         );
+        //Projectiles
+        this.load.path = "../assets/projectiles/";
+        this.load.atlas(
+            "projectiles", 
+            "projectiles.png", 
+            "map_projectiles.json"
+        );
+        //Tile Set
+        this.load.path = "../assets/tilesets/";
+        this.load.json("ImageName", "map_tilesets.json");
+        this.load.image("WaterForming", "A1_AnimatedGround.png");
+        this.load.image("NatureGround", "A2_Ground.png");
+        this.load.image("BuildingWall", "A4_Walls_2.png");
+        this.load.image("NatureWall",   "A4_Walls.png");
+        this.load.image("Floor",        "A5_Tiles.png");
+        this.load.image("House1",       "B_HouseExteriorTiles_1_B.png");
+        this.load.image("House2",       "B_HouseExteriorTiles_1.png");
+        this.load.image("House3",       "B_HouseExteriorTiles_2_B.png");
+        this.load.image("House4",       "B_HouseExteriorTiles_2.png");
+        this.load.image("Outdoor",      "C_OutSide_Nature.png");
+        this.load.image("Indoor",       "D_Inside_House.png");
+        this.load.image("Random",       "D_OutDoor.png");
+        
+        
+        //var atlasTexture = this.textures.get('projectiles');
+        //var frames = atlasTexture.getFrameNames();
+        //this.load.image("bullet",'projectiles', frames[0]);
+        
         var loadingBar = this.add.graphics({
             fillStyle: {
                 color: 0xffffff
@@ -68,6 +99,7 @@ export class load extends Phaser.Scene {
             this.loaded = percent;
         })
     }
+    
     create() {
         if(this.loaded === 1)
             this.scene.start(final.SCENES.MENU);
