@@ -28,6 +28,28 @@ export default class GunManager{
         else
             console.log("Can't switch to a gun that does not exist!!!")
     }
+    //this nextGun is just for testing since i made a dictionary and switching weapons is better for a queue or something
+    //however in the future it wont matter as i think we will use like a minecraft/muck hot bar where you use what 
+    //your selected gun/item is in the hotbar.
+    //but yea ignore the cheese code for now lol
+    nextGun(){
+        var check = true;
+        for(let k in this.#gunDict){
+            if(!check){
+                check = true;
+                this.changeGun(k);
+                break;
+            }
+            if(this.#currentGunName == k)
+                check = false;
+        }
+        if(!check){//goto first gun in dict if we havent switch gun yet
+            for(let k in this.#gunDict){
+                this.changeGun(k);
+                break;
+            }
+        }
+    }
     clearGunDict(){
         this.#gunDict = new Object();
     }

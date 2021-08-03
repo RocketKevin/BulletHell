@@ -70,7 +70,6 @@ export default class Gun{
                 bullet.spawnX = this.player.x;
                 bullet.spawnY = this.player.y;
                 this.#coolDown = this.#fireRate;
-                this.getGunMachine().changeGun("Sniper");
             }
         }
         this.getBulletArray().children.iterate(child => {//check all the bullets
