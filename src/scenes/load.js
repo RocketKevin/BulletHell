@@ -60,6 +60,16 @@ export class load extends Phaser.Scene {
             "slime.png", 
             "map_slime.json"
         );
+        this.load.atlas(
+            "wolf",
+            "../assets/monsters/wolve.png",
+            "../assets/monsters/map_wolve.json"
+        );
+        this.load.atlas(
+            "goblin",
+            "../assets/monsters/goblin.png",
+            "../assets/monsters/goblin.json"
+        );
         //Projectiles
         this.load.path = "../assets/projectiles/";
         this.load.atlas(
@@ -87,7 +97,6 @@ export class load extends Phaser.Scene {
         //var atlasTexture = this.textures.get('projectiles');
         //var frames = atlasTexture.getFrameNames();
         //this.load.image("bullet",'projectiles', frames[0]);
-        
         var loadingBar = this.add.graphics({
             fillStyle: {
                 color: 0xffffff
@@ -101,7 +110,7 @@ export class load extends Phaser.Scene {
     }
     
     create() {
-        if(this.loaded === 1)
+        if (this.loaded === 1)
             this.scene.start(final.SCENES.MENU);
     }
 }

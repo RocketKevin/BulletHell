@@ -1,0 +1,23 @@
+import GunManager from "../GunMachine/GunManager.js";
+import Pistol from "../Guns/pistol.js";
+import Sniper from "../Guns/Sniper.js";
+export default class GunController extends GunManager{
+    create(scene, data){
+        this.player = data.player;
+        this.scene = scene;
+        //console.log("entering create!!!")
+        let pistol = new Pistol("Pistol", this, scene);
+        this.addGun(pistol);
+        scene.physics.add.overlap(scene.mobArray, pistol.getBulletArray(), scene.handleBulletMobCollision, null, scene);
+        scene.physics.add.overlap(scene.mobArray1, pistol.getBulletArray(), scene.handleBulletMobCollision, null, scene);
+        scene.physics.add.overlap(scene.mobArray2, pistol.getBulletArray(), scene.handleBulletMobCollision, null, scene);
+
+        let sniper = new Sniper("Sniper", this, scene);
+        this.addGun(sniper);
+        scene.physics.add.overlap(scene.mobArray, sniper.getBulletArray(), scene.handleBulletMobCollision, null, scene);
+        scene.physics.add.overlap(scene.mobArray1, sniper.getBulletArray(), scene.handleBulletMobCollision, null, scene);
+        scene.physics.add.overlap(scene.mobArray2, sniper.getBulletArray(), scene.handleBulletMobCollision, null, scene);
+        
+        this.changeGun("Pistol");
+    }
+}

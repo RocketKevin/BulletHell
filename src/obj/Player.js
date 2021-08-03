@@ -1,5 +1,7 @@
 import { Status } from './Status.js';
 import { HitBox } from './HitBox.js';
+import GunController from '../GunManager/GunControllers/GunController.js';
+
 export class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, collidables) {
         super(scene, x, y, texture);
@@ -39,6 +41,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.setSize(30, 40);
         this.setOffset(10, 60);
     }
+    updateScene(scene){
+        this.gunController = new GunController(scene, {player: this.sprite,});
+        this.switchGunCoolDown = 2000;
+        //console.log(this.gunController.scene.floatText);
+    }
     getX() {
         return this.body.x
     }
@@ -53,14 +60,26 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityY(0);
         console.log("you have been slain!");
     }
+
     respawn(x, y) {
         this.setX(x);
         this.setY(y - this.height/2);
     }
-    update() {
-        if (this.active) {
-            if (this.keyboard.D.isDown) {
-                this.setVelocityX(128);
+    update(deltaT) {
+        this.gunController.update(deltaT);
+        this.switchGunCoolDown -= deltaT;
+        if (this.keyboard.E.isDown === true){
+            if(this.switchGunCoolDown <=0 ){
+                this.gunController.nextGun();
+                this.switchGunCoolDown = 2000;
+            }
+            else{
+                console.log(this.switchGunCoolDown + " ms until gun can be swapped");
+            }
+        }
+        if (this.sprite.active === true) {
+            if (this.keyboard.D.isDown === true) {
+                this.sprite.setVelocityX(128);
             }
             if (this.keyboard.A.isDown) {
                 this.setVelocityX(-128);
