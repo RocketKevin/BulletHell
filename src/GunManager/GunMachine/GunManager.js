@@ -14,8 +14,10 @@ export default class GunManager{
     create(data) {/* abstract method */ }
 
     changeGun(gunName){
-        if(this.#currentGunName==gunName)//already on gun
+        if(this.#currentGunName==gunName){//already on gun
+            //console.log("already on this gun");
             return;
+        }
         if(gunName in this.#gunDict){//gun exist
             if(this.#currentGun!=null)
                 this.#currentGun.onExit();
@@ -31,6 +33,7 @@ export default class GunManager{
     }
     addGun(gunObject){
         if(!(gunObject.getGunName() in this.#gunDict)){//if gun is not in dictionary 
+            console.log("Added " + gunObject.getGunName() + " to gun dictionary");
             this.#gunDict[gunObject.getGunName()] = gunObject;
         }
     }
@@ -41,6 +44,9 @@ export default class GunManager{
     }
     getCurrentGun(){
         return this.#currentGun;
+    }
+    getGunDict(){
+        return this.#gunDict;
     }
     update(deltaT){
         if(this.#currentGun!=null)

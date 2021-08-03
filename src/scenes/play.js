@@ -177,16 +177,14 @@ export class play extends Phaser.Scene {
     }
 
     handleBulletMobCollision(obj1, obj2) {//obj1 is the mob obj 2 is the bullets
-        console.log(obj1)
-        console.log(obj2)
+        //console.log(obj1)
+        //console.log(obj2)
         if (obj1.active && obj2.active) {
             obj2.visible = false;
             obj2.active = false;
             obj2.destroy();
             obj1.health = obj1.health - obj2.damage;
-            console.log("check" + this.Player);
-            //this.floatText.showText(obj1.x - obj1.width / 4, obj1.y - obj1.height / 2, `${obj2.damage}`);
-
+            this.floatText.showText(obj1.x - obj1.width / 4, obj1.y - obj1.height / 2, `${obj2.damage}`);
             if (obj1.health <= 0 && obj1.getMobAlive()) {
 
                 obj1.body.velocity.x = 0
@@ -196,7 +194,7 @@ export class play extends Phaser.Scene {
                 obj1.visible = false;
                 obj1.active = false;
                 console.log("mob killed!")
-                //this.textBox.showFor("mob was killed, \n good job!!!!", 1000);
+                this.textBox.showFor("mob was killed, \n good job!!!!", 1000);
                 // obj1.destroy();
             }
         }

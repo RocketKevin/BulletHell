@@ -23,6 +23,7 @@ export class Player {
     }
     updateScene(scene){
         this.gunController = new GunController(scene, {player: this.sprite,});
+        //console.log(this.gunController.scene.floatText);
     }
     getX() {
         return this.sprite.body.x
