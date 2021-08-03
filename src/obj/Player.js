@@ -1,25 +1,45 @@
 import { Status } from './Status.js';
 import { HitBox } from './HitBox.js';
 import GunController from '../GunManager/GunControllers/GunController.js';
-export class Player {
-    constructor(scene, x, y, texture, collidables, location) {
-        this.sprite = scene.physics.add.sprite(x, y, texture);
+
+export class Player extends Phaser.Physics.Arcade.Sprite {
+    constructor(scene, x, y, texture, collidables) {
+        super(scene, x, y, texture);
+        scene.add.existing(this);
+        scene.physics.add.existing(this);
+        
+        this.self_format();
+        this.self_physic();
+
         this.status = new Status();
-        this.keyboard = scene.input.keyboard.addKeys("W, A, S, D, E");
-        this.sprite.setCollideWorldBounds(true);
-        scene.physics.world.bounds.width = location.widthInPixels;
-        scene.physics.world.bounds.height = location.heightInPixels;
-        this.sprite.setScale(0.5);
-        this.sprite.setOrigin(0, 0);
-        this.sprite.setFrame("dude1.png");
-        this.sprite.setImmovable(true);
-        this.sprite.setSize(30, 40);
-        this.sprite.setOffset(10, 60);
-        scene.physics.add.collider(this.sprite, collidables);
-        collidables.setCollisionByProperty({ collides: true });
-        this.hitbox = new HitBox(scene, x, y, this.sprite);
-        scene.cameras.main.startFollow(this.sprite);
-        scene.cameras.main.setBounds(0, 0, location.widthInPixels, location.heightInPixels);
+        this.hitbox = new HitBox(scene, this);
+        this.keyboard = scene.input.keyboard.addKeys("W, A, S, D");
+        this.collidablesTerrain(scene, collidables);
+    }
+    collidablesTerrain(scene, collidables) {
+        for(var i = 0; i < collidables.length; i++) {
+            scene.physics.add.collider(this, collidables[i]);
+            collidables[i].setCollisionByProperty({ collides: true });
+        }
+    }
+    getMembers() {
+        var arrayOfMembers = [];
+        for(var key in this) {
+            arrayOfMembers.push({name: key, value: this[key]})
+        }
+        return arrayOfMembers;
+    }
+    self_format() {
+        this.setScale(0.5);
+        this.setOrigin(0, 0);
+        this.setFrame("dude1.png");
+        this.setDepth(1);
+    }
+    self_physic() {
+        this.setCollideWorldBounds(true);
+        this.setImmovable(true);
+        this.setSize(30, 40);
+        this.setOffset(10, 60);
     }
     updateScene(scene){
         this.gunController = new GunController(scene, {player: this.sprite,});
@@ -27,18 +47,23 @@ export class Player {
         //console.log(this.gunController.scene.floatText);
     }
     getX() {
-        return this.sprite.body.x
+        return this.body.x
     }
     getY() {
-        return this.sprite.body.y
+        return this.body.y
     }
     killPlayer() {
         this.visible = false;
-        this.sprite.setVisible(false);
-        this.sprite.active = false;
-        this.sprite.setVelocityX(0);
-        this.sprite.setVelocityY(0);
+        this.setVisible(false);
+        this.active = false;
+        this.setVelocityX(0);
+        this.setVelocityY(0);
         console.log("you have been slain!");
+    }
+
+    respawn(x, y) {
+        this.setX(x);
+        this.setY(y - this.height/2);
     }
     update(deltaT) {
         this.gunController.update(deltaT);
@@ -56,51 +81,47 @@ export class Player {
             if (this.keyboard.D.isDown === true) {
                 this.sprite.setVelocityX(128);
             }
-            if (this.keyboard.A.isDown === true) {
-                this.sprite.setVelocityX(-128);
+            if (this.keyboard.A.isDown) {
+                this.setVelocityX(-128);
             }
-            if (this.keyboard.W.isDown === true) {
-                this.sprite.setVelocityY(-128);
+            if (this.keyboard.W.isDown) {
+                this.setVelocityY(-128);
             }
-            if (this.keyboard.S.isDown === true) {
-                this.sprite.setVelocityY(128);
+            if (this.keyboard.S.isDown) {
+                this.setVelocityY(128);
             }
             if (this.keyboard.A.isUp && this.keyboard.D.isUp) {
-                this.sprite.setVelocityX(0);
+                this.setVelocityX(0);
             }
             if (this.keyboard.W.isUp && this.keyboard.S.isUp) {
-                this.sprite.setVelocityY(0);
+                this.setVelocityY(0);
             }
             if (this.keyboard.A.isDown && this.keyboard.W.isDown) {
-                this.sprite.setVelocityY(-90);
-                this.sprite.setVelocityX(-90);
+                this.setVelocityY(-90);
+                this.setVelocityX(-90);
             }
             if (this.keyboard.W.isDown && this.keyboard.D.isDown) {
-                this.sprite.setVelocityY(-90);
-                this.sprite.setVelocityX(90);
+                this.setVelocityY(-90);
+                this.setVelocityX(90);
             }
             if (this.keyboard.D.isDown && this.keyboard.S.isDown) {
-                this.sprite.setVelocityY(90);
-                this.sprite.setVelocityX(90);
+                this.setVelocityY(90);
+                this.setVelocityX(90);
             }
             if (this.keyboard.A.isDown && this.keyboard.S.isDown) {
-                this.sprite.setVelocityY(90);
-                this.sprite.setVelocityX(-90);
+                this.setVelocityY(90);
+                this.setVelocityX(-90);
             }
-            //console.log(this.sprite.body.velocity.x);
-            if (this.sprite.body.velocity.x > 0) {
-                this.sprite.play("right", true);
-                this.hitbox.update();
-            } else if (this.sprite.body.velocity.x < 0) {
-                this.sprite.play("left", true);
-                this.hitbox.update();
-            } else if (this.sprite.body.velocity.y < 0) {
-                this.sprite.play("up", true);
-                this.hitbox.update();
-            } else if (this.sprite.body.velocity.y > 0) {
-                this.sprite.play("down", true);
-                this.hitbox.update();
+            if (this.body.velocity.x > 0) {
+                this.play("right", true);
+            } else if (this.body.velocity.x < 0) {
+                this.play("left", true);
+            } else if (this.body.velocity.y < 0) {
+                this.play("up", true);
+            } else if (this.body.velocity.y > 0) {
+                this.play("down", true);
             }
+            this.hitbox.update();
         }
     }
 }

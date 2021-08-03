@@ -31,7 +31,6 @@ export class Backpack {
     updateAmountCount(backpack) {
         for(var i = 1; i < 9; i++) {
             if(backpack[i-1] != null) {
-                // console.log(backpack[i-1].amount);
                 this.backpackContainer.list[i].setText(backpack[i-1].amount+"");
             }
         }
