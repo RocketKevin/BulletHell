@@ -7,7 +7,6 @@ export const final = {
         OPTIONS: "OPTIONS",
         CREDITS: "CREDITS",
         UI: "UI",
-        TEST: "TEST",
         ITEMINTERACT: "ITEMINTERACT"
     }
 }
