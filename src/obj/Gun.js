@@ -25,6 +25,8 @@ export class Gun {
         if (this.cursor.isDown) {
             if (this.coolDown <= 0.01) {//when cooldown <0.01 you can "shoot" again aka spawn bullets
                 var bullet = this.bullets.get(this.dude.x + this.dude.width / 4.0, this.dude.y + this.dude.height / 4.0, this.imageName).setScale(0.3);
+                bullet.visible = true;
+                bullet.active = true;
                 var dx = this.cursor.x + this.camera.scrollX - this.dude.x;
                 var dy = this.cursor.y + this.camera.scrollY - this.dude.y;
                 var hyp = Math.sqrt(dx * dx + dy * dy);
@@ -39,8 +41,6 @@ export class Gun {
         this.coolDown = this.coolDown - delta;
         //hide bullets when outof range
         this.bullets.children.iterate(child => {
-            child.visible = true;
-            child.active = true;
             var dx = child.x - child.spawnX;
             var dy = child.y - child.spawnY
             var dist = dx * dx + dy * dy;

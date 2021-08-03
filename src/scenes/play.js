@@ -111,8 +111,8 @@ export class play extends Phaser.Scene {
 
         //gun/bullet
         //constructor(bulletSpeed, bulletRange, fireRate, imageName, dude, input, physics, scene)
-        this.pistol = new Gun(100, 3000, 500, 'dude', this.Player.sprite, this.input, this.physics, this)
-        this.ak = new Gun(1000, 100000, 200, 'bullet', this.Player.sprite, this.input, this.physics, this)
+        // this.pistol = new Gun(100, 3000, 500, 'dude', this.Player.sprite, this.input, this.physics, this)
+        // this.ak = new Gun(1000, 100000, 200, 'bullet', this.Player.sprite, this.input, this.physics, this)
 
         //mob array
         this.mobArray = this.physics.add.group({
@@ -143,10 +143,10 @@ export class play extends Phaser.Scene {
             loop: true
         })
 
-        this.physics.add.overlap(this.mobArray, this.ak.bullets, this.handleBulletMobCollision, null, this);
+        //this.physics.add.overlap(this.mobArray, this.Player.GunController, this.handleBulletMobCollision, null, this);
         this.physics.add.overlap(this.mobArray, this.Player.hitbox.sprite, this.handleDamage, null, this);
 
-        this.physics.add.overlap(this.mobArray1, this.ak.bullets, this.handleBulletMobCollision, null, this);
+        //this.physics.add.overlap(this.mobArray1, this.ak.bullets, this.handleBulletMobCollision, null, this);
         this.physics.add.overlap(this.mobArray1, this.Player.hitbox.sprite, this.handleDamage, null, this);
     }
 
@@ -203,10 +203,10 @@ export class play extends Phaser.Scene {
     }
     update(time, delta) {
 
-        this.Player.update();
-        if (this.ak != null) {
-            this.ak.update(time, delta);
-        }
+        this.Player.update(delta);
+        // if (this.ak != null) {
+        //     this.ak.update(time, delta);
+        // }
         // this.mobArray.children.iterate(child => {
         //     if(child.active)
         //         child.update();

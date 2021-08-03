@@ -1,5 +1,6 @@
 import { Status } from './Status.js';
 import { HitBox } from './HitBox.js';
+import GunController from '../GunManager/GunControllers/GunController.js';
 export class Player {
     constructor(scene, x, y, texture, collidables, location) {
         this.sprite = scene.physics.add.sprite(x, y, texture);
@@ -19,6 +20,8 @@ export class Player {
         this.hitbox = new HitBox(scene, x, y, this.sprite);
         scene.cameras.main.startFollow(this.sprite);
         scene.cameras.main.setBounds(0, 0, location.widthInPixels, location.heightInPixels);
+        console.log("the scene" + scene);
+        this.gunController = new GunController(scene, {});
     }
     getX() {
         return this.sprite.body.x
@@ -34,7 +37,8 @@ export class Player {
         this.sprite.setVelocityY(0);
         console.log("you have been slain!");
     }
-    update() {
+    update(deltaT) {
+        this.gunController.update(deltaT);
         if (this.sprite.active === true) {
             if (this.keyboard.D.isDown === true) {
                 this.sprite.setVelocityX(128);

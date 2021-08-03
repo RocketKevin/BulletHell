@@ -19,7 +19,7 @@ export default class GuardianShot extends State {
     update(deltaT) {
         this.returnCD -= deltaT;
         if(this.returnCD <= 0){
-            console.log("spawn shot")
+            //console.log("spawn shot")
             this.getStateMachine().scene.add.sprite(this.predictX,this.predictY,"dude").setScale(0.5);
             this.getStateMachine().changeState("idle");
         }
