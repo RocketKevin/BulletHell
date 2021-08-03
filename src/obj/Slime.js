@@ -9,8 +9,7 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, sprite);
         scene.add.existing(this);
         this.mobAlive = true;
-        this.player = scene.player;
-        console.log("here")
+        this.player = scene.Player;
         //this = scene.physics.add.sprite(x, y, sprite);
         //this.spawnX = x;
         //this.spawnY = y;
