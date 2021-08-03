@@ -20,8 +20,9 @@ export class Player {
         this.hitbox = new HitBox(scene, x, y, this.sprite);
         scene.cameras.main.startFollow(this.sprite);
         scene.cameras.main.setBounds(0, 0, location.widthInPixels, location.heightInPixels);
-        console.log("the scene" + scene);
-        this.gunController = new GunController(scene, {});
+    }
+    updateScene(scene){
+        this.gunController = new GunController(scene, {player: this.sprite,});
     }
     getX() {
         return this.sprite.body.x

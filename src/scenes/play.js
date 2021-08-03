@@ -142,11 +142,11 @@ export class play extends Phaser.Scene {
             },
             loop: true
         })
-
-        //this.physics.add.overlap(this.mobArray, this.Player.GunController, this.handleBulletMobCollision, null, this);
+        this.Player.updateScene(this);
+        //this.physics.add.overlap(this.mobArray, this.Player.gunController.getCurrentGun().getBulletArray(), this.handleBulletMobCollision, null, this);
         this.physics.add.overlap(this.mobArray, this.Player.hitbox.sprite, this.handleDamage, null, this);
-
-        //this.physics.add.overlap(this.mobArray1, this.ak.bullets, this.handleBulletMobCollision, null, this);
+        
+        //this.physics.add.overlap(this.mobArray1, this.Player.gunController.getCurrentGun().getBulletArray(), this.handleBulletMobCollision, null, this);
         this.physics.add.overlap(this.mobArray1, this.Player.hitbox.sprite, this.handleDamage, null, this);
     }
 
@@ -184,8 +184,8 @@ export class play extends Phaser.Scene {
             obj2.active = false;
             obj2.destroy();
             obj1.health = obj1.health - obj2.damage;
-
-            this.floatText.showText(obj1.x - obj1.width / 4, obj1.y - obj1.height / 2, `${obj2.damage}`);
+            console.log("check" + this.Player);
+            //this.floatText.showText(obj1.x - obj1.width / 4, obj1.y - obj1.height / 2, `${obj2.damage}`);
 
             if (obj1.health <= 0 && obj1.getMobAlive()) {
 
@@ -196,7 +196,7 @@ export class play extends Phaser.Scene {
                 obj1.visible = false;
                 obj1.active = false;
                 console.log("mob killed!")
-                this.textBox.showFor("mob was killed, \n good job!!!!", 1000);
+                //this.textBox.showFor("mob was killed, \n good job!!!!", 1000);
                 // obj1.destroy();
             }
         }

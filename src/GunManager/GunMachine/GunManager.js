@@ -9,7 +9,6 @@ export default class GunManager{
         this.#currentGun = null;
         this.#gunDict = new Object();
         this.create(scene, data);
-        console.log("abc123" + scene)
     }
 
     create(data) {/* abstract method */ }
@@ -21,7 +20,6 @@ export default class GunManager{
             if(this.#currentGun!=null)
                 this.#currentGun.onExit();
             this.#currentGun = this.#gunDict[gunName];
-            console.log("abc" + this.#currentGun);
             this.#currentGunName = gunName;
             this.#currentGun.onEnter();
         }
@@ -40,6 +38,9 @@ export default class GunManager{
         if(gunObject.getGunName() in this.#gunDict){//if gun is in dictionary
             delete this.#gunDict[gunObject.getGunName()];
         }
+    }
+    getCurrentGun(){
+        return this.#currentGun;
     }
     update(deltaT){
         if(this.#currentGun!=null)

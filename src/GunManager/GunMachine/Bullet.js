@@ -3,6 +3,7 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite{
         super(scene, x, y, texture);
         this.spawnX = x;
         this.spawnY = y;
+        this.damage = 100;
     }
     setVelocity(startX, startY, targetX, targetY, camera, bulletSpeed){
         var dx = targetX + camera.scrollX - startX;
