@@ -7,8 +7,9 @@ import { Shop } from "../obj/Shop.js"
 import { Slime } from "../obj/Slime.js"
 import DialogBox from "../obj/UI/DialogBox.js";
 import FloatText from "../obj/UI/FloatText.js";
-import { Wolf } from "../obj/Wolf.js"
 import { Boss } from "../AI/EnemyAI/TestAI/Boss.js";
+import { Wolf } from "../AI/EnemyAI/WolfAI/Wolf.js";
+import { Goblin } from "../AI/EnemyAI/GoblinAI/Goblin.js";
 export class play extends Phaser.Scene {
     constructor() {
         super({
@@ -91,6 +92,69 @@ export class play extends Phaser.Scene {
                 frames: [7, 8, 9]
             })
         })
+        this.anims.create({
+            key: "wolf_right",
+            framesRate: 1,
+            frames: this.anims.generateFrameNames("wolf", {
+                prefix: "wolve",
+                suffix: ".png",
+                frames: [1, 2, 3, 4, 5, 6, 7]
+            })
+        })
+        this.anims.create({
+            key: "wolf_right_lunge",
+            framesRate: 1,
+            frames: this.anims.generateFrameNames("wolf", {
+                prefix: "wolve",
+                suffix: ".png",
+                frames: [8, 9, 10, 11]
+            })
+        })
+        this.anims.create({
+            key: "goblin_pushup",
+            framesRate: 1,
+            frames: this.anims.generateFrameNames("goblin", {
+                prefix: "",
+                suffix: ".png",
+                frames: [44, 45, 46, 47, 48, 47, 46, 45, 44]
+            })
+        })
+        this.anims.create({
+            key: "goblin_up",
+            framesRate: 1,
+            frames: this.anims.generateFrameNames("goblin", {
+                prefix: "",
+                suffix: ".png",
+                frames: [22, 23, 24, 25, 26, 27, 28, 29]
+            })
+        })
+        this.anims.create({
+            key: "goblin_down",
+            framesRate: 1,
+            frames: this.anims.generateFrameNames("goblin", {
+                prefix: "0",
+                suffix: ".png",
+                frames: [0, 1, 2, 3, 4, 5, 6, 7]
+            })
+        })
+        this.anims.create({
+            key: "goblin_left",
+            framesRate: 1,
+            frames: this.anims.generateFrameNames("goblin", {
+                prefix: "",
+                suffix: ".png",
+                frames: [33, 34, 35, 36, 37, 38, 39, 40]
+            })
+        })
+        this.anims.create({
+            key: "goblin_right",
+            framesRate: 1,
+            frames: this.anims.generateFrameNames("goblin", {
+                prefix: "",
+                suffix: ".png",
+                frames: [11, 12, 13, 14, 15, 16, 17, 18]
+            })
+        })
     }
 
     create() {
@@ -122,11 +186,12 @@ export class play extends Phaser.Scene {
         this.mobArray1 = this.physics.add.group({
             classType: Wolf//constructor(scene, x, y, texture)
         });
-        let mob1 = this.mobArray1.get(1000, 500, "slime");
-        this.BossArray = this.physics.add.group({
-                classType: Boss
+        let mob1 = this.mobArray1.get(1000, 500, "wolf");
+
+        this.mobArray2 = this.physics.add.group({
+            classType: Goblin//constructor(scene, x, y, texture)
         });
-        this.BossArray.get(1000,250, "dude")
+        let mob2 = this.mobArray2.get(500, 1000, "slime");
         //spawn a dude mob
         // this.mobDude = this.mobArray.get(250, 250, 'slime').setScale(.75);
         //this.mobArray.add(new Mob(this, 500, 500, this.Player, 'slime'))
@@ -148,6 +213,9 @@ export class play extends Phaser.Scene {
         
         //this.physics.add.overlap(this.mobArray1, this.Player.gunController.getCurrentGun().getBulletArray(), this.handleBulletMobCollision, null, this);
         this.physics.add.overlap(this.mobArray1, this.Player.hitbox.sprite, this.handleDamage, null, this);
+
+        //this.physics.add.overlap(this.mobArray2, this.ak.bullets, this.handleBulletMobCollision, null, this);
+        this.physics.add.overlap(this.mobArray2, this.Player.hitbox.sprite, this.handleDamage, null, this);
     }
 
     handleDamage(player, monster) {
@@ -177,8 +245,8 @@ export class play extends Phaser.Scene {
     }
 
     handleBulletMobCollision(obj1, obj2) {//obj1 is the mob obj 2 is the bullets
-        //console.log(obj1)
-        //console.log(obj2)
+        // console.log(obj1)
+        // console.log(obj2)
         if (obj1.active && obj2.active) {
             obj2.visible = false;
             obj2.active = false;
