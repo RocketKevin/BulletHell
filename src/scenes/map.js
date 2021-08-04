@@ -2,6 +2,7 @@ import { final } from "../final.js";
 import { Player } from "../obj/Player.js";
 import { Camera } from "../obj/Camera.js";
 import { Hub } from "../obj/Hub.js";
+import mobArray from "../doubleArrayMob/mobArray.js";
 export class SceneHolder extends Phaser.Scene{
     constructor() {
         super({
@@ -41,6 +42,7 @@ export class SceneHolder extends Phaser.Scene{
         this.player.y = this.spawn[0].y;
         this.camera = new Camera(this, this.player, this.terrain.map);
         this.Hub = new Hub(this, "Hub", "Backpack", "Shop");
+        this.ultimateMobArray = new mobArray;
         this.player.updateScene(this);
         this.collidors();
     }
