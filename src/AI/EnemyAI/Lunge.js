@@ -3,7 +3,7 @@ import State from "../StateMachine/State.js";
 export default class Lunge extends State {
     onEnter() {
         this.lungetime = 1500;
-        let player = this.getStateMachine().player.sprite;
+        let player = this.getStateMachine().player;
         let enemy = this.getStateMachine().sprite;
 
         let velocityX = player.x - enemy.body.x;

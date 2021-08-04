@@ -13,7 +13,7 @@ export default class GoblinPushUp extends State {
 
 
     update(deltaT) {
-        let player = this.getStateMachine().player.sprite;
+        let player = this.getStateMachine().player;
         let enemy = this.getStateMachine().sprite;
         this.regen -= deltaT
         let velocityX = player.x - enemy.body.x;
