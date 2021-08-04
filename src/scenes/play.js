@@ -206,11 +206,11 @@ export class play extends Phaser.Scene {
         //this.mobArray.add(new Mob(this, 500, 500, this.Player, 'slime'))
         //this.mobArray.get(500, 500, "slime");
         this.time.addEvent({
-            delay: 3000,
+            delay: 300,
             callback: () => {
                 // spawn a new apple
-                if (this.mobArray.getTotalUsed() < 4) { //if the total number that is active is less than 4.
-                    let mob = this.mobArray.get(500, 500, "slime");
+                if (this.mobArray.getTotalUsed() < 3) { //if the total number that is active is less than 4.
+                    let mob = this.mobArray.get(Math.random() * 800 + 300, Math.random() * 800 + 300, "slime");
                     mob.reset();
                 }
             },
@@ -229,6 +229,9 @@ export class play extends Phaser.Scene {
 
         //this.physics.add.overlap(this.mobArray2, this.ak.bullets, this.handleBulletMobCollision, null, this);
         this.physics.add.overlap(this.mobArray2, this.Player.hitbox.sprite, this.handleDamage, null, this);
+        console.log(lab);
+        this.worldHeightInPixels = lab.heightInPixels;
+        this.worldWidthInPixels = lab.widthInPixels;
     }
 
     handleDamage(player, monster) {

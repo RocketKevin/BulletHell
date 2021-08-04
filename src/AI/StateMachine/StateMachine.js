@@ -21,6 +21,9 @@ export default class StateMachine {
      */
     #previousState;
 
+    #created;
+    #tempSprite;
+    #tempData;
 
     /**
      * Creates a new StateMachine and initialize the variables for the state machine. 
@@ -31,7 +34,10 @@ export default class StateMachine {
         this.#states = [];
         this.#currentState = null;
         this.#previousState = null;
-        this.create(sprite, data);
+        //this.create(sprite, data);
+        this.#created = false;
+        this.#tempSprite = sprite;
+        this.#tempData = data;
     }
 
 
@@ -95,6 +101,13 @@ export default class StateMachine {
      * @param {number} deltaT - Change in time.
      */
     update(deltaT) {
+        if(!this.#created)
+        {
+            this.#created = true;
+            this.create(this.#tempSprite, this.#tempData);
+            this.#tempSprite = undefined;
+            this.#tempData = undefined;
+        }
         if (this.#currentState)
             this.#currentState.update(deltaT);
     }

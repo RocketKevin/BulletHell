@@ -1,9 +1,10 @@
 import EnemyController from "../AI/EnemyAI/EnemyController.js";
+import SlimeController from "../AI/EnemyAI/SlimeAI/SlimeController.js";
 import HealthBar from "./UI/HealthBar.js";
 
 export class Slime extends Phaser.Physics.Arcade.Sprite {
     defaultHealth = 500;
-    defaultSpeed = 250;
+    defaultSpeed = 30;
 
     constructor(scene, x, y, sprite) {
         super(scene, x, y, sprite);
@@ -18,13 +19,16 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
         this.health = this.defaultHealth;
         this.damage = 100;
 
-        this.ai = new EnemyController(this, {
+        this.ai = new SlimeController(this, {
             player: this.player,
             animations: "",
+            slimes:scene.mobArray,
         });
-        this.scale = Math.random() + 1;
-        this.speed = 2.0*this.defaultSpeed / this.scale;
-        this.setScale(this.scale);
+        this.speed = this.defaultSpeed;
+
+        // this.scale = Math.random() + 1;
+        // this.speed = 2.0*this.defaultSpeed / this.scale;
+        // this.setScale(this.scale);
 
     }
 
@@ -43,11 +47,16 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
         this.active = true;
         this.health = this.defaultHealth;
         this.healthBar.visible = true;
+        this.speed = this.defaultSpeed;
+        this.setScale(1);
+        this.ai.reset();
         //this.ai.changeState("");
     }
 
     preUpdate(time, deltaT) {//movement and stuff
         super.preUpdate(time, deltaT);
+
+        console.log(`x ${this.x}, y ${this.y}`);
 
         this.ai.update(deltaT);
 
@@ -88,9 +97,10 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
             if (this.health <= 0) {
                 this.setVelocityX(0);
                 this.setVelocityY(0);
-
-                //this.setVisible(false)
-                //this.destroy()
+                this.setMobDead();
+                //obj1.setVisible(false);
+                this.visible = false;
+                this.active = false;
             }
         }
     }
