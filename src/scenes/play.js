@@ -2,7 +2,6 @@ import { final } from "../final.js";
 import { Player } from "../obj/Player.js";
 import { Hub } from "../obj/Hub.js";
 import { Backpack } from "../obj/Backpack.js";
-import { Gun } from "../obj/Gun.js";
 import { Shop } from "../obj/Shop.js"
 import { Slime } from "../obj/Slime.js"
 import DialogBox from "../obj/UI/DialogBox.js";
@@ -10,6 +9,7 @@ import FloatText from "../obj/UI/FloatText.js";
 import { Boss } from "../AI/EnemyAI/TestAI/Boss.js";
 import { Wolf } from "../AI/EnemyAI/WolfAI/Wolf.js";
 import { Goblin } from "../AI/EnemyAI/GoblinAI/Goblin.js";
+import mobArray from "../doubleArrayMob/mobArray.js";
 export class play extends Phaser.Scene {
     constructor() {
         super({
@@ -173,6 +173,8 @@ export class play extends Phaser.Scene {
         this.textBox = new DialogBox(this, 0, 0);
         this.floatText = new FloatText(this);
 
+        this.ultimateMobArray = new mobArray;
+
         //gun/bullet
         //constructor(bulletSpeed, bulletRange, fireRate, imageName, dude, input, physics, scene)
         // this.pistol = new Gun(100, 3000, 500, 'dude', this.Player.sprite, this.input, this.physics, this)
@@ -182,16 +184,20 @@ export class play extends Phaser.Scene {
         this.mobArray = this.physics.add.group({
             classType: Slime//constructor(scene, x, y, texture)
         });
+        this.ultimateMobArray.addMobArray(this.mobArray);
 
         this.mobArray1 = this.physics.add.group({
             classType: Wolf//constructor(scene, x, y, texture)
         });
         let mob1 = this.mobArray1.get(1000, 500, "wolf");
+        this.ultimateMobArray.addMobArray(this.mobArray1);
 
         this.mobArray2 = this.physics.add.group({
             classType: Goblin//constructor(scene, x, y, texture)
         });
         let mob2 = this.mobArray2.get(500, 1000, "slime");
+        this.ultimateMobArray.addMobArray(this.mobArray2);
+
         //spawn a dude mob
         // this.mobDude = this.mobArray.get(250, 250, 'slime').setScale(.75);
         //this.mobArray.add(new Mob(this, 500, 500, this.Player, 'slime'))
