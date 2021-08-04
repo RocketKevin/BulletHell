@@ -17,7 +17,7 @@ export default class WolfIdle extends State {
 
     update(deltaT) {
         //check the player's position
-        let player = this.getStateMachine().player.sprite;
+        let player = this.getStateMachine().player;
         //if the player is too close change state.
         let enemy = this.getSprite();
         enemy.setVelocityX(0);

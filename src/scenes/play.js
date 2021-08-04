@@ -1,12 +1,10 @@
 import { final } from "../final.js";
 import { Player } from "../obj/Player.js";
 import { Hub } from "../obj/Hub.js";
-import { Backpack } from "../obj/Backpack.js";
-import { Gun } from "../obj/Gun.js";
-import { Shop } from "../obj/Shop.js"
 import { Slime } from "../obj/Slime.js"
 import DialogBox from "../obj/UI/DialogBox.js";
 import FloatText from "../obj/UI/FloatText.js";
+import { Camera } from "../obj/Camera.js";
 import { Boss } from "../AI/EnemyAI/TestAI/Boss.js";
 import { Wolf } from "../AI/EnemyAI/WolfAI/Wolf.js";
 import { Goblin } from "../AI/EnemyAI/GoblinAI/Goblin.js";
@@ -158,25 +156,29 @@ export class play extends Phaser.Scene {
     }
 
     create() {
-        var lab = this.add.tilemap("lab");
-        var terrain = lab.addTilesetImage("A2_Ground", "Ground");
-        var terrainTop = lab.addTilesetImage("C_OutSide_Nature", "Nature");
-        var terrainPassable = lab.addTilesetImage("C_OutSide_Nature", "Nature");
+        this.map = this.add.tilemap("lab");
+        this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+        var lab = this.map;
+        var terrain = lab.addTilesetImage("A2_Ground", "NatureGround");
+        var terrainTop = lab.addTilesetImage("C_OutSide_Nature", "Outdoor");
+        var terrainTop2 = lab.addTilesetImage("A4_Walls_2", "BuildingWall");
+        var terrainPassable = lab.addTilesetImage("C_OutSide_Nature", "Outdoor");
         var bottomLayer = lab.createLayer("Ground", [terrain], 0, 0);
-        var passableLayer = lab.createLayer("Ground2", [terrainPassable], 0, 0);
+        var passableLayer = lab.createLayer("Ground2", [terrainPassable, terrainTop2], 0, 0);
         var aboveLayer = lab.createLayer("Above", [terrainTop], 0, 0).setDepth(2);
 
-        this.Hub = new Hub(this, "HubIcon", "Hub", "BackpackIcon", "Backpack", "ShopIcon", "Shop");
-        this.Player = new Player(this, 50, 100, "dude", passableLayer, lab);
+        this.Hub = new Hub(this, "Hub", "Backpack", "Shop");
+        this.Player = new Player(this, 50, 100, "dude", [passableLayer], lab);
         this.Hub.button(this);
 
         this.textBox = new DialogBox(this, 0, 0);
         this.floatText = new FloatText(this);
+        this.userCamera = new Camera(this, this.Player, this.map); 
 
         //gun/bullet
         //constructor(bulletSpeed, bulletRange, fireRate, imageName, dude, input, physics, scene)
-        // this.pistol = new Gun(100, 3000, 500, 'dude', this.Player.sprite, this.input, this.physics, this)
-        // this.ak = new Gun(1000, 100000, 200, 'bullet', this.Player.sprite, this.input, this.physics, this)
+        // this.pistol = new Gun(100, 3000, 500, 'dude', this.player, this.input, this.physics, this)
+        // this.ak = new Gun(1000, 100000, 200, 'bullet', this.player, this.input, this.physics, this)
 
         //mob array
         this.mobArray = this.physics.add.group({
@@ -207,6 +209,10 @@ export class play extends Phaser.Scene {
             },
             loop: true
         })
+        this.test = this.add.image(10, 10, "BuyButton").setOrigin(0).setDepth(10).setScrollFactor(0).setInteractive();
+        this.test.on("pointerup", () => {
+            this.scene.start(final.SCENES.TEST);
+        });
         this.Player.updateScene(this);
         //this.physics.add.overlap(this.mobArray, this.Player.gunController.getCurrentGun().getBulletArray(), this.handleBulletMobCollision, null, this);
         this.physics.add.overlap(this.mobArray, this.Player.hitbox.sprite, this.handleDamage, null, this);
@@ -219,7 +225,7 @@ export class play extends Phaser.Scene {
     }
 
     handleDamage(player, monster) {
-        if (this.Player.sprite.alpha == 0.5) return;
+        if (this.Player.alpha == 0.5) return;
         // console.log("hello")
         if (monster.active) {
             this.Player.status.hp = this.Player.status.hp - monster.damage
@@ -235,10 +241,10 @@ export class play extends Phaser.Scene {
     }
 
     invulnerable() {
-        this.Player.sprite.alpha = 0.5;
+        this.Player.alpha = 0.5;
         this.time.addEvent({
             delay: 1000,
-            callback: () => { this.Player.sprite.alpha = 1 },
+            callback: () => { this.Player.alpha = 1 },
             callbackScope: this,
             loop: false
         });

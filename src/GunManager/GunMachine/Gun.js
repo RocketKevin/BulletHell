@@ -10,8 +10,8 @@ export default class Gun{
     #bulletImage;//String name for the bullet sprite
     //#bulletArray;//Array of bullets
 
-    //this.pistol = new Gun(100, 3000, 500, 'dude', this.Player.sprite, this.input, this.physics, this)
-    //this.ak = new Gun(1000, 100000, 200, 'bullet', this.Player.sprite, this.input, this.physics, this)
+    //this.pistol = new Gun(100, 3000, 500, 'dude', this.player, this.input, this.physics, this)
+    //this.ak = new Gun(1000, 100000, 200, 'bullet', this.player, this.input, this.physics, this)
     constructor(gunName, gunManager, scene){
         this.setDefault();
         this.#gunName = gunName;

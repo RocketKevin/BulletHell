@@ -3,7 +3,7 @@ import State from "../../StateMachine/State.js";
 export default class WolfLunge extends State {
     onEnter() {
         this.lungetime = 1500;
-        let player = this.getStateMachine().player.sprite;
+        let player = this.getStateMachine().player;
         let enemy = this.getStateMachine().sprite;
 
         let velocityX = player.x - enemy.body.x;
@@ -29,7 +29,7 @@ export default class WolfLunge extends State {
             this.getStateMachine().changeState("follow")
         }
 
-        let player = this.getStateMachine().player.sprite;
+        let player = this.getStateMachine().player;
         let enemy = this.getStateMachine().sprite;
         if (player.x - enemy.x < 0) {
             enemy.flipX = true;

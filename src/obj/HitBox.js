@@ -1,6 +1,6 @@
 export class HitBox{
-    constructor(scene, x, y, player) {
-        this.sprite = scene.physics.add.sprite(x, y);
+    constructor(scene, player) {
+        this.sprite = scene.physics.add.sprite(player.x, player.y);
         this.sprite.setSize(40,100);
         this.sprite.setScale(0.5);
         this.sprite.setOrigin(0,0);
@@ -8,7 +8,7 @@ export class HitBox{
         this.follower = player;
     }
     update() {
-        if(this.sprite.active === true) {
+        if(this.sprite.active) {
             this.sprite.x = this.follower.x;
             this.sprite.y = this.follower.y;
         }

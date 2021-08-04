@@ -14,7 +14,7 @@ export default class DongRoam extends State
     
     update(deltaT) {
         //console.log("dongroam")
-        let player = this.getStateMachine().player.sprite;
+        let player = this.getStateMachine().player;
         let enemy = this.getSprite();
         this.timer -= deltaT;
         if(this.timer <= 0)

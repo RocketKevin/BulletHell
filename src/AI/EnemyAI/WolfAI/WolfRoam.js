@@ -40,7 +40,7 @@ export default class WolfRoam extends State {
         }
 
         //check the player's position
-        let player = this.getStateMachine().player.sprite;
+        let player = this.getStateMachine().player;
         //if the player is too close change state.
 
         let velocityX = 0;

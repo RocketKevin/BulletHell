@@ -17,7 +17,7 @@ export default class WolfFollow extends State {
         //when the player gets out of visiion stop following.
         //change to another state. Go back to idle.
         //console.log("following player.");
-        let player = this.getStateMachine().player.sprite;
+        let player = this.getStateMachine().player;
         let enemy = this.getStateMachine().sprite;
 
         let velocityX = player.x - enemy.body.x;

@@ -2,7 +2,7 @@ import State from "../../../StateMachine/State.js";
 export default class GuardianShot extends State {
     onEnter() {
         this.returnCD = 400;
-        let player = this.getStateMachine().player.sprite;
+        let player = this.getStateMachine().player;
         let enemy = this.getStateMachine().sprite;
         enemy.setVelocityX(0);
         enemy.setVelocityY(0);
