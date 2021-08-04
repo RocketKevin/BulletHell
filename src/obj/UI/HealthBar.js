@@ -42,6 +42,9 @@ export default class HealthBar extends Phaser.GameObjects.Container
             this.y = this.gameObject.y - this.gameObject.height / 2;
         }
 
+        if(this.currentHealth > this.maxHealth)
+            this.maxHealth = this.currentHealth;
+
         //change the size of the health bar.
         this.healthBar.width = this.healthBarWidth * (this.currentHealth/this.maxHealth);
     }
