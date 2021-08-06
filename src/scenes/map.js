@@ -29,12 +29,6 @@ export class SceneHolder extends Phaser.Scene{
     }
     create() {
         this.createTerrain("test");
-        // this.player = new Player(this, this.spawn[0].x, this.spawn[0].y, "dude", this.terrain.collidables);
-        // this.player.x = this.spawn[0].x;
-        // this.player.y = this.spawn[0].y;
-        // this.camera = new Camera(this, this.player, this.terrain.map);
-        // this.Hub = new Hub(this, "Hub", "Backpack", "Shop");
-        // this.collidors();
     }
     create2() {
         this.player = new Player(this, this.spawn[0].x, this.spawn[0].y, "dude", this.terrain.collidables);
@@ -123,8 +117,6 @@ export class SceneHolder extends Phaser.Scene{
         }
     }
     testing(player, door) {
-        //console.log(player);
-        //console.log(door);
         if (this.keyboard.E.isDown) {
             if(!door.data.list.Lock) {
                 for(var i = 0; i < this.terrain.map.objects[0].objects.length; i++) {

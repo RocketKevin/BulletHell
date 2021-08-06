@@ -8,7 +8,6 @@ import { Camera } from "../obj/Camera.js";
 import { Boss } from "../AI/EnemyAI/TestAI/Boss.js";
 import { Wolf } from "../AI/EnemyAI/WolfAI/Wolf.js";
 import { Goblin } from "../AI/EnemyAI/GoblinAI/Goblin.js";
-import mobArray from "../doubleArrayMob/mobArray.js";
 export class play extends Phaser.Scene {
     constructor() {
         super({
@@ -176,31 +175,15 @@ export class play extends Phaser.Scene {
         this.floatText = new FloatText(this);
         this.userCamera = new Camera(this, this.Player, this.map); 
 
-        this.ultimateMobArray = new mobArray;
-
         //gun/bullet
         //constructor(bulletSpeed, bulletRange, fireRate, imageName, dude, input, physics, scene)
         // this.pistol = new Gun(100, 3000, 500, 'dude', this.player, this.input, this.physics, this)
         // this.ak = new Gun(1000, 100000, 200, 'bullet', this.player, this.input, this.physics, this)
 
         //mob array
-        this.mobArray = this.physics.add.group({
-            classType: Slime//constructor(scene, x, y, texture)
-        });
-        this.ultimateMobArray.addMobArray(this.mobArray);
-
-        this.mobArray1 = this.physics.add.group({
-            classType: Wolf//constructor(scene, x, y, texture)
-        });
-        let mob1 = this.mobArray1.get(1000, 500, "wolf");
-        this.ultimateMobArray.addMobArray(this.mobArray1);
-
-        this.mobArray2 = this.physics.add.group({
-            classType: Goblin//constructor(scene, x, y, texture)
-        });
-        let mob2 = this.mobArray2.get(500, 1000, "slime");
-        this.ultimateMobArray.addMobArray(this.mobArray2);
-
+        this.mobArray = this.physics.add.group();
+        this.mobArray.add(new Wolf(this, 1000, 500, "wolf"));
+        this.mobArray.add(new Goblin(this, 500, 1000, "goblin"));
         //spawn a dude mob
         // this.mobDude = this.mobArray.get(250, 250, 'slime').setScale(.75);
         //this.mobArray.add(new Mob(this, 500, 500, this.Player, 'slime'))
@@ -209,31 +192,35 @@ export class play extends Phaser.Scene {
             delay: 300,
             callback: () => {
                 // spawn a new apple
-                if (this.mobArray.getTotalUsed() < 3) { //if the total number that is active is less than 4.
-                    let mob = this.mobArray.get(Math.random() * 800 + 300, Math.random() * 800 + 300, "slime");
-                    mob.reset();
+                if (this.getMobAliveStatus("slime", this.mobArray) < 3) { //if the total number that is active is less than 4.
+                    let mob = this.mobArray.add(new Slime(this, Math.random() * 800 + 300, Math.random() * 800 + 300, "slime"));
+                    //mob.reset();
                 }
             },
             loop: true
-        })
+        });
+
+        //this.ultimateMobArray.addMobArray(this.mobArray);
+
+        this.physics.add.overlap(this.mobArray, this.Player.hitbox.sprite, this.handleDamage, null, this); 
+
         this.test = this.add.image(10, 10, "BuyButton").setOrigin(0).setDepth(10).setScrollFactor(0).setInteractive();
         this.test.on("pointerup", () => {
             this.scene.start(final.SCENES.TEST);
         });
         this.Player.updateScene(this);
-        //this.physics.add.overlap(this.mobArray, this.Player.gunController.getCurrentGun().getBulletArray(), this.handleBulletMobCollision, null, this);
-        this.physics.add.overlap(this.mobArray, this.Player.hitbox.sprite, this.handleDamage, null, this);
-        
-        //this.physics.add.overlap(this.mobArray1, this.Player.gunController.getCurrentGun().getBulletArray(), this.handleBulletMobCollision, null, this);
-        this.physics.add.overlap(this.mobArray1, this.Player.hitbox.sprite, this.handleDamage, null, this);
 
-        //this.physics.add.overlap(this.mobArray2, this.ak.bullets, this.handleBulletMobCollision, null, this);
-        this.physics.add.overlap(this.mobArray2, this.Player.hitbox.sprite, this.handleDamage, null, this);
-        console.log(lab);
         this.worldHeightInPixels = lab.heightInPixels;
         this.worldWidthInPixels = lab.widthInPixels;
     }
-
+    getMobAliveStatus(mob, array) {
+        var result = 0;
+        for(var i = 0; i < array.children.size; i++) {
+            if(mob === array.children.entries[i].texture.key && array.children.entries[i].active)
+                result++;
+        }
+        return result;
+    }
     handleDamage(player, monster) {
         if (this.Player.alpha == 0.5) return;
         // console.log("hello")
