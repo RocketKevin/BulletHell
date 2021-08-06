@@ -1,9 +1,10 @@
 import { final } from "../final.js";
 import { Player } from "../obj/Player.js";
 import { Hub } from "../obj/Hub.js";
-import { Slime } from "../obj/Slime.js"
+import { Slime } from "../AI/EnemyAI/SlimeAI/Slime.js";
 import DialogBox from "../obj/UI/DialogBox.js";
 import FloatText from "../obj/UI/FloatText.js";
+import StatusBar from "../obj/UI/StatusBar.js";
 import { Camera } from "../obj/Camera.js";
 import { Boss } from "../AI/EnemyAI/TestAI/Boss.js";
 import { Wolf } from "../AI/EnemyAI/WolfAI/Wolf.js";
@@ -174,9 +175,11 @@ export class play extends Phaser.Scene {
 
         this.textBox = new DialogBox(this, 0, 0);
         this.floatText = new FloatText(this);
-        this.userCamera = new Camera(this, this.Player, this.map); 
+        this.userCamera = new Camera(this, this.Player, this.map);
 
         this.ultimateMobArray = new mobArray;
+
+        this.StatusBar = new StatusBar(this)
 
         //gun/bullet
         //constructor(bulletSpeed, bulletRange, fireRate, imageName, dude, input, physics, scene)
@@ -198,7 +201,7 @@ export class play extends Phaser.Scene {
         this.mobArray2 = this.physics.add.group({
             classType: Goblin//constructor(scene, x, y, texture)
         });
-        let mob2 = this.mobArray2.get(500, 1000, "slime");
+        let mob2 = this.mobArray2.get(500, 1000, "goblin");
         this.ultimateMobArray.addMobArray(this.mobArray2);
 
         //spawn a dude mob
@@ -223,13 +226,13 @@ export class play extends Phaser.Scene {
         this.Player.updateScene(this);
         //this.physics.add.overlap(this.mobArray, this.Player.gunController.getCurrentGun().getBulletArray(), this.handleBulletMobCollision, null, this);
         this.physics.add.overlap(this.mobArray, this.Player.hitbox.sprite, this.handleDamage, null, this);
-        
+
         //this.physics.add.overlap(this.mobArray1, this.Player.gunController.getCurrentGun().getBulletArray(), this.handleBulletMobCollision, null, this);
         this.physics.add.overlap(this.mobArray1, this.Player.hitbox.sprite, this.handleDamage, null, this);
 
         //this.physics.add.overlap(this.mobArray2, this.ak.bullets, this.handleBulletMobCollision, null, this);
         this.physics.add.overlap(this.mobArray2, this.Player.hitbox.sprite, this.handleDamage, null, this);
-        console.log(lab);
+        // console.log(lab);
         this.worldHeightInPixels = lab.heightInPixels;
         this.worldWidthInPixels = lab.widthInPixels;
     }
@@ -277,6 +280,7 @@ export class play extends Phaser.Scene {
                 //obj1.setVisible(false);
                 obj1.visible = false;
                 obj1.active = false;
+                this.Player.status.coins += obj1.coinValue
                 console.log("mob killed!")
                 this.textBox.showFor("mob was killed, \n good job!!!!", 1000);
                 // obj1.destroy();
@@ -286,6 +290,8 @@ export class play extends Phaser.Scene {
     update(time, delta) {
 
         this.Player.update(delta);
+        this.StatusBar.health = this.Player.status.health
+        this.StatusBar.update()
         // if (this.ak != null) {
         //     this.ak.update(time, delta);
         // }

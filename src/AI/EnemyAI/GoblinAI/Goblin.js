@@ -13,6 +13,7 @@ export class Goblin extends Phaser.Physics.Arcade.Sprite {
         this.setSize(40, 70);
         this.mobAlive = true;
         this.player = scene.Player;
+        this.coinValue = 10;
         this.healthBar = new HealthBar(scene, 0, 0, this.defaultHealth);
         this.healthBar.follow(this);
         this.health = this.defaultHealth;
@@ -57,13 +58,13 @@ export class Goblin extends Phaser.Physics.Arcade.Sprite {
 
         this.healthBar.currentHealth = this.health;
         this.healthBar.update();
-        if (this.active) {
-            if (this.health <= 0) {
-                this.setVelocityX(0);
-                this.setVelocityY(0);
-                this.setVelocityX(0);
-                this.setVelocityY(0);
-            }
-        }
+        // if (this.active) {
+        //     if (this.health <= 0) {
+        //         this.setVelocityX(0);
+        //         this.setVelocityY(0);
+        //         this.setVelocityX(0);
+        //         this.setVelocityY(0);
+        //     }
+        // }
     }
 }

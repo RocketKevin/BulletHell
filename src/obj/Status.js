@@ -4,5 +4,6 @@ export class Status {
         this.mp = 100;
         this.damageMod = 0;
         this.defenseMod = 0;
+        this.coins = 0;
     }
 }

@@ -6,7 +6,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, texture);
         scene.add.existing(this);
         scene.physics.add.existing(this);
-        
+
         this.self_format();
         this.self_physic();
 
@@ -16,21 +16,21 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.collidablesTerrain(scene, collidables);
     }
     collidablesTerrain(scene, collidables) {
-        for(var i = 0; i < collidables.length; i++) {
+        for (var i = 0; i < collidables.length; i++) {
             scene.physics.add.collider(this.sprite, collidables[i]);
             collidables[i].setCollisionByProperty({ collides: true });
         }
     }
     collidablesTerrain(scene, collidables) {
-        for(var i = 0; i < collidables.length; i++) {
+        for (var i = 0; i < collidables.length; i++) {
             scene.physics.add.collider(this, collidables[i]);
             collidables[i].setCollisionByProperty({ collides: true });
         }
     }
     getMembers() {
         var arrayOfMembers = [];
-        for(var key in this) {
-            arrayOfMembers.push({name: key, value: this[key]})
+        for (var key in this) {
+            arrayOfMembers.push({ name: key, value: this[key] })
         }
         return arrayOfMembers;
     }
@@ -46,8 +46,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.setSize(30, 40);
         this.setOffset(10, 60);
     }
-    updateScene(scene){
-        this.gunController = new GunController(scene, {player: this});
+    updateScene(scene) {
+        this.gunController = new GunController(scene, { player: this });
         this.switchGunCoolDown = 2000;
         //console.log(this.gunController.scene.floatText);
     }
@@ -67,17 +67,17 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
     respawn(x, y) {
         this.setX(x);
-        this.setY(y - this.height/2);
+        this.setY(y - this.height / 2);
     }
     update(deltaT) {
         this.gunController.update(deltaT);
         this.switchGunCoolDown -= deltaT;
-        if (this.keyboard.Q.isDown === true){
-            if(this.switchGunCoolDown <=0 ){
+        if (this.keyboard.Q.isDown === true) {
+            if (this.switchGunCoolDown <= 0) {
                 this.gunController.nextGun();
                 this.switchGunCoolDown = 2000;
             }
-            else{
+            else {
                 console.log(this.switchGunCoolDown + " ms until gun can be swapped");
             }
         }
@@ -128,5 +128,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
             }
             this.hitbox.update();
         }
+        console.log(this.status.coins)
     }
 }
