@@ -97,8 +97,12 @@ export class SceneHolder extends Phaser.Scene{
                 if(ObjectsFromJson[i].filename === this.terrain.map.tilesets[j].name)
                     tileset.push(this.terrain.map.addTilesetImage(ObjectsFromJson[i].filename, ObjectsFromJson[i].key));
         };
-        for(var i = 0; i < this.terrain.map.layers.length; i++)
+        for(var i = 0; i < this.terrain.map.layers.length; i++) {
             this.terrain.collidables.push(this.terrain.map.createLayer(this.terrain.map.layers[i].name, tileset, 0, 0));
+            if(this.terrain.collidables[i].layer.name === "Above") {
+                this.terrain.collidables[i].setDepth(1);
+            }
+        }
         for(var i = 0; i < this.terrain.map.objects[0].objects.length; i++) {
             if(this.terrain.map.objects[0].objects[i].name === "Spawn"){
                 this.spawn = this.terrain.map.createFromObjects("Objects", {name: "Spawn"}, '');
