@@ -56,7 +56,7 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
     preUpdate(time, deltaT) {//movement and stuff
         super.preUpdate(time, deltaT);
 
-        console.log(`x ${this.x}, y ${this.y}`);
+        //console.log(`x ${this.x}, y ${this.y}`);
 
         this.ai.update(deltaT);
 
