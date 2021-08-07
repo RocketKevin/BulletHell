@@ -1,6 +1,5 @@
-import EnemyController from "../AI/EnemyAI/EnemyController.js";
-import SlimeController from "../AI/EnemyAI/SlimeAI/SlimeController.js";
-import HealthBar from "./UI/HealthBar.js";
+import SlimeController from "./SlimeController.js";
+import HealthBar from "../../../obj/UI/HealthBar.js";
 
 export class Slime extends Phaser.Physics.Arcade.Sprite {
     defaultHealth = 500;
@@ -11,6 +10,7 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         this.mobAlive = true;
         this.player = scene.Player;
+        this.coinValue = 2;
         //this = scene.physics.add.sprite(x, y, sprite);
         //this.spawnX = x;
         //this.spawnY = y;
@@ -22,7 +22,7 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
         this.ai = new SlimeController(this, {
             player: this.player,
             animations: "",
-            slimes:scene.mobArray,
+            slimes: scene.mobArray,
         });
         this.speed = this.defaultSpeed;
 
@@ -94,14 +94,17 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
             //     }
             // }
 
-            if (this.health <= 0) {
-                this.setVelocityX(0);
-                this.setVelocityY(0);
-                this.setMobDead();
-                //obj1.setVisible(false);
-                this.visible = false;
-                this.active = false;
-            }
+            // if (this.health <= 0) {
+            //     this.player.status.coins += 2
+            //     console.log(true)
+            //     console.log(this.player.status.coins)
+            //     this.setVelocityX(0);
+            //     this.setVelocityY(0);
+            //     this.setMobDead();
+            //     //obj1.setVisible(false);
+            //     this.visible = false;
+            //     this.active = false;
+            // }
         }
     }
 }
