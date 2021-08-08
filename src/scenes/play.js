@@ -209,7 +209,7 @@ export class play extends Phaser.Scene {
 
         this.physics.add.overlap(this.mobArray, this.Player.hitbox.sprite, this.handleDamage, null, this); 
 
-        this.test = this.add.image(10, 10, "BuyButton").setOrigin(0).setDepth(10).setScrollFactor(0).setInteractive();
+        this.test = this.add.image(10, 110, "BuyButton").setOrigin(0).setDepth(10).setScrollFactor(0).setInteractive();
         this.test.on("pointerup", () => {
             this.scene.start(final.SCENES.TEST);
         });

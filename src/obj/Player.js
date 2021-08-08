@@ -17,12 +17,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
     collidablesTerrain(scene, collidables) {
         for (var i = 0; i < collidables.length; i++) {
-            scene.physics.add.collider(this.sprite, collidables[i]);
-            collidables[i].setCollisionByProperty({ collides: true });
-        }
-    }
-    collidablesTerrain(scene, collidables) {
-        for (var i = 0; i < collidables.length; i++) {
             scene.physics.add.collider(this, collidables[i]);
             collidables[i].setCollisionByProperty({ collides: true });
         }

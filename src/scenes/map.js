@@ -2,7 +2,7 @@ import { final } from "../final.js";
 import { Player } from "../obj/Player.js";
 import { Camera } from "../obj/Camera.js";
 import { Hub } from "../obj/Hub.js";
-import mobArray from "../doubleArrayMob/mobArray.js";
+import { Terrain } from "../obj/Terrain.js";
 export class SceneHolder extends Phaser.Scene{
     constructor() {
         super({
@@ -23,20 +23,20 @@ export class SceneHolder extends Phaser.Scene{
         this.doorEvent = [];
         this.cooldown = 2000;
         this.flag = false;
+        this.test = null;
     }
     init() {
         this.keyboard = this.input.keyboard.addKeys("E");
     }
     create() {
+        //this.test = new Terrain(this);
+        //this.test.setTerrainMap("Hello");
         this.createTerrain("test");
     }
     create2() {
         this.player = new Player(this, this.spawn[0].x, this.spawn[0].y, "dude", this.terrain.collidables);
-        this.player.x = this.spawn[0].x;
-        this.player.y = this.spawn[0].y;
         this.camera = new Camera(this, this.player, this.terrain.map);
         this.Hub = new Hub(this, "Hub", "Backpack", "Shop");
-        this.ultimateMobArray = new mobArray;
         this.player.updateScene(this);
         this.collidors();
     }
