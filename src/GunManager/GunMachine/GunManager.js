@@ -55,7 +55,6 @@ export default class GunManager{
     }
     addGun(gunObject){
         if(!(gunObject.getGunName() in this.#gunDict)){//if gun is not in dictionary 
-            console.log("Added " + gunObject.getGunName() + " to gun dictionary");
             this.#gunDict[gunObject.getGunName()] = gunObject;
         }
     }

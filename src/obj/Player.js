@@ -64,16 +64,19 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.setY(y - this.height / 2);
     }
     update(deltaT) {
-        this.gunController.update(deltaT);
-        this.switchGunCoolDown -= deltaT;
-        if (this.keyboard.Q.isDown === true) {
-            if (this.switchGunCoolDown <= 0) {
-                this.gunController.nextGun();
-                this.switchGunCoolDown = 2000;
-            }
-            else {
-                console.log(this.switchGunCoolDown + " ms until gun can be swapped");
-            }
+        if(this.gunController != null) {
+            this.gunController.update(deltaT);
+            this.switchGunCoolDown -= deltaT;
+            if (this.keyboard.Q.isDown) {
+                if (this.switchGunCoolDown <= 0) {
+                    this.gunController.nextGun();
+                    this.switchGunCoolDown = 2000;
+                }
+                else {
+                    console.log(this.switchGunCoolDown + " ms until gun can be swapped");
+                }
+                this.keyboard.Q.isDown = false;
+            }   
         }
         if (this.active) {
             if (this.keyboard.D.isDown) {
@@ -122,6 +125,5 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
             }
             this.hitbox.update();
         }
-        console.log(this.status.coins)
     }
 }

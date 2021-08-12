@@ -3,6 +3,12 @@ import { Player } from "../obj/Player.js";
 import { Camera } from "../obj/Camera.js";
 import { Hub } from "../obj/Hub.js";
 import { Terrain } from "../obj/Terrain.js";
+function syncDelay(milliseconds){
+    let start = new Date().getTime();
+    let end = 0;
+    while((end - start) < milliseconds)
+        end = new Date().getTime();
+}
 export class SceneHolder extends Phaser.Scene{
     constructor() {
         super({
@@ -29,33 +35,44 @@ export class SceneHolder extends Phaser.Scene{
         this.keyboard = this.input.keyboard.addKeys("E");
     }
     create() {
-        //this.test = new Terrain(this);
-        //this.test.setTerrainMap("Hello");
-        this.createTerrain("test");
-    }
-    create2() {
-        this.player = new Player(this, this.spawn[0].x, this.spawn[0].y, "dude", this.terrain.collidables);
+        this.test = new Terrain(this); 
+        this.terrainConfig("test");
+        syncDelay(10);
+        this.player = new Player(this, 0, 0, "dude", this.terrain.collidables);
+        syncDelay(10);
+        if(this.spawn != null)
+            this.player.respawn(this.spawn[0].x, this.spawn[0].y);  
+        syncDelay(10);
         this.camera = new Camera(this, this.player, this.terrain.map);
+        syncDelay(10);
         this.Hub = new Hub(this, "Hub", "Backpack", "Shop");
+        syncDelay(10);
         this.player.updateScene(this);
-        this.collidors();
+        syncDelay(10); 
+        this.collidors();        
     }
     update(time, delta) {
-        this.cooldown -= delta;
-        if(this.cooldown < 0) {
-            if(!this.flag) {
-                this.flag = true;
-                this.create2();
-            }
+        if(this.terrain.map != null) {
+            this.terrain.width = this.terrain.map.widthInPixels;
+            this.terrain.height = this.terrain.map.heightInPixels;
+            this.physics.world.setBounds(0, 0, this.terrain.width, this.terrain.height);
         }
-        this.terrain.width = this.terrain.map.widthInPixels;
-        this.terrain.height = this.terrain.map.heightInPixels;
-        this.physics.world.setBounds(0, 0, this.terrain.width, this.terrain.height);
         if(this.player != null)
             this.player.update(delta);
     }
+    terrainConfig(mapName) {
+        this.test.setTerrainMap(mapName);
+        this.test.setTileSets("TileSetName");
+        this.test.setLayers();
+        this.test.setEventLayers();
+        //These need to be fixed
+        this.terrain.collidables = this.test.getMapColliables();
+        this.spawn = this.test.getSpawnInfo();  
+        this.terrain.map = this.test.getMap();
+        this.doorEvent = this.test.getDoorInfo();
+    }
     loadWorld() {
-        this.createTerrain(this.levelData.mapName);
+        this.terrainConfig(this.levelData.mapName);
         for(var i = 0; i < this.terrain.map.objects[0].objects.length; i++) {
             var tempX = this.terrain.map.objects[0].objects[i].x;
             var tempY = this.terrain.map.objects[0].objects[i].y;
@@ -67,6 +84,7 @@ export class SceneHolder extends Phaser.Scene{
         this.collidors();
     }
     destroyWorld() {
+        this.test.initalize();
         this.terrain.map.destroy();
         this.terrain = {
             map: null,
@@ -83,20 +101,24 @@ export class SceneHolder extends Phaser.Scene{
         this.physics.world.colliders.destroy();
     }
     createTerrain(mapName) {
-        var ObjectsFromJson = this.cache.json.get("ImageName").object;
+        var ObjectsFromJson = this.cache.json.get("TileSetName").object;
+
         this.terrain.map = this.add.tilemap(mapName);
+
         var tileset = [];
         for(var i = 0; i < ObjectsFromJson.length; i++) {
             for(var j = 0; j < this.terrain.map.tilesets.length; j++)
                 if(ObjectsFromJson[i].filename === this.terrain.map.tilesets[j].name)
                     tileset.push(this.terrain.map.addTilesetImage(ObjectsFromJson[i].filename, ObjectsFromJson[i].key));
         };
+
         for(var i = 0; i < this.terrain.map.layers.length; i++) {
             this.terrain.collidables.push(this.terrain.map.createLayer(this.terrain.map.layers[i].name, tileset, 0, 0));
             if(this.terrain.collidables[i].layer.name === "Above") {
                 this.terrain.collidables[i].setDepth(1);
             }
         }
+        
         for(var i = 0; i < this.terrain.map.objects[0].objects.length; i++) {
             if(this.terrain.map.objects[0].objects[i].name === "Spawn"){
                 this.spawn = this.terrain.map.createFromObjects("Objects", {name: "Spawn"}, '');
