@@ -1,13 +1,13 @@
 import { final } from "../final.js";
-import { Player } from "../obj/Player.js";
+import { player } from "../obj/player.js";
 import { Camera } from "../obj/Camera.js";
 import { Hub } from "../obj/Hub.js";
 import { Terrain } from "../obj/Terrain.js";
-function syncDelay(milliseconds){
-    let start = new Date().getTime();
-    let end = 0;
-    while((end - start) < milliseconds)
-        end = new Date().getTime();
+import { KeyBoard } from "../obj/KeyBoard.js";
+function delay(n){
+    return new Promise(function(resolve){
+        setTimeout(resolve,n);
+    });
 }
 export class SceneHolder extends Phaser.Scene{
     constructor() {
@@ -17,8 +17,7 @@ export class SceneHolder extends Phaser.Scene{
         this.terrain = {
             map: null,
             width: 0,
-            height: 0,
-            collidables: []
+            height: 0
         };
         this.player = null;
         this.mobArray = null;
@@ -32,60 +31,59 @@ export class SceneHolder extends Phaser.Scene{
         this.test = null;
     }
     init() {
-        this.keyboard = this.input.keyboard.addKeys("E");
+        this.keyboard = new KeyBoard(this);
     }
-    create() {
+    async create() {
         this.test = new Terrain(this); 
-        this.terrainConfig("test");
-        syncDelay(10);
-        this.player = new Player(this, 0, 0, "dude", this.terrain.collidables);
-        syncDelay(10);
-        if(this.spawn != null)
-            this.player.respawn(this.spawn[0].x, this.spawn[0].y);  
-        syncDelay(10);
-        this.camera = new Camera(this, this.player, this.terrain.map);
-        syncDelay(10);
+        this.player = new player(this);
+        this.camera = new Camera();
         this.Hub = new Hub(this, "Hub", "Backpack", "Shop");
-        syncDelay(10);
-        this.player.updateScene(this);
-        syncDelay(10); 
-        this.collidors();        
+
+        await this.loadWorld("test");
+
+        this.player.updateScene(this);      
     }
     update(time, delta) {
-        if(this.terrain.map != null) {
-            this.terrain.width = this.terrain.map.widthInPixels;
-            this.terrain.height = this.terrain.map.heightInPixels;
-            this.physics.world.setBounds(0, 0, this.terrain.width, this.terrain.height);
-        }
+        this.keyboard.update();
+        this.physics.world.setBounds(0, 0, this.test.getMapWidth(), this.test.getMapHeight());
         if(this.player != null)
             this.player.update(delta);
+        console.log(this.player.x);
     }
-    terrainConfig(mapName) {
+    async terrainConfig(mapName) {
         this.test.setTerrainMap(mapName);
         this.test.setTileSets("TileSetName");
         this.test.setLayers();
         this.test.setEventLayers();
         //These need to be fixed
-        this.terrain.collidables = this.test.getMapColliables();
         this.spawn = this.test.getSpawnInfo();  
         this.terrain.map = this.test.getMap();
         this.doorEvent = this.test.getDoorInfo();
     }
-    loadWorld() {
-        this.terrainConfig(this.levelData.mapName);
-        for(var i = 0; i < this.terrain.map.objects[0].objects.length; i++) {
-            var tempX = this.terrain.map.objects[0].objects[i].x;
-            var tempY = this.terrain.map.objects[0].objects[i].y;
-            if(this.OuterDoorId == this.terrain.map.objects[0].objects[i].id) { 
-                this.player.respawn(tempX, tempY);
-            }
+    async playerConfig() {
+        if(this.spawn != null) {
+            //console.log(this.spawn[0].x);
+            this.player.respawn(this.spawn[0].x, this.spawn[0].y);  
+            // console.log(this.player.x);
+            // await delay(5000);
         }
-        this.camera = new Camera(this, this.player, this.terrain.map);
+    }
+    async cameraConfig() {
+        this.camera.setCamera(this);
+        this.camera.setFollow(this.player);
+        this.camera.setBounds(this.test.getMapWidth(), this.test.getMapHeight());
+    }
+    async loadWorld(mapName) {
+        await this.terrainConfig(mapName);
+        await this.playerConfig();
+        await this.cameraConfig();
+        
         this.collidors();
     }
-    destroyWorld() {
+    async destroyWorld() {
         this.test.initalize();
-        this.terrain.map.destroy();
+        this.camera.initalize();
+        this.player.initalize();
         this.terrain = {
             map: null,
             width: 0,
@@ -93,111 +91,41 @@ export class SceneHolder extends Phaser.Scene{
             collidables: []
         };
         this.mobArray = null;
-        this.camera = null;
         for(var i = 0; i < this.doorEvent.length; i++)
             this.doorEvent[i].destroy();
         this.doorEvent = [];
         this.spawn = null;
         this.physics.world.colliders.destroy();
     }
-    createTerrain(mapName) {
-        var ObjectsFromJson = this.cache.json.get("TileSetName").object;
-
-        this.terrain.map = this.add.tilemap(mapName);
-
-        var tileset = [];
-        for(var i = 0; i < ObjectsFromJson.length; i++) {
-            for(var j = 0; j < this.terrain.map.tilesets.length; j++)
-                if(ObjectsFromJson[i].filename === this.terrain.map.tilesets[j].name)
-                    tileset.push(this.terrain.map.addTilesetImage(ObjectsFromJson[i].filename, ObjectsFromJson[i].key));
-        };
-
-        for(var i = 0; i < this.terrain.map.layers.length; i++) {
-            this.terrain.collidables.push(this.terrain.map.createLayer(this.terrain.map.layers[i].name, tileset, 0, 0));
-            if(this.terrain.collidables[i].layer.name === "Above") {
-                this.terrain.collidables[i].setDepth(1);
-            }
-        }
-        
-        for(var i = 0; i < this.terrain.map.objects[0].objects.length; i++) {
-            if(this.terrain.map.objects[0].objects[i].name === "Spawn"){
-                this.spawn = this.terrain.map.createFromObjects("Objects", {name: "Spawn"}, '');
-                this.spawn[0].setVisible(false);
-            }
-        }
-        this.doorEvent = this.terrain.map.createFromObjects("Objects", {name: "Door"}, '');
-        this.doorEvent.map((sprite) => {
-            this.physics.add.existing(sprite);
-            sprite.setVisible(false);
-        });
-    }
     collidors() {
-        this.player.collidablesTerrain(this, this.terrain.collidables);
+        this.player.collidablesTerrain(this, this.test.getMapColliables());
         for(var i = 0; i < this.doorEvent.length; i++) {
             //console.log(this.doorEvent[i]);
             this.physics.add.overlap(this.player, this.doorEvent[i], this.testing, null, this);
         }
     }
-    testing(player, door) {
-        if (this.keyboard.E.isDown) {
-            if(!door.data.list.Lock) {
+    async testing(player, door) {
+        let tempKeyboard = this.keyboard.getKeyboard();
+        let data = [];
+        data.push(door.data.list.Link);
+        data.push(door.data.list.Lock);
+        data.push(door.data.list.Message);
+        data.push(door.data.list.OuterDoorId);
+        if (tempKeyboard.E.isDown) {
+            if(!data[1]) {
                 for(var i = 0; i < this.terrain.map.objects[0].objects.length; i++) {
-                    if(door.data.list.Link === this.terrain.map.objects[0].objects[i].id)
+                    if(data[0] === this.terrain.map.objects[0].objects[i].id)
                         this.player.respawn(this.terrain.map.objects[0].objects[i].x, this.terrain.map.objects[0].objects[i].y);
-                    else if(door.data.list.Link.length > 1) {
-                        this.OuterDoorId = door.data.list.OuterDoorId;
-                        this.levelData = this.cache.json.get(door.data.list.Link);
-                        setTimeout(() => {  
-                            this.destroyWorld();
-                            this.loadWorld(); 
-                        }, 2000);
+                    else if(data[0].length > 1) {
+                        this.OuterDoorId = data[3];
+                        this.levelData = this.cache.json.get(data[0]);
+                        await this.destroyWorld();
+                        await this.loadWorld(this.levelData.mapName);
                     }  
                 }
             } else
-                console.log(door.data.list.Message);
+                console.log(data[2]);
         }
-        this.keyboard.E.isDown = false;
-    }
-    destroyTerrain() {
-        this.terrain.map = null;
-        for(var i = 0; i < this.terrain.collidables.length; i++)
-            this.terrain.collidables.pop();
-    }
-    getCamera() {
-        return this.camera;
-    }
-    getPlayer() {
-        return this.player;
-    }
-    getMobArray() {
-        return this.mobArray;
-    }
-    getUserInterface() {
-        return this.userInterface;
-    }
-    getDialog() {
-        return this.dialog;
-    }
-    getArrayOfMembers() {
-        var arrayOfMembers = [];
-        for(var key in this) {
-            arrayOfMembers.push({name: key, value: this[key]});
-        }
-        return arrayOfMembers;
-    }
-    setCamera(camera) {
-        this.camera = camera;
-    }
-    setPlayer(player) {
-        this.player = player;
-    }
-    setMobArray(mobArray) {
-        this.mobArray = mobArray;
-    }
-    setUserInterface(userInterface) {
-        this.userInterface = userInterface;
-    }
-    setDialog(dialog) {
-        this.dialog = dialog;
+        tempKeyboard.E.isDown = false;
     }
 }

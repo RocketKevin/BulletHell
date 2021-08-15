@@ -10,7 +10,7 @@ export class Wolf extends Phaser.Physics.Arcade.Sprite {
         this.setScale(1);
         scene.add.existing(this);
         this.mobAlive = true;
-        this.player = scene.Player;
+        this.player = scene.player;
         this.coinValue = 5;
         this.healthBar = new HealthBar(scene, 0, 0, this.defaultHealth);
         this.healthBar.follow(this);

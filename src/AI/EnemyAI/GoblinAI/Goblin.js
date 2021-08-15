@@ -12,7 +12,7 @@ export class Goblin extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
         this.setSize(40, 70);
         this.mobAlive = true;
-        this.player = scene.Player;
+        this.player = scene.player;
         this.coinValue = 10;
         this.healthBar = new HealthBar(scene, 0, 0, this.defaultHealth);
         this.healthBar.follow(this);

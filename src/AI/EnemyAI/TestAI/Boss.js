@@ -10,7 +10,7 @@ export class Boss extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         this.scene = scene
         this.mobAlive = true;
-        this.player = scene.Player;
+        this.player = scene.player;
         //this = scene.physics.add.sprite(x, y, sprite);
         //this.spawnX = x;
         //this.spawnY = y;
