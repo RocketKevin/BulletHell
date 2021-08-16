@@ -1,14 +1,18 @@
 import { final } from "../final.js";
 import { player } from "../obj/player.js";
 import { Hub } from "../obj/Hub.js";
-import { Slime } from "../AI/EnemyAI/SlimeAI/Slime.js";
+// import { Slime } from "../AI/EnemyAI/SlimeAI/Slime.js";
 import DialogBox from "../obj/UI/DialogBox.js";
 import FloatText from "../obj/UI/FloatText.js";
 import StatusBar from "../obj/UI/StatusBar.js";
 import { Camera } from "../obj/Camera.js";
 import { Boss } from "../AI/EnemyAI/TestAI/Boss.js";
-import { Wolf } from "../AI/EnemyAI/WolfAI/Wolf.js";
-import { Goblin } from "../AI/EnemyAI/GoblinAI/Goblin.js";
+// import { Wolf } from "../AI/EnemyAI/WolfAI/Wolf.js";
+// import { Goblin } from "../AI/EnemyAI/GoblinAI/Goblin.js";
+import Mob from "../mob/Mob.js";
+import Slime from "../mob/Slime.js";
+import Goblin from "../mob/Goblin.js";
+import Wolf from "../mob/Wolf.js";
 import { KeyBoard } from "../obj/KeyBoard.js";
 import MobManager from "../mob/MobManager.js";
 export class play extends Phaser.Scene {
@@ -284,11 +288,10 @@ export class play extends Phaser.Scene {
     //     return result;
     // }
     handleMobPlayerCollision(player, monster) {
-        //console.log(monster);
         if (this.player.alpha == 0.5) return;
         // console.log("hello")
         if (monster.active) {
-            this.player.status.hp = this.player.status.hp - monster.damage
+            this.player.status.hp = this.player.status.hp - monster.getDamage();
             // console.log(monster)
             // console.log(player)
             if (this.player.status.hp <= 0) {
@@ -310,6 +313,11 @@ export class play extends Phaser.Scene {
         });
     }
 
+    /**
+     * 
+     * @param {Mob} obj1 - The mob.
+     * @param {Player} obj2 - The player.
+     */
     handleMobBulletCollision(obj1, obj2) {//obj1 is the mob obj 2 is the bullets
         //console.log(obj1)
         //console.log(obj2)
@@ -317,9 +325,9 @@ export class play extends Phaser.Scene {
             obj2.visible = false;
             obj2.active = false;
             obj2.destroy();
-            obj1.health = obj1.health - obj2.damage;
-            //this.floatText.showText(obj1.x - obj1.width / 4, obj1.y - obj1.height / 2, `${obj2.damage}`);
-            if (obj1.health <= 0 && obj1.getMobAlive()) {
+            obj1.setHealth(obj1.getHealth() - obj2.damage);
+            this.floatText.showText(obj1.x - obj1.width / 4, obj1.y - obj1.height / 2, `${obj2.damage}`);
+            if (obj1.getHealth() <= 0 && obj1.getMobAlive()) {
 
                 obj1.body.velocity.x = 0
                 obj1.body.velocity.y = 0
@@ -327,9 +335,9 @@ export class play extends Phaser.Scene {
                 //obj1.setVisible(false);
                 obj1.visible = false;
                 obj1.active = false;
-                this.player.status.coins += obj1.coinValue
+                this.player.status.coins += obj1.getCoinValue();
                 console.log("mob killed!")
-                this.textBox.showFor("mob was killed, \n good job!!!!", 1000);
+                //this.textBox.showFor("mob was killed, \n good job!!!!", 1000);
                 // obj1.destroy();
             }
         }

@@ -21,8 +21,8 @@ export default class DongRoam extends State
         {
             this.timer = 500;
             var num = Math.random()*360;
-            enemy.setVelocityX(enemy.speed*Math.cos(num));
-            enemy.setVelocityY(enemy.speed*Math.sin(num));
+            enemy.setVelocityX(enemy.getSpeed()*Math.cos(num));
+            enemy.setVelocityY(enemy.getSpeed()*Math.sin(num));
         }
 
         if (Math.abs(enemy.body.velocity.y) < Math.abs(enemy.body.velocity.x)) {

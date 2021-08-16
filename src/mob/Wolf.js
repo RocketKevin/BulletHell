@@ -1,15 +1,17 @@
 import Mob from "./Mob.js";
+import WolfController from "../AI/EnemyAI/WolfAI/WolfController.js";
 
 export default class Wolf extends Mob
 {
     constructor(scene, x, y, sprite) {
         super(scene, x, y, sprite);
         super.mobConfig({
+            defaultHealth: 1500,
             damage: 250,
-            defaultSpeed: 50,
+            defaultSpeed: 75,
         })
         this.ai = new WolfController(this, {
-            player: this.player,
+            player: scene.player,
             animations: "",
         });
         this.cd = 4000;

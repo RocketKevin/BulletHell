@@ -51,8 +51,6 @@ export default class MobManager
      */
     addOverlapAll(other, callback)
     {
-        //console.log("Other");
-        console.log(other);
         for(let group of this.getMobGroups())
             this.#scene.physics.add.overlap(group, other, callback, null, this.#scene); 
     }

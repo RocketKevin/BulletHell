@@ -1,4 +1,5 @@
 import Mob from "./Mob.js";
+import SlimeController from "../AI/EnemyAI/SlimeAI/SlimeController.js";
 
 export default class Slime extends Mob
 {
@@ -10,7 +11,7 @@ export default class Slime extends Mob
             defaultSpeed: 30,
         })
         this.ai = this.ai = new SlimeController(this, {
-            player: this.player,
+            player: scene.player,
             animations: "",
             slimes: [],
         });

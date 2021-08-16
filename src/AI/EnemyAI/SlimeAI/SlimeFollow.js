@@ -18,8 +18,8 @@ export default class SlimeFollow extends SlimeState
         let velocityY = player.y - enemy.body.y;
 
         let distance = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
-        velocityX = velocityX / distance * enemy.speed;
-        velocityY = velocityY / distance * enemy.speed;
+        velocityX = velocityX / distance * enemy.getSpeed();
+        velocityY = velocityY / distance * enemy.getSpeed();
 
         enemy.setVelocityX(velocityX);
         enemy.setVelocityY(velocityY);

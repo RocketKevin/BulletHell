@@ -151,7 +151,7 @@ export default class Mob extends Phaser.Physics.Arcade.Sprite {
      */
     getMobAlive()
     {
-        return this.mobAlive;
+        return this.#mobAlive;
     }
 
     /**
@@ -159,8 +159,8 @@ export default class Mob extends Phaser.Physics.Arcade.Sprite {
      */
     setMobDead()
     {
-        this.mobAlive = false;
-        this.healthBar.visible = false;
+        this.#mobAlive = false;
+        this.#healthBar.visible = false;
         this.visible = false;
         this.active = false;
     }
@@ -170,14 +170,15 @@ export default class Mob extends Phaser.Physics.Arcade.Sprite {
      */
     reset()
     {
-        this.mobAlive = true;
+        this.#mobAlive = true;
         this.visible = true;
         this.active = true;
-        this.health = this.defaultHealth;
-        this.speed = this.defaultSpeed;
-        this.healthBar.visible = true;
+        this.#health = this.#defaultHealth;
+        this.#speed = this.#defaultSpeed;
+        this.#healthBar.visible = true;
         this.setScale(1);
-        this.ai.reset();
+        if(this.ai && this.ai.reset)
+            this.ai.reset();
     }
 
     preUpdate(time, deltaT) 
@@ -185,8 +186,8 @@ export default class Mob extends Phaser.Physics.Arcade.Sprite {
         super.preUpdate(time, deltaT);
         if(this.ai)
             this.ai.update(deltaT);
-        this.healthBar.currentHealth = this.health;
-        this.healthBar.update();
+        this.#healthBar.currentHealth = this.#health;
+        this.#healthBar.update();
         this.update(deltaT);
     }
 
