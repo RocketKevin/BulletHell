@@ -70,29 +70,29 @@ export default class SlimeState extends State
             }
         }
 
-        if(this.mergeAble && Math.random() < 0.0005 && !this.getSprite().superSlime) //using math.random to prevent merging constantly.
-        {
-            //check for merging here.
-            let thisSlime = this.getSprite();
-            let otherSlimes = this.getStateMachine().slimes.getChildren().filter((slime) => {
-                if(thisSlime == slime)
-                    return false;
-                if(slime.active == false)
-                    return false;
-                return true;
-            });
-            //console.log(otherSlimes);
-            if(otherSlimes && otherSlimes.length >= 1)
-            {
-                let randomSlime = otherSlimes[Math.floor(Math.random() * otherSlimes.length)];
-                //checks to make sure that the slime chosen is not the current slime and that the chosen slime is not a superSlime.
-                if(randomSlime != thisSlime && !randomSlime.superSlime)
-                {
-                    //start merging.
-                    this.getStateMachine().otherSlime = randomSlime;
-                    this.getStateMachine().changeState("slimeMerge");
-                }
-            }
-        }
+        // if(this.mergeAble && Math.random() < 0.0005 && !this.getSprite().superSlime) //using math.random to prevent merging constantly.
+        // {
+        //     //check for merging here.
+        //     let thisSlime = this.getSprite();
+        //     let otherSlimes = this.getStateMachine().slimes.getChildren().filter((slime) => {
+        //         if(thisSlime == slime)
+        //             return false;
+        //         if(slime.active == false)
+        //             return false;
+        //         return true;
+        //     });
+        //     //console.log(otherSlimes);
+        //     if(otherSlimes && otherSlimes.length >= 1)
+        //     {
+        //         let randomSlime = otherSlimes[Math.floor(Math.random() * otherSlimes.length)];
+        //         //checks to make sure that the slime chosen is not the current slime and that the chosen slime is not a superSlime.
+        //         if(randomSlime != thisSlime && !randomSlime.superSlime)
+        //         {
+        //             //start merging.
+        //             this.getStateMachine().otherSlime = randomSlime;
+        //             this.getStateMachine().changeState("slimeMerge");
+        //         }
+        //     }
+        // }
     }
 }
