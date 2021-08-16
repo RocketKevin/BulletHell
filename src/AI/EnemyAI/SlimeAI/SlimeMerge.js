@@ -35,8 +35,8 @@ export default class SlimeMerge extends SlimeState
             this.getStateMachine().changeState("slimeRoam");
         }
 
-        velocityX = velocityX / distance * enemy.speed * 2;
-        velocityY = velocityY / distance * enemy.speed * 2;
+        velocityX = velocityX / distance * enemy.getSpeed() * 2;
+        velocityY = velocityY / distance * enemy.getSpeed() * 2;
 
         enemy.setVelocityX(velocityX);
         enemy.setVelocityY(velocityY);
@@ -47,9 +47,9 @@ export default class SlimeMerge extends SlimeState
         if (distance2 < this.mergeRange * this.mergeRange) {
             //kill the other slime.
             enemy.setScale(enemy.scale * 2);
-            enemy.health *= 8;
-            enemy.speed *= 1.5;
-            otherSlime.health = 0;
+            enemy.setHealth(5000);
+            enemy.setSpeed(enemy.getSpeed() * 1.5);
+            otherSlime.setHealth(0);
             enemy.superSlime = true; //the slime is now a superSlime.
             this.getStateMachine().changeState("slimeRoam");
         }

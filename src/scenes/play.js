@@ -1,15 +1,20 @@
 import { final } from "../final.js";
 import { player } from "../obj/player.js";
 import { Hub } from "../obj/Hub.js";
-import { Slime } from "../AI/EnemyAI/SlimeAI/Slime.js";
+// import { Slime } from "../AI/EnemyAI/SlimeAI/Slime.js";
 import DialogBox from "../obj/UI/DialogBox.js";
 import FloatText from "../obj/UI/FloatText.js";
 import StatusBar from "../obj/UI/StatusBar.js";
 import { Camera } from "../obj/Camera.js";
 import { Boss } from "../AI/EnemyAI/TestAI/Boss.js";
-import { Wolf } from "../AI/EnemyAI/WolfAI/Wolf.js";
-import { Goblin } from "../AI/EnemyAI/GoblinAI/Goblin.js";
+// import { Wolf } from "../AI/EnemyAI/WolfAI/Wolf.js";
+// import { Goblin } from "../AI/EnemyAI/GoblinAI/Goblin.js";
+import Mob from "../mob/Mob.js";
+import Slime from "../mob/Slime.js";
+import Goblin from "../mob/Goblin.js";
+import Wolf from "../mob/Wolf.js";
 import { KeyBoard } from "../obj/KeyBoard.js";
+import MobManager from "../mob/MobManager.js";
 export class play extends Phaser.Scene {
     constructor() {
         super({
@@ -193,29 +198,72 @@ export class play extends Phaser.Scene {
 
         //mob array
 
-        this.mobArray = this.physics.add.group();
-        this.mobArray.add(new Wolf(this, 1000, 500, "wolf"));
-        this.mobArray.add(new Goblin(this, 500, 1000, "goblin"));
+        // this.mobGroups = [];
+        // const slimeGroupConfig = {
+        //     classType: Slime,
+        //     key: "slime",
+        //     visible: true,
+        //     frameQuantity: 0,
+        //     createCallback: () => {
+        //         console.log("New Slime Added")
+        //         //scene.physics.add.overlap(scene.mobArray, gunDict[k].getBulletArray(), scene.handleBulletMobCollision, null, scene);
+        //     },
+        //     hitAreaCallback: function() {console.log("hit")}
+        // }
+        // this.mobGroups.push(this.physics.add.group(slimeGroupConfig));
+        // this.mobGroups[0].get(500, 500, "slime");
+        //this.superMobArry.spawn("slime", x, y);
+        this.mobManager = new MobManager(this);
+        this.mobManager.addMobGroup("slime", Slime);
+        this.mobManager.addMobGroup("wolf", Wolf);
+        this.mobManager.addMobGroup("goblin", Goblin);
+        this.mobManager.spawnMob("goblin", 500, 1000);
+        this.mobManager.spawnMob("wolf", 1000, 500);
 
-        //spawn a dude mob
-        // this.mobDude = this.mobArray.get(250, 250, 'slime').setScale(.75);
-        //this.mobArray.add(new Mob(this, 500, 500, this.player, 'slime'))
-        //this.mobArray.get(500, 500, "slime");
+        // this.mobArray = this.physics.add.group();
+        // this.mobArray.add(new Wolf(this, 1000, 500, "wolf"));
+        // this.mobArray.add(new Goblin(this, 500, 1000, "goblin"));
+
         this.time.addEvent({
             delay: 300,
             callback: () => {
-                // spawn a new apple
-                if (this.getMobAliveStatus("slime", this.mobArray) < 3) { //if the total number that is active is less than 4.
-                    let mob = this.mobArray.add(new Slime(this, Math.random() * 800 + 300, Math.random() * 800 + 300, "slime"));
-                    //mob.reset();
+                if (this.mobManager.getNumAlive("slime") < 3) { //if the total number that is active is less than 4.
+                    this.mobManager.spawnMob("slime", Math.random() * 800 + 300, Math.random() * 800 + 300);
                 }
             },
             loop: true
         });
 
+        //spawn a dude mob
+        // this.mobDude = this.mobArray.get(250, 250, 'slime').setScale(.75);
+        //this.mobArray.add(new Mob(this, 500, 500, this.player, 'slime'))
+        //this.mobArray.get(500, 500, "slime");
+
+        // this.time.addEvent({
+        //     delay: 300,
+        //     callback: () => {
+        //         // spawn a new apple
+        //         if (this.getMobAliveStatus("slime", this.mobArray) < 3) { //if the total number that is active is less than 4.
+        //             let mob = this.mobArray.add(new Slime(this, Math.random() * 800 + 300, Math.random() * 800 + 300, "slime"));
+        //             //mob.reset();
+        //         }
+        //     },
+        //     loop: true
+        // });
+
         //this.ultimateMobArray.addMobArray(this.mobArray);
 
-        this.physics.add.overlap(this.mobArray, this.player.hitbox.sprite, this.handleDamage, null, this); 
+        
+        // for(let k in gunDict){
+        //     if(scene.mobArray != null) {
+        //         scene.physics.add.overlap(scene.mobArray, gunDict[k].getBulletArray(), scene.handleBulletMobCollision, null, scene);
+        //     }
+        // }
+        
+        //add collisions for the mob.
+        
+        // for(let group of this.mobManager.getMobGroups())
+        //     this.physics.add.overlap(group, this.player.hitbox.sprite, this.handleDamage, null, this); 
 
         this.test = this.add.image(10, 110, "BuyButton").setOrigin(0).setDepth(10).setScrollFactor(0).setInteractive();
         this.test.on("pointerup", () => {
@@ -224,20 +272,26 @@ export class play extends Phaser.Scene {
         this.player.updateScene(this);
         this.worldHeightInPixels = lab.heightInPixels;
         this.worldWidthInPixels = lab.widthInPixels;
+
+        //add collision handlers for the mobs.
+        this.mobManager.addOverlapAll(this.player.hitbox.sprite, this.handleMobPlayerCollision);
+        let gunDict = this.player.gunController.getGunDict();
+        for(let key in gunDict)
+            this.mobManager.addOverlapAll(gunDict[key].getBulletArray(), this.handleMobBulletCollision);
     }
-    getMobAliveStatus(mob, array) {
-        var result = 0;
-        for(var i = 0; i < array.children.size; i++) {
-            if(mob === array.children.entries[i].texture.key && array.children.entries[i].active)
-                result++;
-        }
-        return result;
-    }
-    handleDamage(player, monster) {
+    // getMobAliveStatus(mob, array) {
+    //     var result = 0;
+    //     for(var i = 0; i < array.children.size; i++) {
+    //         if(mob === array.children.entries[i].texture.key && array.children.entries[i].active)
+    //             result++;
+    //     }
+    //     return result;
+    // }
+    handleMobPlayerCollision(player, monster) {
         if (this.player.alpha == 0.5) return;
         // console.log("hello")
         if (monster.active) {
-            this.player.status.hp = this.player.status.hp - monster.damage
+            this.player.status.hp = this.player.status.hp - monster.getDamage();
             // console.log(monster)
             // console.log(player)
             if (this.player.status.hp <= 0) {
@@ -259,16 +313,21 @@ export class play extends Phaser.Scene {
         });
     }
 
-    handleBulletMobCollision(obj1, obj2) {//obj1 is the mob obj 2 is the bullets
-        // console.log(obj1)
-        // console.log(obj2)
+    /**
+     * 
+     * @param {Mob} obj1 - The mob.
+     * @param {Player} obj2 - The player.
+     */
+    handleMobBulletCollision(obj1, obj2) {//obj1 is the mob obj 2 is the bullets
+        //console.log(obj1)
+        //console.log(obj2)
         if (obj1.active && obj2.active) {
             obj2.visible = false;
             obj2.active = false;
             obj2.destroy();
-            obj1.health = obj1.health - obj2.damage;
+            obj1.setHealth(obj1.getHealth() - obj2.damage);
             this.floatText.showText(obj1.x - obj1.width / 4, obj1.y - obj1.height / 2, `${obj2.damage}`);
-            if (obj1.health <= 0 && obj1.getMobAlive()) {
+            if (obj1.getHealth() <= 0 && obj1.getMobAlive()) {
 
                 obj1.body.velocity.x = 0
                 obj1.body.velocity.y = 0
@@ -276,9 +335,9 @@ export class play extends Phaser.Scene {
                 //obj1.setVisible(false);
                 obj1.visible = false;
                 obj1.active = false;
-                this.player.status.coins += obj1.coinValue
+                this.player.status.coins += obj1.getCoinValue();
                 console.log("mob killed!")
-                this.textBox.showFor("mob was killed, \n good job!!!!", 1000);
+                //this.textBox.showFor("mob was killed, \n good job!!!!", 1000);
                 // obj1.destroy();
             }
         }

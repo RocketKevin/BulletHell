@@ -20,8 +20,8 @@ export default class GoblinPushUp extends State {
         let velocityY = player.y - enemy.body.y;
 
         let distance = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
-        velocityX = velocityX / distance * enemy.speed;
-        velocityY = velocityY / distance * enemy.speed;
+        velocityX = velocityX / distance * enemy.getSpeed();
+        velocityY = velocityY / distance * enemy.getSpeed();
         if (distance < 300) {
             enemy.setVelocityX(-velocityX);
             enemy.setVelocityY(-velocityY);
@@ -33,14 +33,14 @@ export default class GoblinPushUp extends State {
                 enemy.play("goblin_right", true)
             }
         }
-        else if (distance >= 300 && this.regen <= 0 && enemy.health < enemy.defaultHealth) {
+        else if (distance >= 300 && this.regen <= 0 && enemy.getHealth() < enemy.getDefaultHealth()) {
             this.regen = 1000
             enemy.setVelocityX(0)
             enemy.setVelocityY(0)
-            enemy.health += 200
+            enemy.setHealth(enemy.getHealth() + 200);
             enemy.play("goblin_pushup", true)
         }
-        else if (enemy.health >= enemy.defaultHealth / 2) {
+        else if (enemy.getHealth() >= enemy.getDefaultHealth() / 2) {
             this.getStateMachine().changeState("follow");
         }
     }
