@@ -48,6 +48,7 @@ export class load extends Phaser.Scene {
         );
         //Map
         this.load.path = "../assets/maps/";
+        this.load.json("MapName", "AllMapName.json");
         this.load.json("IslandHideOut", "data_IslandHideOut.json");
         this.load.json("HideOut", "data_HideOut.json");
         this.load.tilemapTiledJSON("lab", "lab.json");
@@ -78,7 +79,7 @@ export class load extends Phaser.Scene {
         );
         //Tile Set
         this.load.path = "../assets/tilesets/";
-        this.load.json("ImageName", "map_tilesets.json");
+        this.load.json("TileSetName", "map_tilesets.json");
         this.load.image("WaterForming", "A1_AnimatedGround.png");
         this.load.image("NatureGround", "A2_Ground.png");
         this.load.image("BuildingWall", "A4_Walls_2.png");

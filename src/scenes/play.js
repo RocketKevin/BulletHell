@@ -1,5 +1,5 @@
 import { final } from "../final.js";
-import { Player } from "../obj/Player.js";
+import { player } from "../obj/player.js";
 import { Hub } from "../obj/Hub.js";
 import { Slime } from "../AI/EnemyAI/SlimeAI/Slime.js";
 import DialogBox from "../obj/UI/DialogBox.js";
@@ -9,11 +9,15 @@ import { Camera } from "../obj/Camera.js";
 import { Boss } from "../AI/EnemyAI/TestAI/Boss.js";
 import { Wolf } from "../AI/EnemyAI/WolfAI/Wolf.js";
 import { Goblin } from "../AI/EnemyAI/GoblinAI/Goblin.js";
+import { KeyBoard } from "../obj/KeyBoard.js";
 export class play extends Phaser.Scene {
     constructor() {
         super({
             key: final.SCENES.PLAY
         })
+    }
+    init() {
+        this.keyboard = new KeyBoard(this);
     }
     preload() {
         this.load.image("Ground", "../assets/tilesets/A2_Ground.png");
@@ -167,15 +171,19 @@ export class play extends Phaser.Scene {
         var bottomLayer = lab.createLayer("Ground", [terrain], 0, 0);
         var passableLayer = lab.createLayer("Ground2", [terrainPassable, terrainTop2], 0, 0);
         var aboveLayer = lab.createLayer("Above", [terrainTop], 0, 0).setDepth(2);
-
+        this.colliables = passableLayer;
         this.Hub = new Hub(this, "Hub", "Backpack", "Shop");
-        this.Player = new Player(this, 50, 100, "dude", [passableLayer], lab);
+        this.player = new player(this);
+        this.player.respawn(50, 100);
+
         this.Hub.button(this);
 
         this.textBox = new DialogBox(this, 0, 0);
         this.floatText = new FloatText(this);
-        this.userCamera = new Camera(this, this.Player, this.map);
-
+        this.userCamera = new Camera();
+        this.userCamera.setCamera(this);
+        this.userCamera.setFollow(this.player);
+        this.userCamera.setBounds(this.map.widthInPixels, this.map.heightInPixels);
         this.StatusBar = new StatusBar(this)
 
         //gun/bullet
@@ -191,7 +199,7 @@ export class play extends Phaser.Scene {
 
         //spawn a dude mob
         // this.mobDude = this.mobArray.get(250, 250, 'slime').setScale(.75);
-        //this.mobArray.add(new Mob(this, 500, 500, this.Player, 'slime'))
+        //this.mobArray.add(new Mob(this, 500, 500, this.player, 'slime'))
         //this.mobArray.get(500, 500, "slime");
         this.time.addEvent({
             delay: 300,
@@ -207,13 +215,13 @@ export class play extends Phaser.Scene {
 
         //this.ultimateMobArray.addMobArray(this.mobArray);
 
-        this.physics.add.overlap(this.mobArray, this.Player.hitbox.sprite, this.handleDamage, null, this); 
+        this.physics.add.overlap(this.mobArray, this.player.hitbox.sprite, this.handleDamage, null, this); 
 
-        this.test = this.add.image(10, 10, "BuyButton").setOrigin(0).setDepth(10).setScrollFactor(0).setInteractive();
+        this.test = this.add.image(10, 110, "BuyButton").setOrigin(0).setDepth(10).setScrollFactor(0).setInteractive();
         this.test.on("pointerup", () => {
             this.scene.start(final.SCENES.TEST);
         });
-        this.Player.updateScene(this);
+        this.player.updateScene(this);
         this.worldHeightInPixels = lab.heightInPixels;
         this.worldWidthInPixels = lab.widthInPixels;
     }
@@ -226,14 +234,14 @@ export class play extends Phaser.Scene {
         return result;
     }
     handleDamage(player, monster) {
-        if (this.Player.alpha == 0.5) return;
+        if (this.player.alpha == 0.5) return;
         // console.log("hello")
         if (monster.active) {
-            this.Player.status.hp = this.Player.status.hp - monster.damage
+            this.player.status.hp = this.player.status.hp - monster.damage
             // console.log(monster)
             // console.log(player)
-            if (this.Player.status.hp <= 0) {
-                this.Player.killPlayer();
+            if (this.player.status.hp <= 0) {
+                this.player.killplayer();
                 this.ak = null
             }
             this.invulnerable()
@@ -242,10 +250,10 @@ export class play extends Phaser.Scene {
     }
 
     invulnerable() {
-        this.Player.alpha = 0.5;
+        this.player.alpha = 0.5;
         this.time.addEvent({
             delay: 1000,
-            callback: () => { this.Player.alpha = 1 },
+            callback: () => { this.player.alpha = 1 },
             callbackScope: this,
             loop: false
         });
@@ -268,7 +276,7 @@ export class play extends Phaser.Scene {
                 //obj1.setVisible(false);
                 obj1.visible = false;
                 obj1.active = false;
-                this.Player.status.coins += obj1.coinValue
+                this.player.status.coins += obj1.coinValue
                 console.log("mob killed!")
                 this.textBox.showFor("mob was killed, \n good job!!!!", 1000);
                 // obj1.destroy();
@@ -276,9 +284,9 @@ export class play extends Phaser.Scene {
         }
     }
     update(time, delta) {
-
-        this.Player.update(delta);
-        this.StatusBar.health = this.Player.status.health
+        this.keyboard.update();
+        this.player.update(delta);
+        this.StatusBar.health = this.player.status.health
         this.StatusBar.update()
         // if (this.ak != null) {
         //     this.ak.update(time, delta);

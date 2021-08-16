@@ -1,19 +1,14 @@
 import { final } from "../final.js";
-import { Player } from "../obj/Player.js";
+import { player } from "../obj/player.js";
 import { Camera } from "../obj/Camera.js";
 import { Hub } from "../obj/Hub.js";
-import mobArray from "../doubleArrayMob/mobArray.js";
+import { Terrain } from "../obj/Terrain.js";
+import { KeyBoard } from "../obj/KeyBoard.js";
 export class SceneHolder extends Phaser.Scene{
     constructor() {
         super({
             key: final.SCENES.TEST
-        })
-        this.terrain = {
-            map: null,
-            width: 0,
-            height: 0,
-            collidables: []
-        };
+        });
         this.player = null;
         this.mobArray = null;
         this.camera = null;
@@ -21,161 +16,92 @@ export class SceneHolder extends Phaser.Scene{
         this.dialog = null;
         this.spawn = null;
         this.doorEvent = [];
-        this.cooldown = 2000;
-        this.flag = false;
+        this.terrain = null;
     }
     init() {
-        this.keyboard = this.input.keyboard.addKeys("E");
+        this.keyboard = new KeyBoard(this);
     }
     create() {
-        this.createTerrain("test");
-    }
-    create2() {
-        this.player = new Player(this, this.spawn[0].x, this.spawn[0].y, "dude", this.terrain.collidables);
-        this.player.x = this.spawn[0].x;
-        this.player.y = this.spawn[0].y;
-        this.camera = new Camera(this, this.player, this.terrain.map);
+        this.terrain = new Terrain(this); 
+        this.player = new player(this);
+        this.camera = new Camera();
         this.Hub = new Hub(this, "Hub", "Backpack", "Shop");
-        this.ultimateMobArray = new mobArray;
-        this.player.updateScene(this);
-        this.collidors();
+
+        this.loadWorld("test");
+
+        this.player.updateScene(this);      
     }
     update(time, delta) {
-        this.cooldown -= delta;
-        if(this.cooldown < 0) {
-            if(!this.flag) {
-                this.flag = true;
-                this.create2();
-            }
-        }
-        this.terrain.width = this.terrain.map.widthInPixels;
-        this.terrain.height = this.terrain.map.heightInPixels;
-        this.physics.world.setBounds(0, 0, this.terrain.width, this.terrain.height);
+        this.keyboard.update();
+        this.physics.world.setBounds(0, 0, this.terrain.getMapWidth(), this.terrain.getMapHeight());
         if(this.player != null)
             this.player.update(delta);
     }
-    loadWorld() {
-        this.createTerrain(this.levelData.mapName);
-        for(var i = 0; i < this.terrain.map.objects[0].objects.length; i++) {
-            var tempX = this.terrain.map.objects[0].objects[i].x;
-            var tempY = this.terrain.map.objects[0].objects[i].y;
-            if(this.OuterDoorId == this.terrain.map.objects[0].objects[i].id) { 
-                this.player.respawn(tempX, tempY);
-            }
+    terrainConfig(mapName) {
+        this.terrain.setTerrainMap(mapName);
+        this.terrain.setTileSets("TileSetName");
+        this.terrain.setLayers();
+        this.terrain.setEventLayers();
+        //These need to be fixed
+        this.spawn = this.terrain.getSpawnInfo();  
+        this.doorEvent = this.terrain.getDoorInfo();
+    }
+    playerConfig() {
+        if(this.spawn != null) {
+            this.player.respawn(this.spawn[0].x, this.spawn[0].y);  
         }
-        this.camera = new Camera(this, this.player, this.terrain.map);
+    }
+    cameraConfig() {
+        this.camera.setCamera(this);
+        this.camera.setFollow(this.player);
+        this.camera.setBounds(this.terrain.getMapWidth(), this.terrain.getMapHeight());
+    }
+    loadWorld(mapName) {
+        this.terrainConfig(mapName);
+        this.playerConfig();
+        this.cameraConfig();
+        
         this.collidors();
     }
     destroyWorld() {
-        this.terrain.map.destroy();
-        this.terrain = {
-            map: null,
-            width: 0,
-            height: 0,
-            collidables: []
-        };
+        this.terrain.initalize();
+        this.camera.initalize();
+        this.player.initalize();
         this.mobArray = null;
-        this.camera = null;
+        this.spawn = null;
         for(var i = 0; i < this.doorEvent.length; i++)
             this.doorEvent[i].destroy();
         this.doorEvent = [];
-        this.spawn = null;
         this.physics.world.colliders.destroy();
     }
-    createTerrain(mapName) {
-        var ObjectsFromJson = this.cache.json.get("ImageName").object;
-        this.terrain.map = this.add.tilemap(mapName);
-        var tileset = [];
-        for(var i = 0; i < ObjectsFromJson.length; i++) {
-            for(var j = 0; j < this.terrain.map.tilesets.length; j++)
-                if(ObjectsFromJson[i].filename === this.terrain.map.tilesets[j].name)
-                    tileset.push(this.terrain.map.addTilesetImage(ObjectsFromJson[i].filename, ObjectsFromJson[i].key));
-        };
-        for(var i = 0; i < this.terrain.map.layers.length; i++) {
-            this.terrain.collidables.push(this.terrain.map.createLayer(this.terrain.map.layers[i].name, tileset, 0, 0));
-            if(this.terrain.collidables[i].layer.name === "Above") {
-                this.terrain.collidables[i].setDepth(1);
-            }
-        }
-        for(var i = 0; i < this.terrain.map.objects[0].objects.length; i++) {
-            if(this.terrain.map.objects[0].objects[i].name === "Spawn"){
-                this.spawn = this.terrain.map.createFromObjects("Objects", {name: "Spawn"}, '');
-                this.spawn[0].setVisible(false);
-            }
-        }
-        this.doorEvent = this.terrain.map.createFromObjects("Objects", {name: "Door"}, '');
-        this.doorEvent.map((sprite) => {
-            this.physics.add.existing(sprite);
-            sprite.setVisible(false);
-        });
-    }
     collidors() {
-        this.player.collidablesTerrain(this, this.terrain.collidables);
-        for(var i = 0; i < this.doorEvent.length; i++) {
-            //console.log(this.doorEvent[i]);
-            this.physics.add.overlap(this.player, this.doorEvent[i], this.testing, null, this);
-        }
+        this.player.collidablesTerrain(this, this.terrain.getMapColliables());
+        for(var i = 0; i < this.doorEvent.length; i++)
+            this.physics.add.overlap(this.player, this.doorEvent[i], this.teleport, null, this);
     }
-    testing(player, door) {
-        if (this.keyboard.E.isDown) {
-            if(!door.data.list.Lock) {
-                for(var i = 0; i < this.terrain.map.objects[0].objects.length; i++) {
-                    if(door.data.list.Link === this.terrain.map.objects[0].objects[i].id)
-                        this.player.respawn(this.terrain.map.objects[0].objects[i].x, this.terrain.map.objects[0].objects[i].y);
-                    else if(door.data.list.Link.length > 1) {
-                        this.OuterDoorId = door.data.list.OuterDoorId;
-                        this.levelData = this.cache.json.get(door.data.list.Link);
-                        setTimeout(() => {  
-                            this.destroyWorld();
-                            this.loadWorld(); 
-                        }, 2000);
+    teleport(player, door) {
+        let tempKeyboard = this.keyboard.getKeyboard();
+        let data = {
+            "Link": door.data.list.Link,
+            "Lock": door.data.list.Lock,
+            "Message": door.data.list.Message,
+            "OuterDoorId": door.data.list.OuterDoorId
+        };
+        if (tempKeyboard.E.isDown) {
+            if(!data.Lock) {
+                for(var i = 0; i < this.doorEvent.length; i++) {
+                    if(data.Link === this.doorEvent[i].id)
+                        this.player.respawn(this.doorEvent[i].x - 16, this.doorEvent[i].y - 16);
+                    else if(data.Link.length > 1) {
+                        this.OuterDoorId = data.OuterDoorId;
+                        this.levelData = this.cache.json.get(data.Link);
+                        this.destroyWorld();
+                        this.loadWorld(this.levelData.mapName);
                     }  
                 }
             } else
-                console.log(door.data.list.Message);
+                console.log(data.Message);
         }
-        this.keyboard.E.isDown = false;
-    }
-    destroyTerrain() {
-        this.terrain.map = null;
-        for(var i = 0; i < this.terrain.collidables.length; i++)
-            this.terrain.collidables.pop();
-    }
-    getCamera() {
-        return this.camera;
-    }
-    getPlayer() {
-        return this.player;
-    }
-    getMobArray() {
-        return this.mobArray;
-    }
-    getUserInterface() {
-        return this.userInterface;
-    }
-    getDialog() {
-        return this.dialog;
-    }
-    getArrayOfMembers() {
-        var arrayOfMembers = [];
-        for(var key in this) {
-            arrayOfMembers.push({name: key, value: this[key]});
-        }
-        return arrayOfMembers;
-    }
-    setCamera(camera) {
-        this.camera = camera;
-    }
-    setPlayer(player) {
-        this.player = player;
-    }
-    setMobArray(mobArray) {
-        this.mobArray = mobArray;
-    }
-    setUserInterface(userInterface) {
-        this.userInterface = userInterface;
-    }
-    setDialog(dialog) {
-        this.dialog = dialog;
+        tempKeyboard.E.isDown = false;
     }
 }

@@ -22,7 +22,14 @@ export default class GunController extends GunManager{
         let testgun = new testGun("testGun", this, scene);
         this.addGun(testgun);
         
-        scene.physics.add.overlap(scene.mobArray, testgun.getBulletArray(), scene.handleBulletMobCollision, null, scene);
+        let gunDict = this.getGunDict();
+        for(let k in gunDict){
+            if(scene.mobArray != null) {
+                scene.physics.add.overlap(scene.mobArray, gunDict[k].getBulletArray(), scene.handleBulletMobCollision, null, scene);
+            }
+        }
+
+        //scene.physics.add.overlap(scene.mobArray, testgun.getBulletArray(), scene.handleBulletMobCollision, null, scene);
         // scene.physics.add.overlap(scene.mobArray1, testgun.getBulletArray(), scene.handleBulletMobCollision, null, scene);
         // scene.physics.add.overlap(scene.mobArray2, testgun.getBulletArray(), scene.handleBulletMobCollision, null, scene);
         //scene.ultimateMobArray.addPhysicsGunMob(scene, this.getGunDict());

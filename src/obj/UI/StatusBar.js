@@ -3,7 +3,7 @@ export default class StatusBar extends Phaser.GameObjects.Container {
   constructor(scene) {
     super(scene)
     scene.add.existing(this)
-    this.player = scene.Player
+    this.player = scene.player
     this.coins = this.player.status.coins
     this.setDepth(100);
     this.setScrollFactor(0);

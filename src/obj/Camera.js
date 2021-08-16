@@ -1,7 +1,18 @@
 export class Camera {
-    constructor(scene, sprite, map) {
-        this.userCamera = scene.cameras.main; 
-        this.userCamera.startFollow(sprite);
-        this.userCamera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    #userCamera
+    constructor() {
+        this.initalize();
+    }
+    initalize() {
+        this.#userCamera = null;
+    }
+    setCamera(scene) {
+        this.#userCamera = scene.cameras.main;
+    }
+    setFollow(sprite) {
+        this.#userCamera.startFollow(sprite);
+    }
+    setBounds(width, height) {
+        this.#userCamera.setBounds(0, 0, width, height);
     }
 }
