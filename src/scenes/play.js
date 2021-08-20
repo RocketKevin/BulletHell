@@ -16,6 +16,7 @@ import Wolf from "../mob/Wolf.js";
 import { KeyBoard } from "../obj/KeyBoard.js";
 import MobManager from "../mob/MobManager.js";
 import UIArea from "../obj/UI/UIArea.js";
+import SocketController from "../SocketManager/SocketController.js";
 export class play extends Phaser.Scene {
     constructor() {
         super({
@@ -199,7 +200,6 @@ export class play extends Phaser.Scene {
         
         this.StatusBar = new StatusBar(this);
         this.ScreenUI.addUI(this.StatusBar, 0, 0, UIArea.ANCHOR.TOPLEFT);
-
         //gun/bullet
         //constructor(bulletSpeed, bulletRange, fireRate, imageName, dude, input, physics, scene)
         // this.pistol = new Gun(100, 3000, 500, 'dude', this.player, this.input, this.physics, this)
@@ -274,7 +274,7 @@ export class play extends Phaser.Scene {
         // for(let group of this.mobManager.getMobGroups())
         //     this.physics.add.overlap(group, this.player.hitbox.sprite, this.handleDamage, null, this); 
 
-        this.test = this.add.image(10, 110, "BuyButton").setOrigin(0).setDepth(10).setScrollFactor(0).setInteractive();
+        this.test = this.add.image(300, 300, "BuyButton").setOrigin(0).setDepth(10).setScrollFactor(0).setInteractive();
         this.test.on("pointerup", () => {
             this.scene.start(final.SCENES.TEST);
         });
@@ -289,7 +289,7 @@ export class play extends Phaser.Scene {
             this.mobManager.addOverlapAll(gunDict[key].getBulletArray(), this.handleMobBulletCollision);
         
         //console.log(this);
-        
+        this.socketControl = new SocketController(this);
     }
     // getMobAliveStatus(mob, array) {
     //     var result = 0;
@@ -353,6 +353,9 @@ export class play extends Phaser.Scene {
                 // obj1.destroy();
             }
         }
+    }
+    createNewPlayer(){
+        return new player(this);
     }
     update(time, delta) {
         this.keyboard.update();

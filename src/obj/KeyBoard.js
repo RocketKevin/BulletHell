@@ -1,3 +1,5 @@
+import info from "../SocketManager/info.js";
+
 export class KeyBoard {
     #keyboard
     #scene
@@ -16,37 +18,48 @@ export class KeyBoard {
             if (this.#keyboard.D.isDown) {
                 //clientContoller.movePlayer("moveright");
                 this.#scene.player.setVelocityX(128);
+                this.#scene.socketControl.pass(new info(0, this.#scene.player.x, this.#scene.player.y, this.#scene.player.body.velocity.x, this.#scene.player.body.velocity.y, false));
+                //constructor(time, velocityX, velocityY, shoot){
             }
             if (this.#keyboard.A.isDown) {
                 this.#scene.player.setVelocityX(-128);
+                this.#scene.socketControl.pass(new info(0, this.#scene.player.x, this.#scene.player.y, this.#scene.player.body.velocity.x, this.#scene.player.body.velocity.y, false));
             }
             if (this.#keyboard.W.isDown) {
                 this.#scene.player.setVelocityY(-128);
+                this.#scene.socketControl.pass(new info(0, this.#scene.player.x, this.#scene.player.y, this.#scene.player.body.velocity.x, this.#scene.player.body.velocity.y, false));
             }
             if (this.#keyboard.S.isDown) {
                 this.#scene.player.setVelocityY(128);
+                this.#scene.socketControl.pass(new info(0, this.#scene.player.x, this.#scene.player.y, this.#scene.player.body.velocity.x, this.#scene.player.body.velocity.y, false));
             }
             if (this.#keyboard.A.isUp && this.#keyboard.D.isUp) {
                 this.#scene.player.setVelocityX(0);
+                this.#scene.socketControl.pass(new info(0, this.#scene.player.x, this.#scene.player.y, this.#scene.player.body.velocity.x, this.#scene.player.body.velocity.y, false));
             }
             if (this.#keyboard.W.isUp && this.#keyboard.S.isUp) {
                 this.#scene.player.setVelocityY(0);
+                this.#scene.socketControl.pass(new info(0, this.#scene.player.x, this.#scene.player.y, this.#scene.player.body.velocity.x, this.#scene.player.body.velocity.y, false));
             }
             if (this.#keyboard.A.isDown && this.#keyboard.W.isDown) {
                 this.#scene.player.setVelocityY(-90);
                 this.#scene.player.setVelocityX(-90);
+                this.#scene.socketControl.pass(new info(0, this.#scene.player.x, this.#scene.player.y, this.#scene.player.body.velocity.x, this.#scene.player.body.velocity.y, false));
             }
             if (this.#keyboard.W.isDown && this.#keyboard.D.isDown) {
                 this.#scene.player.setVelocityY(-90);
                 this.#scene.player.setVelocityX(90);
+                this.#scene.socketControl.pass(new info(0, this.#scene.player.x, this.#scene.player.y, this.#scene.player.body.velocity.x, this.#scene.player.body.velocity.y, false));
             }
             if (this.#keyboard.D.isDown && this.#keyboard.S.isDown) {
                 this.#scene.player.setVelocityY(90);
                 this.#scene.player.setVelocityX(90);
+                this.#scene.socketControl.pass(new info(0, this.#scene.player.x, this.#scene.player.y, this.#scene.player.body.velocity.x, this.#scene.player.body.velocity.y, false));
             }
             if (this.#keyboard.A.isDown && this.#keyboard.S.isDown) {
                 this.#scene.player.setVelocityY(90);
                 this.#scene.player.setVelocityX(-90);
+                this.#scene.socketControl.pass(new info(0, this.#scene.player.x, this.#scene.player.y, this.#scene.player.body.velocity.x, this.#scene.player.body.velocity.y, false));
             }
         }
         if(this.#scene.player != null && this.#scene.player.gunController != null) {

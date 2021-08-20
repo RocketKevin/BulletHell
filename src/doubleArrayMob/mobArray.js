@@ -7,8 +7,8 @@ export default class mobArray{
         this.#ultimateMobArray.push(array);
     }
     addPhysicsGunMob(scene, gunDict){
-        for(let k in gunDict){
-            this.#ultimateMobArray.forEach(element => {
+        for(let k in gunDict){//go through every gun
+            this.#ultimateMobArray.forEach(element => {//go through every mob array
                 scene.physics.add.overlap(element, gunDict[k].getBulletArray(), scene.handleBulletMobCollision, null, scene);
             });
         }
