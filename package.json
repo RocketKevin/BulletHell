@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/RocketKevin/BulletHell#readme",
   "dependencies": {
-    "phaser": "^3.55.2"
+    "express": "^4.17.1",
+    "phaser": "^3.55.2",
+    "socket.io": "^4.1.3"
   }
 }

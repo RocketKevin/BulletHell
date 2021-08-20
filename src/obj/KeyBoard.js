@@ -14,6 +14,7 @@ export class KeyBoard {
     update() {
         if (this.#scene.player != null && this.#scene.player.active) {
             if (this.#keyboard.D.isDown) {
+                //clientContoller.movePlayer("moveright");
                 this.#scene.player.setVelocityX(128);
             }
             if (this.#keyboard.A.isDown) {

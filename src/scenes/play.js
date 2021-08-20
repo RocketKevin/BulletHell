@@ -278,6 +278,9 @@ export class play extends Phaser.Scene {
         let gunDict = this.player.gunController.getGunDict();
         for(let key in gunDict)
             this.mobManager.addOverlapAll(gunDict[key].getBulletArray(), this.handleMobBulletCollision);
+        
+        //console.log(this);
+        this.cameras.main.setZoom(1.5);
     }
     // getMobAliveStatus(mob, array) {
     //     var result = 0;
