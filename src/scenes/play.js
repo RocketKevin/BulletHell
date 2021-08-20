@@ -280,7 +280,7 @@ export class play extends Phaser.Scene {
             this.mobManager.addOverlapAll(gunDict[key].getBulletArray(), this.handleMobBulletCollision);
         
         //console.log(this);
-        this.cameras.main.setZoom(1.5);
+        this.cameras.main.setZoom(1.25);
     }
     // getMobAliveStatus(mob, array) {
     //     var result = 0;

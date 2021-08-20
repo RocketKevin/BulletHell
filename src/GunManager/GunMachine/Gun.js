@@ -62,11 +62,15 @@ export default class Gun{
         this.#coolDown = this.#coolDown - deltaT;//update fire rate cooldown
         if(this.cursor.isDown) {//if left mouse is down
             if(this.#coolDown <= 0.01) {//if fire rate cool down is finished
-                var bullet = this.getBulletArray().get(this.player.x + this.player.width / 4.0, this.player.y + this.player.height / 4.0, this.#bulletImage).setScale(0.3);
+                let startX = this.player.x + this.player.width / 4;
+                let startY = this.player.y + this.player.height / 4;
+                let targetX = this.cursor.x / this.camera.zoom;
+                let targetY = this.cursor.y / this.camera.zoom;
+                let bullet = this.getBulletArray().get(startX, startY, this.#bulletImage).setScale(0.3);
                 bullet.damage = this.#bulletDamage;
                 bullet.visible = true;
                 bullet.active = true;
-                bullet.setVelocity(this.player.x, this.player.y, this.cursor.x, this.cursor.y, this.camera, this.#bulletSpeed);
+                bullet.setVelocity(startX, startY, targetX, targetY, this.camera, this.#bulletSpeed);
                 bullet.spawnX = this.player.x;
                 bullet.spawnY = this.player.y;
                 this.#coolDown = this.#fireRate;
