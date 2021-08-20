@@ -1,25 +1,28 @@
+import UIArea from "./UIArea.js";
 
-export default class StatusBar extends Phaser.GameObjects.Container {
+export default class StatusBar extends UIArea {
   constructor(scene) {
     super(scene)
-    scene.add.existing(this)
+    let statusBarWidth = 300;
+    let statusBarHeight = 60;
     this.player = scene.player
     this.coins = this.player.status.coins
     this.setDepth(100);
     this.setScrollFactor(0);
+    this.setSize(statusBarWidth, statusBarHeight);
 
 
+    this.statusBarBox = new Phaser.GameObjects.Rectangle(scene, 0, 0, statusBarWidth, statusBarHeight, 0x3b4bd4, 1);
+    this.addUI(this.statusBarBox, 0, 0, UIArea.ANCHOR.TOPLEFT);
+    this.text = new Phaser.GameObjects.Text(scene, 0, 0, "Coins: " + this.coins.toString(), { fontFamily: "Arial", fontSize: "24px"});
+    this.addUI(this.text, 0.05, 0.5, UIArea.ANCHOR.CENTER);
 
-    this.text = new Phaser.GameObjects.Text(scene, 0, window.innerHeight - 30, "Coins: " + this.coins.toString(), { fontFamily: "Arial", fontSize: "30px" });
-    this.add(this.text);
-
-    this.healthBarWidth = window.innerWidth / 2
+    this.healthBarWidth = 280;
     this.healthBarHeight = 25;
-    console.log()
-    this.border = new Phaser.GameObjects.Rectangle(scene, this.healthBarWidth / 2, this.healthBarHeight / 2, this.healthBarWidth, this.healthBarHeight, 0x000000, 1);
-    this.healthBar = new Phaser.GameObjects.Rectangle(scene, this.healthBarWidth / 2, this.healthBarHeight / 2, this.healthBarWidth, this.healthBarHeight, 0xc2c20e, 1);
-    this.add(this.border);
-    this.add(this.healthBar);
+    this.border = new Phaser.GameObjects.Rectangle(scene, 0, 0, this.healthBarWidth, this.healthBarHeight, 0x000000, 1);
+    this.healthBar = new Phaser.GameObjects.Rectangle(scene, 0, 0, this.healthBarWidth, this.healthBarHeight, 0xab310f, 1);
+    this.addUI(this.border, 0.03, 0.05, UIArea.ANCHOR.TOPLEFT);
+    this.addUI(this.healthBar, 0.03, 0.05, UIArea.ANCHOR.TOPLEFT);
   }
 
   update() {

@@ -15,6 +15,7 @@ import Goblin from "../mob/Goblin.js";
 import Wolf from "../mob/Wolf.js";
 import { KeyBoard } from "../obj/KeyBoard.js";
 import MobManager from "../mob/MobManager.js";
+import UIArea from "../obj/UI/UIArea.js";
 export class play extends Phaser.Scene {
     constructor() {
         super({
@@ -189,7 +190,15 @@ export class play extends Phaser.Scene {
         this.userCamera.setCamera(this);
         this.userCamera.setFollow(this.player);
         this.userCamera.setBounds(this.map.widthInPixels, this.map.heightInPixels);
-        this.StatusBar = new StatusBar(this)
+        this.cameras.main.setZoom(1.25); //sets the zoom of the camera.
+
+        this.ScreenUI = new UIArea(this);
+        let camera = this.cameras.main;
+        this.ScreenUI.setPosition(camera.width / 2,camera.height / 2); //the postion is the center of the screen.
+        this.ScreenUI.setSize(camera.displayWidth, camera.displayHeight); //the width and height matches the camera's transformed width and height.
+        
+        this.StatusBar = new StatusBar(this);
+        this.ScreenUI.addUI(this.StatusBar, 0, 0, UIArea.ANCHOR.TOPLEFT);
 
         //gun/bullet
         //constructor(bulletSpeed, bulletRange, fireRate, imageName, dude, input, physics, scene)
@@ -280,7 +289,7 @@ export class play extends Phaser.Scene {
             this.mobManager.addOverlapAll(gunDict[key].getBulletArray(), this.handleMobBulletCollision);
         
         //console.log(this);
-        this.cameras.main.setZoom(1.25);
+        
     }
     // getMobAliveStatus(mob, array) {
     //     var result = 0;
