@@ -4,12 +4,15 @@
  */
 export default class MobManager
 {
+    /**
+     * @type {Phaser.GameObjects.Group[]}
+     */
     #groups;
     #scene;
 
     /**
      * Creates a new mob manager.
-     * @param {*} scene - The current scene.
+     * @param {Phaser.Scene} scene - The current scene.
      */
     constructor(scene)
     {
@@ -47,7 +50,7 @@ export default class MobManager
      * Create overlaps between an given gameObject(s) and all the mob groups.
      * Uses the mob as the first collider and other as the second collider.
      * @param {*} other - The other gameObject(s).
-     * @param {*} callback - The callback function.
+     * @param {Function} callback - The callback function.
      */
     addOverlapAll(other, callback)
     {
@@ -57,8 +60,8 @@ export default class MobManager
 
     /**
      * Adds a mob group to the mobManager.
-     * @param {*} groupName - The name of the group.
-     * @param {*} classType - The class of the Mob.
+     * @param {String} groupName - The name of the group.
+     * @param {Function} classType - The class of the Mob.
      */
     addMobGroup(groupName, classType)
     {

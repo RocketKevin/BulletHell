@@ -1,3 +1,4 @@
+import { player } from "../obj/player.js";
 import HealthBar from "../obj/UI/HealthBar.js";
 
 /**
@@ -16,10 +17,10 @@ export default class Mob extends Phaser.Physics.Arcade.Sprite {
 
     /**
      * Creates a new mob object with some default values.
-     * @param {*} scene - The current scene.
-     * @param {*} x - The x coord.
-     * @param {*} y - The y coord.
-     * @param {*} sprite - The sprite.
+     * @param {Phaser.Scene} scene - The current scene.
+     * @param {Number} x - The x coord.
+     * @param {Number} y - The y coord.
+     * @param {Phaser.GameObjects.Sprite} sprite - The sprite.
      */
     constructor(scene, x, y, sprite)
     {
@@ -34,8 +35,8 @@ export default class Mob extends Phaser.Physics.Arcade.Sprite {
         this.#healthBar = new HealthBar(scene, 0, 0, this.#defaultHealth);
         this.#player = scene.player;
         this.#mobAlive = true;
-
         this.#healthBar.follow(this);
+        //this.setBounce(0.5, 0.5);
     }
 
     /**
@@ -141,7 +142,7 @@ export default class Mob extends Phaser.Physics.Arcade.Sprite {
 
     /**
      * Gets the current player.
-     * @returns {*} The player.
+     * @returns {player} The player.
      */
     getPlayer() {return this.#player};
 

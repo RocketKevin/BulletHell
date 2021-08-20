@@ -1,8 +1,8 @@
 import { final } from "../final.js";
-export class controls extends Phaser.Scene {
+export class options extends Phaser.Scene {
     constructor() {
         super({
-            key: final.SCENES.CONTROLS
+            key: final.SCENES.OPTIONS
         })
     }
     preload() {
@@ -19,9 +19,7 @@ export class controls extends Phaser.Scene {
             fixedWidth: width / 2,
         }
 
-        this.add.text(width * 0.25, 120, "Press WASD to move", textConfig);
-        this.add.text(width * 0.25, 240, "Left click to fire", textConfig);
-        this.add.text(width * 0.25, 360, "E to interact", textConfig);
+        this.add.text(width * 0.25, 120, "There are currently no options.", textConfig);
 
         let backBtn = this.add.text(width * 0.25, 620, "BACK", textConfig);
         backBtn.setInteractive();
