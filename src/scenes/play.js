@@ -379,8 +379,15 @@ export class play extends Phaser.Scene {
                 this.player.status.coins += obj1.getCoinValue();
                 //play some particles.
                 let num = Math.log2(obj1.getDefaultHealth());
-                this.particleManager.sprayParticle("rect", obj1.x, obj1.y, num);
-
+                this.particleManager.sprayParticle("rect", obj1.x, obj1.y, {
+                    amount: num,
+                    speed: 30,
+                    directionVector: {
+                        x: 0,
+                        y: 1,
+                    },
+                    spreadAngle: 270,
+                });
                 console.log("mob killed!")
                 //this.textBox.showFor("mob was killed, \n good job!!!!", 1000);
                 // obj1.destroy();

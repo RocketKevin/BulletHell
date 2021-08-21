@@ -107,6 +107,15 @@ export default class PartileManager
                     alpha: 0,
                     ease: "Power1",
                 });
+                this.#scene.tweens.add({
+                    targets: particle,
+                    repeat: 0,
+                    delay: 100,
+                    duration: 800,
+                    alpha: 0,
+                    y: y + 10,
+                    ease: "Power1",
+                });
             }
         }
     }
