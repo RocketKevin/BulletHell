@@ -1,3 +1,4 @@
+import Mob from "./Mob.js";
 
 /**
  * The MobManager stores groups of mobs for reuse.
@@ -80,6 +81,7 @@ export default class MobManager
      * @param {String} groupName - The groupName of the mob to spawn.
      * @param {Number} x - The x location.
      * @param {Number} y - The y location.
+     * @returns {Mob} The created mob.
      */
     spawnMob(groupName, x, y)
     {
@@ -87,8 +89,9 @@ export default class MobManager
         {
             if(group.name === groupName)
             {
-                group.get(x, y, groupName).reset();
-                break;
+                let mob = group.get(x, y, groupName);
+                mob.reset()
+                return mob;
             }
         }
     }

@@ -3,9 +3,21 @@ import info from "../SocketManager/info.js";
 export class KeyBoard {
     #keyboard
     #scene
+    
+    /**
+     * 
+     * @param {Phaser.Scene} scene 
+     */
     constructor(scene) {
         this.#scene = scene;
         this.#keyboard = scene.input.keyboard.addKeys("W, A, S, D, Q, E");
+
+        // //debugger
+        // this.#scene.input.keyboard.on("keydown-L", () => {
+        //     let {debug} = this.#scene.physics.getConfig();
+        //     this.#scene.game.config.physics.arcade.debug = !debug;
+        //     console.log(this.#scene.physics);
+        // })
     }
     getKeyboard() {
         return this.#keyboard;

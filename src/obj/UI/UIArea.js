@@ -18,8 +18,8 @@ export default class UIArea extends Phaser.GameObjects.Container
         scene.add.existing(this);
         this.setScrollFactor(0);
         this.setDepth(100);
-        console.log(this);
-        console.log(`x: ${this.x} y: ${this.y}`);
+        //console.log(this);
+        //console.log(`x: ${this.x} y: ${this.y}`);
     }
 
     /**
