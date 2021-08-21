@@ -12,7 +12,7 @@ var shengConfig = {
     physics: {
         default: "arcade",
         arcade: {
-            debug: true
+            debug: false
         }
     },
     scale: {
@@ -26,7 +26,7 @@ var config = {
     physics: {
         default: "arcade",
         arcade: {
-            debug: true
+            debug: true,
         }
     },
     scale: {

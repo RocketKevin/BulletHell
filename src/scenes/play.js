@@ -17,6 +17,9 @@ import { KeyBoard } from "../obj/KeyBoard.js";
 import MobManager from "../mob/MobManager.js";
 import UIArea from "../obj/UI/UIArea.js";
 import SocketController from "../SocketManager/SocketController.js";
+import PartileManager from "../particle/ParticleManager.js";
+import RectangleParticle from "../particle/RectangleParticle.js";
+import BulletSpark from "../particle/BulletSpark.js";
 export class play extends Phaser.Scene {
     constructor() {
         super({
@@ -191,6 +194,7 @@ export class play extends Phaser.Scene {
         this.userCamera.setCamera(this);
         this.userCamera.setFollow(this.player);
         this.userCamera.setBounds(this.map.widthInPixels, this.map.heightInPixels);
+        
         this.cameras.main.setZoom(1.25); //sets the zoom of the camera.
 
         this.ScreenUI = new UIArea(this);
@@ -204,6 +208,11 @@ export class play extends Phaser.Scene {
         //constructor(bulletSpeed, bulletRange, fireRate, imageName, dude, input, physics, scene)
         // this.pistol = new Gun(100, 3000, 500, 'dude', this.player, this.input, this.physics, this)
         // this.ak = new Gun(1000, 100000, 200, 'bullet', this.player, this.input, this.physics, this)
+        // let socket = io();
+        // socket.on("chat message", function(msg) {
+        //         console.log(msg);
+        //         socket.emit("chat message", "I received the chat message");
+        //     })
 
         //mob array
 
@@ -226,12 +235,19 @@ export class play extends Phaser.Scene {
         this.mobManager.addMobGroup("slime", Slime);
         this.mobManager.addMobGroup("wolf", Wolf);
         this.mobManager.addMobGroup("goblin", Goblin);
-        this.mobManager.spawnMob("goblin", 500, 1000);
+        let g = this.mobManager.spawnMob("goblin", 500, 1000);
+        g.mobConfig({
+            defaultHealth: 10000,
+            //defaultSpeed: 500,
+        })
         this.mobManager.spawnMob("wolf", 1000, 500);
 
         // this.mobArray = this.physics.add.group();
         // this.mobArray.add(new Wolf(this, 1000, 500, "wolf"));
         // this.mobArray.add(new Goblin(this, 500, 1000, "goblin"));
+        this.particleManager = new PartileManager(this);
+        this.particleManager.addParticleGroup("rect", RectangleParticle);
+        this.particleManager.addParticleGroup("BulletSpark", BulletSpark);
 
         this.time.addEvent({
             delay: 300,
@@ -304,6 +320,7 @@ export class play extends Phaser.Scene {
         // console.log("hello")
         if (monster.active) {
             this.player.status.hp = this.player.status.hp - monster.getDamage();
+            this.sound.play("playerTakeDamageSound");
             // console.log(monster)
             // console.log(player)
             if (this.player.status.hp <= 0) {
@@ -336,9 +353,22 @@ export class play extends Phaser.Scene {
         if (obj1.active && obj2.active) {
             obj2.visible = false;
             obj2.active = false;
-            obj2.destroy();
             obj1.setHealth(obj1.getHealth() - obj2.damage);
             this.floatText.showText(obj1.x - obj1.width / 4, obj1.y - obj1.height / 2, `${obj2.damage}`);
+            // this.particleManager.sprayParticle("BulletSpark", obj2.x, obj2.y, Math.log10(obj2.damage), {
+            //     x: -obj2.body.velocity.x,
+            //     y: -obj2.body.velocity.y,
+            // }, 30, 80);
+            this.particleManager.sprayParticle("BulletSpark", obj2.x, obj2.y, {
+                amount: Math.log10(obj2.damage),
+                directionVector: {
+                    x: -obj2.body.velocity.x,
+                    y: -obj2.body.velocity.y,
+                },
+                spreadAngle: 30,
+                speed: 10 * Math.log2(obj2.damage),
+            });
+            obj2.destroy();
             if (obj1.getHealth() <= 0 && obj1.getMobAlive()) {
 
                 obj1.body.velocity.x = 0
@@ -348,6 +378,17 @@ export class play extends Phaser.Scene {
                 obj1.visible = false;
                 obj1.active = false;
                 this.player.status.coins += obj1.getCoinValue();
+                //play some particles.
+                let num = Math.log2(obj1.getDefaultHealth());
+                this.particleManager.sprayParticle("rect", obj1.x, obj1.y, {
+                    amount: num,
+                    speed: 30,
+                    directionVector: {
+                        x: 0,
+                        y: 1,
+                    },
+                    spreadAngle: 270,
+                });
                 console.log("mob killed!")
                 //this.textBox.showFor("mob was killed, \n good job!!!!", 1000);
                 // obj1.destroy();
