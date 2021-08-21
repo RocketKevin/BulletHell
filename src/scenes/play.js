@@ -19,6 +19,7 @@ import UIArea from "../obj/UI/UIArea.js";
 import SocketController from "../SocketManager/SocketController.js";
 import PartileManager from "../particle/ParticleManager.js";
 import RectangleParticle from "../particle/RectangleParticle.js";
+import BulletSpark from "../particle/BulletSpark.js";
 export class play extends Phaser.Scene {
     constructor() {
         super({
@@ -236,7 +237,7 @@ export class play extends Phaser.Scene {
         this.mobManager.addMobGroup("goblin", Goblin);
         let g = this.mobManager.spawnMob("goblin", 500, 1000);
         g.mobConfig({
-            defaultHealth: 100000,
+            defaultHealth: 10000,
             //defaultSpeed: 500,
         })
         this.mobManager.spawnMob("wolf", 1000, 500);
@@ -246,6 +247,7 @@ export class play extends Phaser.Scene {
         // this.mobArray.add(new Goblin(this, 500, 1000, "goblin"));
         this.particleManager = new PartileManager(this);
         this.particleManager.addParticleGroup("rect", RectangleParticle);
+        this.particleManager.addParticleGroup("BulletSpark", BulletSpark);
 
         this.time.addEvent({
             delay: 300,
@@ -350,9 +352,22 @@ export class play extends Phaser.Scene {
         if (obj1.active && obj2.active) {
             obj2.visible = false;
             obj2.active = false;
-            obj2.destroy();
             obj1.setHealth(obj1.getHealth() - obj2.damage);
             this.floatText.showText(obj1.x - obj1.width / 4, obj1.y - obj1.height / 2, `${obj2.damage}`);
+            // this.particleManager.sprayParticle("BulletSpark", obj2.x, obj2.y, Math.log10(obj2.damage), {
+            //     x: -obj2.body.velocity.x,
+            //     y: -obj2.body.velocity.y,
+            // }, 30, 80);
+            this.particleManager.sprayParticle("BulletSpark", obj2.x, obj2.y, {
+                amount: Math.log10(obj2.damage),
+                directionVector: {
+                    x: -obj2.body.velocity.x,
+                    y: -obj2.body.velocity.y,
+                },
+                spreadAngle: 30,
+                speed: 10 * Math.log2(obj2.damage),
+            });
+            obj2.destroy();
             if (obj1.getHealth() <= 0 && obj1.getMobAlive()) {
 
                 obj1.body.velocity.x = 0
@@ -363,7 +378,8 @@ export class play extends Phaser.Scene {
                 obj1.active = false;
                 this.player.status.coins += obj1.getCoinValue();
                 //play some particles.
-                this.particleManager.sprayParticle("rect", obj1.x, obj1.y, 8);
+                let num = Math.log2(obj1.getDefaultHealth());
+                this.particleManager.sprayParticle("rect", obj1.x, obj1.y, num);
 
                 console.log("mob killed!")
                 //this.textBox.showFor("mob was killed, \n good job!!!!", 1000);
