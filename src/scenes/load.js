@@ -93,6 +93,9 @@ export class load extends Phaser.Scene {
         this.load.image("Indoor", "D_Inside_House.png");
         this.load.image("Random", "D_OutDoor.png");
 
+        this.load.path = "../assets/sounds/"
+        this.load.audio("playerTakeDamageSound", "playerTakeDamage.mp3");
+
         var loadingBar = this.add.graphics({
             fillStyle: {
                 color: 0xffffff

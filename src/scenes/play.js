@@ -320,6 +320,7 @@ export class play extends Phaser.Scene {
         // console.log("hello")
         if (monster.active) {
             this.player.status.hp = this.player.status.hp - monster.getDamage();
+            this.sound.play("playerTakeDamageSound");
             // console.log(monster)
             // console.log(player)
             if (this.player.status.hp <= 0) {
