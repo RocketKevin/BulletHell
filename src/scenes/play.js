@@ -242,7 +242,7 @@ export class play extends Phaser.Scene {
         //     //defaultSpeed: 500,
         // })
         this.mobManager.spawnMob("wolf", 1000, 500);
-        this.mobManager.spawnMob("dude", 300, 300);
+        this.mobManager.spawnMob("dude", 800, 900);
         // this.mobArray = this.physics.add.group();
         // this.mobArray.add(new Wolf(this, 1000, 500, "wolf"));
         // this.mobArray.add(new Goblin(this, 500, 1000, "goblin"));

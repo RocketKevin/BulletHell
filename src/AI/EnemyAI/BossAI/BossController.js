@@ -1,6 +1,8 @@
 import StateMachine from "../../StateMachine/StateMachine.js";
 import BossFollow from "../BossAI/BossFollow.js";
-import BossShooting1 from "./BossShooting1.js";
+import BossIdle from "./BossIdle.js";
+import BossLunge from "./BossLunge.js";
+import BossRoam from "./BossRoam.js";
 
 export default class BossController extends StateMachine {
     create(sprite, data) {
@@ -9,7 +11,13 @@ export default class BossController extends StateMachine {
 
         let follow = new BossFollow("follow", this, sprite);
         this.addState(follow);
+        let idle = new BossIdle("idle", this, sprite);
+        this.addState(idle);
+        let lunge = new BossLunge("lunge", this, sprite);
+        this.addState(lunge);
+        let roam = new BossRoam("roam", this, sprite);
+        this.addState(roam);
 
-        this.changeState("follow");
+        this.changeState("idle");
     }
 }

@@ -25,4 +25,11 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
         this.body.setVelocityX(dx / hyp * bulletSpeed);//unit vector's x times some speed
         this.body.setVelocityY(dy / hyp * bulletSpeed);//unit vector's y times some speed
     }
+    Random360Spray(startX, startY, bulletSpeed) {
+        let dx = (Math.random() * 1600) - startX;
+        let dy = (Math.random() * 1800) - startY;
+        let hyp = Math.sqrt(dx * dx + dy * dy);
+        this.body.setVelocityX(dx / hyp * bulletSpeed);//unit vector's x times some speed
+        this.body.setVelocityY(dy / hyp * bulletSpeed);//unit vector's y times some speed
+    }
 }

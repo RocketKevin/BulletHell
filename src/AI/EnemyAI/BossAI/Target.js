@@ -1,9 +1,9 @@
 import Gun from "../../../GunManager/GunMachine/Gun.js";
 
-export default class BossGun extends Gun {
+export default class Target extends Gun {
     constructor(gunName, gunManager, scene) {
         super(gunName, gunManager, scene);
-        this.setCustom("Pistol", "500", "250", "100", "300", "projectiles");
+        this.setCustom("Target", "500", "250", "100", "300", "projectiles");
         this.coolDown = 100
         // this.#gunName = "Pistol";
         // this.#bulletSpeed = "1000";

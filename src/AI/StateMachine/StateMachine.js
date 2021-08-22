@@ -101,8 +101,7 @@ export default class StateMachine {
      * @param {number} deltaT - Change in time.
      */
     update(deltaT) {
-        if(!this.#created)
-        {
+        if (!this.#created) {
             this.#created = true;
             this.create(this.#tempSprite, this.#tempData);
             this.#tempSprite = undefined;
