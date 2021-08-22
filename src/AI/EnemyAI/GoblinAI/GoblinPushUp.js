@@ -37,7 +37,7 @@ export default class GoblinPushUp extends State {
             this.regen = 1000
             enemy.setVelocityX(0)
             enemy.setVelocityY(0)
-            enemy.setHealth(enemy.getHealth() + 200);
+            enemy.setHealth(enemy.getHealth() + enemy.getDefaultHealth() * 0.05);
             enemy.play("goblin_pushup", true)
         }
         else if (enemy.getHealth() >= enemy.getDefaultHealth() / 2) {

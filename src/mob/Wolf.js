@@ -9,11 +9,13 @@ export default class Wolf extends Mob
             defaultHealth: 1500,
             damage: 250,
             defaultSpeed: 75,
+            coinValue: 10
         })
         this.ai = new WolfController(this, {
             player: scene.player,
             animations: "",
         });
+        this.body.setSize(100, 50);
         this.cd = 4000;
         this.time = scene.time;
     }

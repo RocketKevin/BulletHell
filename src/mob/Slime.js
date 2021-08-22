@@ -9,12 +9,15 @@ export default class Slime extends Mob
         super.mobConfig({
             damage: 100,
             defaultSpeed: 30,
+            coinValue: 2,
         })
         this.ai = this.ai = new SlimeController(this, {
             player: scene.player,
             animations: "",
             slimes: [],
         });
+        //this.body.setOffset(8, 8);
+        this.body.setSize(24, 24);
     }
 
     update(deltaT)
