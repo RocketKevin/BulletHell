@@ -6,7 +6,7 @@ import DialogBox from "../obj/UI/DialogBox.js";
 import FloatText from "../obj/UI/FloatText.js";
 import StatusBar from "../obj/UI/StatusBar.js";
 import { Camera } from "../obj/Camera.js";
-import { Boss } from "../AI/EnemyAI/TestAI/Boss.js";
+import Boss from "../mob/Boss.js";
 // import { Wolf } from "../AI/EnemyAI/WolfAI/Wolf.js";
 // import { Goblin } from "../AI/EnemyAI/GoblinAI/Goblin.js";
 import Mob from "../mob/Mob.js";
@@ -194,14 +194,14 @@ export class play extends Phaser.Scene {
         this.userCamera.setCamera(this);
         this.userCamera.setFollow(this.player);
         this.userCamera.setBounds(this.map.widthInPixels, this.map.heightInPixels);
-        
+
         this.cameras.main.setZoom(1.25); //sets the zoom of the camera.
 
         this.ScreenUI = new UIArea(this);
         let camera = this.cameras.main;
-        this.ScreenUI.setPosition(camera.width / 2,camera.height / 2); //the postion is the center of the screen.
+        this.ScreenUI.setPosition(camera.width / 2, camera.height / 2); //the postion is the center of the screen.
         this.ScreenUI.setSize(camera.displayWidth, camera.displayHeight); //the width and height matches the camera's transformed width and height.
-        
+
         this.StatusBar = new StatusBar(this);
         this.ScreenUI.addUI(this.StatusBar, 0, 0, UIArea.ANCHOR.TOPLEFT);
         //gun/bullet
@@ -235,13 +235,14 @@ export class play extends Phaser.Scene {
         this.mobManager.addMobGroup("slime", Slime);
         this.mobManager.addMobGroup("wolf", Wolf);
         this.mobManager.addMobGroup("goblin", Goblin);
+        this.mobManager.addMobGroup("dude", Boss)
         let g = this.mobManager.spawnMob("goblin", 500, 1000);
         // g.mobConfig({
         //     defaultHealth: 10000,
         //     //defaultSpeed: 500,
         // })
         this.mobManager.spawnMob("wolf", 1000, 500);
-
+        this.mobManager.spawnMob("dude", 300, 300);
         // this.mobArray = this.physics.add.group();
         // this.mobArray.add(new Wolf(this, 1000, 500, "wolf"));
         // this.mobArray.add(new Goblin(this, 500, 1000, "goblin"));
@@ -278,15 +279,15 @@ export class play extends Phaser.Scene {
 
         //this.ultimateMobArray.addMobArray(this.mobArray);
 
-        
+
         // for(let k in gunDict){
         //     if(scene.mobArray != null) {
         //         scene.physics.add.overlap(scene.mobArray, gunDict[k].getBulletArray(), scene.handleBulletMobCollision, null, scene);
         //     }
         // }
-        
+
         //add collisions for the mob.
-        
+
         // for(let group of this.mobManager.getMobGroups())
         //     this.physics.add.overlap(group, this.player.hitbox.sprite, this.handleDamage, null, this); 
 
@@ -301,9 +302,9 @@ export class play extends Phaser.Scene {
         //add collision handlers for the mobs.
         this.mobManager.addOverlapAll(this.player.hitbox.sprite, this.handleMobPlayerCollision);
         let gunDict = this.player.gunController.getGunDict();
-        for(let key in gunDict)
+        for (let key in gunDict)
             this.mobManager.addOverlapAll(gunDict[key].getBulletArray(), this.handleMobBulletCollision);
-        
+
         //console.log(this);
         this.socketControl = new SocketController(this);
     }
@@ -395,7 +396,7 @@ export class play extends Phaser.Scene {
             }
         }
     }
-    createNewPlayer(){
+    createNewPlayer() {
         return new player(this);
     }
     update(time, delta) {

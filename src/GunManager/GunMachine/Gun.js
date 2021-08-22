@@ -1,5 +1,5 @@
 import Bullet from "./Bullet.js";
-export default class Gun{
+export default class Gun {
     #gunManager;//GunManager holding the gun
     #gunName;//String name of gun
     #bulletSpeed;//Speed the bullet travels at 
@@ -12,17 +12,17 @@ export default class Gun{
 
     //this.pistol = new Gun(100, 3000, 500, 'dude', this.player, this.input, this.physics, this)
     //this.ak = new Gun(1000, 100000, 200, 'bullet', this.player, this.input, this.physics, this)
-    constructor(gunName, gunManager, scene){
+    constructor(gunName, gunManager, scene) {
         this.setDefault();
         this.#gunName = gunName;
         this.#gunManager = gunManager;
-        this.bulletArray = scene.physics.add.group({classType: Bullet});
+        this.bulletArray = scene.physics.add.group({ classType: Bullet });
         this.cursor = scene.input.mousePointer;
         this.camera = scene.cameras.main;
         this.physics = scene.physics;
         this.player = gunManager.player;
     }
-    setDefault(){
+    setDefault() {
         this.#gunName = "default";
         this.#bulletSpeed = "1000";
         this.#bulletRange = "1000";
@@ -31,7 +31,7 @@ export default class Gun{
         this.#bulletImage = "bullet";
         this.#coolDown = this.#fireRate;
     }
-    setCustom(gunName, bulletSpeed, bulletRange, bulletDamage, fireRate, bulletImage){
+    setCustom(gunName, bulletSpeed, bulletRange, bulletDamage, fireRate, bulletImage) {
         this.#gunName = gunName;
         this.#bulletSpeed = bulletSpeed;
         this.#bulletRange = bulletRange;
@@ -40,28 +40,28 @@ export default class Gun{
         this.#bulletImage = bulletImage;
         this.#coolDown = this.#fireRate;
     }
-    onEnter(){
+    onEnter() {
         console.log("Switched to " + this.#gunName);
     }
-    onExit(){
+    onExit() {
         console.log("Switching off " + this.#gunName);
     }
-    getGunName(){ 
+    getGunName() {
         return this.#gunName;
     }
-    getGunMachine(){
+    getGunMachine() {
         return this.#gunManager;
     }
-    getBulletArray(){
+    getBulletArray() {
         return this.bulletArray;
     }
-    getBulletRange(){
+    getBulletRange() {
         return this.#bulletRange;
     }
-    update(deltaT){
+    update(deltaT) {
         this.#coolDown = this.#coolDown - deltaT;//update fire rate cooldown
-        if(this.cursor.isDown) {//if left mouse is down
-            if(this.#coolDown <= 0.01) {//if fire rate cool down is finished
+        if (this.cursor.isDown) {//if left mouse is down
+            if (this.#coolDown <= 0.01) {//if fire rate cool down is finished
                 this.shoot();
             }
         }
@@ -75,7 +75,7 @@ export default class Gun{
             }
         })
     }
-    shoot(){
+    shoot() {
         let startX = this.player.x + this.player.width / 4;
         let startY = this.player.y + this.player.height / 4;
         let targetX = this.cursor.x / this.camera.zoom;
@@ -89,5 +89,16 @@ export default class Gun{
         bullet.spawnY = this.player.y;
         this.#coolDown = this.#fireRate;
     }
-
+    getBulletImage() {
+        return this.#bulletImage;
+    }
+    getBulletDamage() {
+        return this.#bulletDamage;
+    }
+    getBulletSpeed() {
+        return this.#bulletSpeed;
+    }
+    getFireRate() {
+        return this.#fireRate;
+    }
 }

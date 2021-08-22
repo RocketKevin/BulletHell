@@ -1,5 +1,6 @@
 import Mob from "./Mob.js";
-import GoblinController from "../AI/EnemyAI/GoblinAI/GoblinController.js";
+import BossController from "../AI/EnemyAI/BossAI/BossController.js";
+import BossGunController from "../AI/EnemyAI/BossAI/BossGunController.js";
 
 export default class Boss extends Mob {
     constructor(scene, x, y, sprite) {
@@ -10,18 +11,22 @@ export default class Boss extends Mob {
             coinValue: 1000,
             defaultHealth: 500000,
         })
-        this.ai = new GoblinController(this, {
+        this.ai = new BossController(this, {
             player: scene.player,
             animations: "",
         });
         this.time = scene.time;
+        this.updateScene(scene)
     }
-
+    updateScene(scene) {
+        this.gunController = new BossGunController(scene, { boss: this });
+    }
     update(deltaT) {
-        this.cd -= deltaT
-        if (this.getHealth() <= ) {
-            this.ai.changeState("immortal")
+        // this.cd -= deltaT
+        if (this.gunController != null) {
+            this.gunController.update(deltaT);
         }
     }
+
 }
 

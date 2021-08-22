@@ -1,8 +1,8 @@
 import Mob from "./Mob.js";
 import GoblinController from "../AI/EnemyAI/GoblinAI/GoblinController.js";
+// import BossGunController from "../AI/EnemyAI/BossAI/BossGunController.js";
 
-export default class Goblin extends Mob
-{
+export default class Goblin extends Mob {
     constructor(scene, x, y, sprite) {
         super(scene, x, y, sprite);
         super.mobConfig({
@@ -19,8 +19,8 @@ export default class Goblin extends Mob
         this.time = scene.time;
     }
 
-    update(deltaT)
-    {
+
+    update(deltaT) {
         this.cd -= deltaT
         if (this.getHealth() <= this.getDefaultHealth() * 0.25) {
             if (this.ai.getState().getStateName() == "follow") {
