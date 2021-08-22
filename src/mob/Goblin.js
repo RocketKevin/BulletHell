@@ -8,11 +8,10 @@ export default class Goblin extends Mob
         super.mobConfig({
             damage: 200,
             defaultSpeed: 100,
-            coinValue: 10,
+            coinValue: 20,
             defaultHealth: 5000,
         })
-        scene.physics.add.existing(this);
-        this.setSize(40, 70);
+        this.setSize(30, 60);
         this.ai = new GoblinController(this, {
             player: scene.player,
             animations: "",
@@ -23,7 +22,7 @@ export default class Goblin extends Mob
     update(deltaT)
     {
         this.cd -= deltaT
-        if (this.getHealth() <= 1000) {
+        if (this.getHealth() <= this.getDefaultHealth() * 0.25) {
             if (this.ai.getState().getStateName() == "follow") {
                 this.ai.changeState("pushup")
             }

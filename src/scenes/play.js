@@ -236,10 +236,10 @@ export class play extends Phaser.Scene {
         this.mobManager.addMobGroup("wolf", Wolf);
         this.mobManager.addMobGroup("goblin", Goblin);
         let g = this.mobManager.spawnMob("goblin", 500, 1000);
-        g.mobConfig({
-            defaultHealth: 10000,
-            //defaultSpeed: 500,
-        })
+        // g.mobConfig({
+        //     defaultHealth: 10000,
+        //     //defaultSpeed: 500,
+        // })
         this.mobManager.spawnMob("wolf", 1000, 500);
 
         // this.mobArray = this.physics.add.group();
@@ -320,7 +320,7 @@ export class play extends Phaser.Scene {
         // console.log("hello")
         if (monster.active) {
             this.player.status.hp = this.player.status.hp - monster.getDamage();
-            this.sound.play("playerTakeDamageSound");
+            // this.sound.play("playerTakeDamageSound");
             // console.log(monster)
             // console.log(player)
             if (this.player.status.hp <= 0) {

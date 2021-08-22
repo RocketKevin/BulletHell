@@ -26,6 +26,7 @@ export default class Mob extends Phaser.Physics.Arcade.Sprite {
     {
         super(scene, x, y, sprite);
         scene.add.existing(this);
+        scene.physics.add.existing(this);
         this.#defaultHealth = 500;
         this.#health = this.#defaultHealth;
         this.#defaultSpeed = 30;

@@ -10,7 +10,7 @@
 			"scale": 1,
 			"frames": [
 				{
-					"filename": "projectile_bullet.png",
+					"filename": "projectiles.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -18,16 +18,16 @@
 						"h": 64
 					},
 					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 64,
-						"h": 64
+						"x": 28,
+						"y": 26,
+						"w": 8,
+						"h": 8
 					},
 					"frame": {
-						"x": 0,
-						"y": 0,
-						"w": 64,
-						"h": 64
+						"x": 28,
+						"y": 26,
+						"w": 8,
+						"h": 8
 					}
 				},
 				{
@@ -35,20 +35,20 @@
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 64,
-						"h": 64
+						"w": 8,
+						"h": 8
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 64,
-						"h": 64
+						"w": 8,
+						"h": 8
 					},
 					"frame": {
-						"x": 64,
+						"x": 8,
 						"y": 0,
-						"w": 64,
-						"h": 64
+						"w": 8,
+						"h": 8
 					}
 				}
 			]

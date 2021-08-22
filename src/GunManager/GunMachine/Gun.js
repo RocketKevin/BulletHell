@@ -80,7 +80,7 @@ export default class Gun{
         let startY = this.player.y + this.player.height / 4;
         let targetX = this.cursor.x / this.camera.zoom;
         let targetY = this.cursor.y / this.camera.zoom;
-        let bullet = this.getBulletArray().get(startX, startY, this.#bulletImage).setScale(0.3);
+        let bullet = this.getBulletArray().get(startX, startY, this.#bulletImage).setScale(1.5);
         bullet.damage = this.#bulletDamage;
         bullet.visible = true;
         bullet.active = true;
