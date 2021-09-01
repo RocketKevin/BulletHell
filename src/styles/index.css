@@ -1,8 +1,9 @@
 body {
   margin: 0;
-  /* https://unsplash.com/photos/ESkw2ayO2As {1800x820}*/
-  //background-image: url("/assets/Background.jpg");
-  //background-size: cover;
+  /* https://unsplash.com/photos/ESkw2ayO2As {1800x820}
+     background-image: url("/assets/Background.jpg");
+     background-size: cover;
+  */
 }
 
 h1 {
