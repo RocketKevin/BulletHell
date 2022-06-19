@@ -1,5 +1,5 @@
 const express = require("express");
-var PORT = process.env.PORT || 3001
+var PORT = process.env.PORT || 5000
 const app = express();
 const path = require("path");
 const http = require("http");
@@ -43,7 +43,7 @@ class queue{//not a real queue since removing items from the queue takes linear 
     }
 }
 
-server.listen(PORT, () => {
-    console.log("listening on port 3001");
+server.listen(5000, () => {
+    console.log("listening on port 5000");
 })
 
