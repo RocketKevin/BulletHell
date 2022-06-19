@@ -28,6 +28,9 @@ export class play extends Phaser.Scene {
     }
     init() {
         this.keyboard = new KeyBoard(this);
+        this.totalKillCount = 0;
+        this.bossKillCount = 0;
+        this.wave = 1;
     }
     preload() {
         this.load.image("Ground", "../assets/tilesets/A2_Ground.png");
@@ -236,13 +239,14 @@ export class play extends Phaser.Scene {
         this.mobManager.addMobGroup("wolf", Wolf);
         this.mobManager.addMobGroup("goblin", Goblin);
         this.mobManager.addMobGroup("dude", Boss)
-        let g = this.mobManager.spawnMob("goblin", 500, 1000);
+        ////let g = this.mobManager.spawnMob("goblin", 500, 1000);
         // g.mobConfig({
         //     defaultHealth: 10000,
         //     //defaultSpeed: 500,
         // })
-        this.mobManager.spawnMob("wolf", 1000, 500);
-        this.mobManager.spawnMob("dude", 800, 900);
+        ////this.mobManager.spawnMob("wolf", 1000, 500);
+        //Boss Mob
+        // this.mobManager.spawnMob("dude", 800, 900);
         // this.mobArray = this.physics.add.group();
         // this.mobArray.add(new Wolf(this, 1000, 500, "wolf"));
         // this.mobArray.add(new Goblin(this, 500, 1000, "goblin"));
@@ -253,8 +257,61 @@ export class play extends Phaser.Scene {
         this.time.addEvent({
             delay: 300,
             callback: () => {
-                if (this.mobManager.getNumAlive("slime") < 3) { //if the total number that is active is less than 4.
-                    this.mobManager.spawnMob("slime", Math.random() * 800 + 300, Math.random() * 800 + 300);
+                if (this.wave === 1) {
+                    for (var i=0; i<5; i++) {
+                        this.mobManager.spawnMob("slime", Math.random() * 800 + 300, Math.random() * 800 + 300);
+                    }
+                    this.wave += 1;
+                }
+                if (this.wave === 2 && this.totalKillCount === 5) {
+                    for (var i=0; i<2; i++) {
+                        this.mobManager.spawnMob("wolf", Math.random() * 800 + 300, Math.random() * 800 + 300);
+                        this.mobManager.spawnMob("slime", Math.random() * 800 + 300, Math.random() * 800 + 300);
+                    }
+                    this.wave += 1;
+                }
+                if (this.wave === 3 && this.totalKillCount === 9) {
+                    for (var i=0; i<4; i++) {
+                        this.mobManager.spawnMob("wolf", Math.random() * 800 + 300, Math.random() * 800 + 300);
+                    }
+                    this.wave += 1;
+                }
+                if (this.wave === 4 && this.totalKillCount === 13) {
+                    this.mobManager.spawnMob("goblin", Math.random() * 800 + 300, Math.random() * 800 + 300);
+                    this.wave += 1;
+                }
+                if (this.wave === 5 && this.totalKillCount === 14) {
+                    this.mobManager.spawnMob("wolf", Math.random() * 800 + 300, Math.random() * 800 + 300);
+                    this.mobManager.spawnMob("wolf", Math.random() * 800 + 300, Math.random() * 800 + 300);
+                    this.mobManager.spawnMob("goblin", Math.random() * 800 + 300, Math.random() * 800 + 300);
+                    this.wave += 1;
+                }
+                if (this.wave === 6 && this.totalKillCount === 17) {
+                    this.mobManager.spawnMob("goblin", Math.random() * 800 + 300, Math.random() * 800 + 300);
+                    this.mobManager.spawnMob("goblin", Math.random() * 800 + 300, Math.random() * 800 + 300);
+                    for (var i=0; i<9; i++) {
+                        this.mobManager.spawnMob("slime", Math.random() * 800 + 300, Math.random() * 800 + 300);
+                    }
+                    this.wave += 1;
+                }
+                if (this.wave === 7 && this.totalKillCount === 28) {
+                    for (var i=0; i<6; i++) {
+                        this.mobManager.spawnMob("wolf", Math.random() * 800 + 300, Math.random() * 800 + 300);
+                    }
+                    this.mobManager.spawnMob("goblin", Math.random() * 800 + 300, Math.random() * 800 + 300);
+                    this.wave += 1;
+                }
+                if (this.wave === 8 && this.totalKillCount === 35) {
+                    for (var i=0; i<4; i++) {
+                        this.mobManager.spawnMob("goblin", Math.random() * 800 + 300, Math.random() * 800 + 300);
+                    }
+                    this.wave += 1;
+                }
+                if (this.wave === 9 && this.totalKillCount === 39) {
+                    for (var i=0; i<10; i++) {
+                        this.mobManager.spawnMob("wolf", Math.random() * 800 + 300, Math.random() * 800 + 300);
+                    }
+                    this.wave += 1;
                 }
             },
             loop: true
@@ -390,7 +447,13 @@ export class play extends Phaser.Scene {
                     },
                     spreadAngle: 270,
                 });
-                console.log("mob killed!")
+                this.totalKillCount += 1;
+                console.log("Killcount is:" + this.totalKillCount);
+                console.log(obj1.getCoinValue());
+                // if (obj1.getCoinValue === 1000) {
+                //     this.bossKillCount += 1;
+                //     console.log("Boss Kill Count is:" + this.bossKillCount);
+                // }
                 //this.textBox.showFor("mob was killed, \n good job!!!!", 1000);
                 // obj1.destroy();
             }

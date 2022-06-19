@@ -54,6 +54,6 @@ export default class BossRoam extends State {
         if (distance > 400) {
             this.getStateMachine().changeState("follow");
         }
-        console.log("hu")
+        // console.log("hu")
     }
 }
