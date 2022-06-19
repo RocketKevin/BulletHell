@@ -36,7 +36,7 @@ var config = {
         height: '100%',
     }
 };
-var game = new Phaser.Game(shengConfig);
+var game = new Phaser.Game(config);
 window.addEventListener('resize', function (event) {
     // game.width = window.innerWidth;
     // game.height = window.innerHeight; 
