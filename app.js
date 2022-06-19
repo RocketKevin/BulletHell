@@ -5,6 +5,7 @@ const http = require("http");
 const server = http.createServer(app);
 const {Server} = require("socket.io");
 const io = new Server(server);
+var PORT = process.env.PORT || 5000
 
 app.use("/", express.static(path.join(__dirname, "src")));
 let ID = 0;
@@ -42,7 +43,7 @@ class queue{//not a real queue since removing items from the queue takes linear 
     }
 }
 
-server.listen(3001, () => {
-    console.log("listening on port 3001");
+server.listen(process.env.PORT || 5000, () => {
+    console.log("listening on port 5000");
 })
 
