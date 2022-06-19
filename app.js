@@ -43,7 +43,7 @@ class queue{//not a real queue since removing items from the queue takes linear 
     }
 }
 
-server.listen(5000, () => {
+server.listen(process.env.PORT || 5000, () => {
     console.log("listening on port 5000");
 })
 
