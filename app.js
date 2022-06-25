@@ -8,7 +8,7 @@ const {Server} = require("socket.io");
 const io = new Server(server);
 var PORT = process.env.PORT || 5000
 
-app.use(express.static("src"));
+app.use(express.static(path.join(__dirname, 'src')));
 let ID = 0;
 io.on("connection", (socket) => { 
     console.log("a user has connected to the server. New socket created.");
