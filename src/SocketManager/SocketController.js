@@ -1,4 +1,4 @@
-import { player } from "../obj/player.js";
+import { player } from "../obj/Player.js";
 
 export default class SocketController{
     #socket;
