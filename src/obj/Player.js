@@ -1,5 +1,6 @@
 import { Status } from './Status.js';
 import { HitBox } from './HitBox.js';
+import Phaser from 'phaser';
 import GunController from '../GunManager/GunControllers/GunController.js';
 export class player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene) {

@@ -4,6 +4,7 @@ import { Camera } from "../obj/Camera.js";
 import { Hub } from "../obj/Hub.js";
 import { Terrain } from "../obj/Terrain.js";
 import { KeyBoard } from "../obj/KeyBoard.js";
+import Phaser from 'phaser';
 export class SceneHolder extends Phaser.Scene{
     constructor() {
         super({

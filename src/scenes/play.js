@@ -1,6 +1,7 @@
 import { final } from "../final.js";
 import { player } from "../obj/player.js";
 import { Hub } from "../obj/Hub.js";
+import Phaser from 'phaser';
 // import { Slime } from "../AI/EnemyAI/SlimeAI/Slime.js";
 import DialogBox from "../obj/UI/DialogBox.js";
 import FloatText from "../obj/UI/FloatText.js";

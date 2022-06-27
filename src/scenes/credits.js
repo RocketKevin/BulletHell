@@ -1,4 +1,5 @@
 import { final } from "../final.js";
+import Phaser from 'phaser';
 export class credits extends Phaser.Scene {
     constructor() {
         super({
