@@ -461,23 +461,17 @@ export class play extends Phaser.Scene {
     }
     createNewPlayer() {
         this.Player = new Player(this);
-        this.userCamera.setFollow(this.Player);
-        this.Player.updateScene(this);
-        this.mobManager.addOverlapAll(this.Player.hitbox.sprite, this.handleMobPlayerCollision);
-        // this.Player.playerDead = false;
-        this.Player.setHitBox(this)
-        this.Player.setStatus();
     }
     update(time, delta) {
         this.keyboard.update();
         this.Player.update(delta);
         this.StatusBar.health = this.Player.status.health
         this.StatusBar.update()
-
+        // console.log(this.Player.hitbox.sprite.x, this.Player.hitbox.sprite.y)
         if (this.Player.playerDead) {
-            this.Player.playerDead = false;
-            this.createNewPlayer();
-            this.Player.respawn(50, 100);
+            this.registry.destroy();
+            this.events.off();
+            this.scene.restart();
         }
     }
 
