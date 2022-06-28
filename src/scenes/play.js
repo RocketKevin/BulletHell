@@ -1,5 +1,5 @@
 import { final } from "../final.js";
-import { player } from "../obj/player.js";
+import { Player } from "../obj/Player.js";
 import { Hub } from "../obj/Hub.js";
 // import { Slime } from "../AI/EnemyAI/SlimeAI/Slime.js";
 import DialogBox from "../obj/UI/DialogBox.js";
@@ -184,8 +184,8 @@ export class play extends Phaser.Scene {
         this.physics.world.setBounds(0, 0, this.terrain.getMapWidth(), this.terrain.getMapHeight());
 
         this.Hub = new Hub(this, "Hub", "Backpack", "Shop");
-        this.player = new player(this);
-        this.player.respawn(50, 100);
+        this.Player = new Player(this);
+        this.Player.respawn(50, 100);
 
         this.Hub.button(this);
 
@@ -193,7 +193,7 @@ export class play extends Phaser.Scene {
         this.floatText = new FloatText(this);
         this.userCamera = new Camera();
         this.userCamera.setCamera(this);
-        this.userCamera.setFollow(this.player);
+        this.userCamera.setFollow(this.Player);
         this.userCamera.setBounds(this.terrain.getMapWidth(), this.terrain.getMapHeight());
 
         this.cameras.main.setZoom(1.25); //sets the zoom of the camera.
@@ -283,13 +283,13 @@ export class play extends Phaser.Scene {
         this.test.on("pointerup", () => {
             this.scene.start(final.SCENES.TEST);
         });
-        this.player.updateScene(this);
+        this.Player.updateScene(this);
         this.worldHeightInPixels = this.terrain.getMapHeight();
         this.worldWidthInPixels = this.terrain.getMapWidth();
 
         //add collision handlers for the mobs.
-        this.mobManager.addOverlapAll(this.player.hitbox.sprite, this.handleMobPlayerCollision);
-        let gunDict = this.player.gunController.getGunDict();
+        this.mobManager.addOverlapAll(this.Player.hitbox.sprite, this.handleMobPlayerCollision);
+        let gunDict = this.Player.gunController.getGunDict();
         for (let key in gunDict)
             this.mobManager.addOverlapAll(gunDict[key].getBulletArray(), this.handleMobBulletCollision);
 
@@ -298,20 +298,23 @@ export class play extends Phaser.Scene {
     }
 
     handleMobPlayerCollision(none, monster) {
-        if (this.player.alpha == 0.5) return;
+        // if (this.player.alpha == 0.5) return;
         if (monster.active) {
-            this.player.status.hp = this.player.status.hp - monster.getDamage();
-            if (this.player.status.hp <= 0) {
-                this.player.killplayer();
-                this.player = new player(this);
-                this.userCamera.setFollow(this.player);
-                this.player.respawn(50, 100);
-                this.player.updateScene(this);
-                this.mobManager.addOverlapAll(this.player.hitbox.sprite, this.handleMobPlayerCollision);
-                let gunDict = this.player.gunController.getGunDict();
+            this.Player.status.hp = this.Player.status.hp - monster.getDamage();
+            if (this.Player.status.hp <= 0) {
+                this.Player.killPlayer();
+                this.Player = new Player(this);
+                this.userCamera.setFollow(this.Player);
+                this.Player.respawn(50, 100);
+                this.Player.updateScene(this);
+                this.mobManager.addOverlapAll(this.Player.hitbox.sprite, this.handleMobPlayerCollision);
+                let gunDict = this.Player.gunController.getGunDict();
                 for (let key in gunDict)
                     this.mobManager.addOverlapAll(gunDict[key].getBulletArray(), this.handleMobBulletCollision);
-                this.ak = null
+                this.ak = null;
+                this.registry.destroy();
+                this.events.off();
+                this.scene.restart();
             }
             this.invulnerable()
         }
@@ -319,10 +322,10 @@ export class play extends Phaser.Scene {
     }
 
     invulnerable() {
-        this.player.alpha = 0.5;
+        this.Player.alpha = 0.5;
         this.time.addEvent({
             delay: 1000,
-            callback: () => { this.player.alpha = 1 },
+            callback: () => { this.Player.alpha = 1 },
             callbackScope: this,
             loop: false
         });
@@ -331,7 +334,7 @@ export class play extends Phaser.Scene {
     /**
      * 
      * @param {Mob} obj1 - The mob.
-     * @param {Player} obj2 - The player.
+     * @param {Player} obj2 - The Player.
      */
     handleMobBulletCollision(obj1, obj2) {//obj1 is the mob obj 2 is the bullets
         //console.log(obj1)
@@ -359,7 +362,7 @@ export class play extends Phaser.Scene {
                 //obj1.setVisible(false);
                 obj1.visible = false;
                 obj1.active = false;
-                this.player.status.coins += obj1.getCoinValue();
+                this.Player.status.coins += obj1.getCoinValue();
                 //play some particles.
                 let num = Math.log2(obj1.getDefaultHealth());
                 this.particleManager.sprayParticle("rect", obj1.x, obj1.y, {
@@ -379,15 +382,20 @@ export class play extends Phaser.Scene {
     }
 
     createNewPlayer() {
-        return new player(this);
+        this.Player = new Player(this);
     }
 
     update(time, delta) {
         this.keyboard.update();
-        this.player.update(delta);
-        if(this.player.active) {
-            this.StatusBar.health = this.player.status.health;
+        this.Player.update(delta);
+        if(this.Player.active) {
+            this.StatusBar.health = this.Player.status.health;
         }
         this.StatusBar.update()
+        if (this.Player.playerDead) {
+            this.registry.destroy();
+            this.events.off();
+            this.scene.restart();
+        }
     }
 }

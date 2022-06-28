@@ -11,9 +11,9 @@ export class ShopItemInteract {
         this.panel.setVisible(false);
         this.panel.setInteractive();
         this.panel.setScrollFactor(0);
-        scene.events.on("render", () => {
-            scene.Hub.shop.shopContainer.add(this.panel);
-        });        
+        // scene.events.on("render", () => {
+        //     scene.Hub.shop.shopContainer.add(this.panel);
+        // });        
     }
     events(scene, item) {
         this.panel.on("pointerup", () => {
