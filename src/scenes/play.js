@@ -460,20 +460,25 @@ export class play extends Phaser.Scene {
         }
     }
     createNewPlayer() {
-        return new Player(this);
+        this.Player = new Player(this);
+        this.userCamera.setFollow(this.Player);
+        this.Player.updateScene(this);
+        this.mobManager.addOverlapAll(this.Player.hitbox.sprite, this.handleMobPlayerCollision);
+        // this.Player.playerDead = false;
+        this.Player.setHitBox(this)
+        this.Player.setStatus();
     }
     update(time, delta) {
         this.keyboard.update();
         this.Player.update(delta);
         this.StatusBar.health = this.Player.status.health
         this.StatusBar.update()
-        // if (this.ak != null) {
-        //     this.ak.update(time, delta);
-        // }
-        // this.mobArray.children.iterate(child => {
-        //     if(child.active)
-        //         child.update();
-        // })
+
+        if (this.Player.playerDead) {
+            this.Player.playerDead = false;
+            this.createNewPlayer();
+            this.Player.respawn(50, 100);
+        }
     }
 
 

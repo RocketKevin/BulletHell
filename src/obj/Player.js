@@ -15,6 +15,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.status = null;
         this.hitbox = null;
         this.gunController = null;
+        this.playerDead = false;
     }
     self_config(scene) {
         this.setHitBox(scene);
@@ -68,6 +69,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.active = false;
         this.setVelocityX(0);
         this.setVelocityY(0);
+        this.playerDead = true;
+        this.destroy();
         console.log("you have been slain!");
     }
     respawn(x, y) {
