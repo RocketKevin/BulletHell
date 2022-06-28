@@ -11,7 +11,7 @@ export class load extends Phaser.Scene {
     }
     preload() {
         this.game.canvas.style = "margin: auto; display: block;";
-        this.load.path = "../assets/";
+        this.load.path = "../src/assets/";
         this.load.image("controlmenu", "controlmenu.png");
         this.load.image("backbutton", "back.png");
         this.load.image("okaybutton", "okay.png");
@@ -21,7 +21,7 @@ export class load extends Phaser.Scene {
             "dude.json"
         );
         //UI
-        this.load.path = "../assets/userinterface/";
+        this.load.path = "../src/assets/userinterface/";
         this.load.json("UIName", "map_userinterface.json");
         this.load.image("BuyButton", "shopUI_buyButton.png");
         this.load.image("HubIcon", "HubIcon.png");
@@ -31,7 +31,7 @@ export class load extends Phaser.Scene {
         this.load.image("Shop", "Shop.png");
         this.load.image("Hub", "Hub.png");
         //Items
-        this.load.path = "../assets/items/";
+        this.load.path = "../src/assets/items/";
         this.load.json("ItemProperty", "property_items.json");
         this.load.atlas(
             "items",
@@ -39,7 +39,7 @@ export class load extends Phaser.Scene {
             "map_items.json"
         );
         //Main Menu
-        this.load.path = "../assets/mainmenu/";
+        this.load.path = "../src/assets/mainmenu/";
         this.load.json("MainMenuProperty", "property_MainMenuComponent.json");
         this.load.atlas(
             "mainmenu",
@@ -47,14 +47,14 @@ export class load extends Phaser.Scene {
             "map_MainMenuComponents.json"
         );
         //Map
-        this.load.path = "../assets/maps/";
+        this.load.path = "../src/assets/maps/";
         this.load.json("MapName", "AllMapName.json");
         this.load.json("IslandHideOut", "data_IslandHideOut.json");
         this.load.json("HideOut", "data_HideOut.json");
         this.load.tilemapTiledJSON("lab", "lab.json");
         this.load.tilemapTiledJSON("test", "test.json");
         //Monsters
-        this.load.path = "../assets/monsters/";
+        this.load.path = "../src/assets/monsters/";
         this.load.atlas(
             "slime",
             "slime.png",
@@ -71,14 +71,14 @@ export class load extends Phaser.Scene {
             "goblin.json"
         );
         //Projectiles
-        this.load.path = "../assets/projectiles/";
+        this.load.path = "../src/assets/projectiles/";
         this.load.atlas(
             "projectiles",
             "projectiles.png",
             "map_projectiles.json"
         );
         //Tile Set
-        this.load.path = "../assets/tilesets/";
+        this.load.path = "../src/assets/tilesets/";
         this.load.json("TileSetName", "map_tilesets.json");
         this.load.image("WaterForming", "A1_AnimatedGround.png");
         this.load.image("NatureGround", "A2_Ground.png");
@@ -93,7 +93,7 @@ export class load extends Phaser.Scene {
         this.load.image("Indoor", "D_Inside_House.png");
         this.load.image("Random", "D_OutDoor.png");
 
-        this.load.path = "../assets/sounds/"
+        this.load.path = "../src/assets/sounds/"
         this.load.audio("playerTakeDamageSound", "playerTakeDamage.mp3");
 
         var loadingBar = this.add.graphics({

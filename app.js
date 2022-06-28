@@ -7,7 +7,7 @@ const server = http.createServer(app);
 const {Server} = require("socket.io");
 const io = new Server(server);
 
-app.use(express.static(path.join(__dirname, 'src')));
+app.use("/", express.static(path.join(__dirname)));
 let ID = 0;
 io.on("connection", (socket) => { 
     console.log("a user has connected to the server. New socket created.");
@@ -21,10 +21,6 @@ io.on("connection", (socket) => {
         socket.broadcast.emit("client", q.getFirst(playerID));
     })
     io.emit("chat message", "You are very good at sockets.")
-    // socket.on("chat message", (msg) => {
-    //     //send message received from one client to all other clients.
-    //     io.emit("chat message", msg);
-    // })
 })
 
 class queue{//not a real queue since removing items from the queue takes linear time
