@@ -1,4 +1,4 @@
-import { final } from "../../final.js";
+import { final } from "../final.js";
 export class load extends Phaser.Scene {
     constructor() {
         super({
