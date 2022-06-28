@@ -1,5 +1,5 @@
 import GunManager from "../GunMachine/GunManager.js";
-import Pistol from "../Guns/pistol.js";
+import Pistol from "../Guns/Pistol.js";
 import Sniper from "../Guns/Sniper.js";
 import testGun from "../Guns/tylergun.js";
 export default class GunController extends GunManager{
