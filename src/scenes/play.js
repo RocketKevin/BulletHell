@@ -20,6 +20,7 @@ import SocketController from "../SocketManager/SocketController.js";
 import PartileManager from "../particle/ParticleManager.js";
 import RectangleParticle from "../particle/RectangleParticle.js";
 import BulletSpark from "../particle/BulletSpark.js";
+import { Terrain } from "../obj/Terrain.js";
 export class play extends Phaser.Scene {
     constructor() {
         super({
@@ -33,9 +34,9 @@ export class play extends Phaser.Scene {
         this.wave = 1;
     }
     preload() {
-        this.load.image("Ground", "../assets/tilesets/A2_Ground.png");
-        this.load.image("Nature", "../assets/tilesets/C_OutSide_Nature.png");
-        this.load.tilemapTiledJSON("lab", "../assets/maps/lab.json");
+        this.load.image("Ground", "../src/assets/tilesets/A2_Ground.png");
+        this.load.image("Nature", "../src/assets/tilesets/C_OutSide_Nature.png");
+        this.load.tilemapTiledJSON("lab", "../src/assets/maps/lab.json");
         this.anims.create({
             key: "right",
             framesRate: 10,
@@ -174,17 +175,14 @@ export class play extends Phaser.Scene {
     }
 
     create() {
-        this.map = this.add.tilemap("lab");
-        this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-        var lab = this.map;
-        var terrain = lab.addTilesetImage("A2_Ground", "NatureGround");
-        var terrainTop = lab.addTilesetImage("C_OutSide_Nature", "Outdoor");
-        var terrainTop2 = lab.addTilesetImage("A4_Walls_2", "BuildingWall");
-        var terrainPassable = lab.addTilesetImage("C_OutSide_Nature", "Outdoor");
-        var bottomLayer = lab.createLayer("Ground", [terrain], 0, 0);
-        var passableLayer = lab.createLayer("Ground2", [terrainPassable, terrainTop2], 0, 0);
-        var aboveLayer = lab.createLayer("Above", [terrainTop], 0, 0).setDepth(2);
-        this.colliables = passableLayer;
+        this.terrain = new Terrain(this);
+        this.terrain.setTerrainMap("lab");
+        this.terrain.setTileSets("TileSetName");
+        this.terrain.setLayers();
+        this.terrain.setEventLayers();
+
+        this.physics.world.setBounds(0, 0, this.terrain.getMapWidth(), this.terrain.getMapHeight());
+
         this.Hub = new Hub(this, "Hub", "Backpack", "Shop");
         this.player = new player(this);
         this.player.respawn(50, 100);
@@ -196,7 +194,7 @@ export class play extends Phaser.Scene {
         this.userCamera = new Camera();
         this.userCamera.setCamera(this);
         this.userCamera.setFollow(this.player);
-        this.userCamera.setBounds(this.map.widthInPixels, this.map.heightInPixels);
+        this.userCamera.setBounds(this.terrain.getMapWidth(), this.terrain.getMapHeight());
 
         this.cameras.main.setZoom(1.25); //sets the zoom of the camera.
 
@@ -207,49 +205,13 @@ export class play extends Phaser.Scene {
 
         this.StatusBar = new StatusBar(this);
         this.ScreenUI.addUI(this.StatusBar, 0, 0, UIArea.ANCHOR.TOPLEFT);
-        //gun/bullet
-        //constructor(bulletSpeed, bulletRange, fireRate, imageName, dude, input, physics, scene)
-        // this.pistol = new Gun(100, 3000, 500, 'dude', this.player, this.input, this.physics, this)
-        // this.ak = new Gun(1000, 100000, 200, 'bullet', this.player, this.input, this.physics, this)
-        // let socket = io();
-        // socket.on("chat message", function(msg) {
-        //         console.log(msg);
-        //         socket.emit("chat message", "I received the chat message");
-        //     })
 
-        //mob array
-
-        // this.mobGroups = [];
-        // const slimeGroupConfig = {
-        //     classType: Slime,
-        //     key: "slime",
-        //     visible: true,
-        //     frameQuantity: 0,
-        //     createCallback: () => {
-        //         console.log("New Slime Added")
-        //         //scene.physics.add.overlap(scene.mobArray, gunDict[k].getBulletArray(), scene.handleBulletMobCollision, null, scene);
-        //     },
-        //     hitAreaCallback: function() {console.log("hit")}
-        // }
-        // this.mobGroups.push(this.physics.add.group(slimeGroupConfig));
-        // this.mobGroups[0].get(500, 500, "slime");
-        //this.superMobArry.spawn("slime", x, y);
         this.mobManager = new MobManager(this);
         this.mobManager.addMobGroup("slime", Slime);
         this.mobManager.addMobGroup("wolf", Wolf);
         this.mobManager.addMobGroup("goblin", Goblin);
         this.mobManager.addMobGroup("dude", Boss)
-        ////let g = this.mobManager.spawnMob("goblin", 500, 1000);
-        // g.mobConfig({
-        //     defaultHealth: 10000,
-        //     //defaultSpeed: 500,
-        // })
-        ////this.mobManager.spawnMob("wolf", 1000, 500);
-        //Boss Mob
-        // this.mobManager.spawnMob("dude", 800, 900);
-        // this.mobArray = this.physics.add.group();
-        // this.mobArray.add(new Wolf(this, 1000, 500, "wolf"));
-        // this.mobArray.add(new Goblin(this, 500, 1000, "goblin"));
+
         this.particleManager = new PartileManager(this);
         this.particleManager.addParticleGroup("rect", RectangleParticle);
         this.particleManager.addParticleGroup("BulletSpark", BulletSpark);
@@ -317,44 +279,13 @@ export class play extends Phaser.Scene {
             loop: true
         });
 
-        //spawn a dude mob
-        // this.mobDude = this.mobArray.get(250, 250, 'slime').setScale(.75);
-        //this.mobArray.add(new Mob(this, 500, 500, this.player, 'slime'))
-        //this.mobArray.get(500, 500, "slime");
-
-        // this.time.addEvent({
-        //     delay: 300,
-        //     callback: () => {
-        //         // spawn a new apple
-        //         if (this.getMobAliveStatus("slime", this.mobArray) < 3) { //if the total number that is active is less than 4.
-        //             let mob = this.mobArray.add(new Slime(this, Math.random() * 800 + 300, Math.random() * 800 + 300, "slime"));
-        //             //mob.reset();
-        //         }
-        //     },
-        //     loop: true
-        // });
-
-        //this.ultimateMobArray.addMobArray(this.mobArray);
-
-
-        // for(let k in gunDict){
-        //     if(scene.mobArray != null) {
-        //         scene.physics.add.overlap(scene.mobArray, gunDict[k].getBulletArray(), scene.handleBulletMobCollision, null, scene);
-        //     }
-        // }
-
-        //add collisions for the mob.
-
-        // for(let group of this.mobManager.getMobGroups())
-        //     this.physics.add.overlap(group, this.player.hitbox.sprite, this.handleDamage, null, this); 
-
         this.test = this.add.image(300, 300, "BuyButton").setOrigin(0).setDepth(10).setScrollFactor(0).setInteractive();
         this.test.on("pointerup", () => {
             this.scene.start(final.SCENES.TEST);
         });
         this.player.updateScene(this);
-        this.worldHeightInPixels = lab.heightInPixels;
-        this.worldWidthInPixels = lab.widthInPixels;
+        this.worldHeightInPixels = this.terrain.getMapHeight();
+        this.worldWidthInPixels = this.terrain.getMapWidth();
 
         //add collision handlers for the mobs.
         this.mobManager.addOverlapAll(this.player.hitbox.sprite, this.handleMobPlayerCollision);
@@ -365,24 +296,21 @@ export class play extends Phaser.Scene {
         //console.log(this);
         this.socketControl = new SocketController(this);
     }
-    // getMobAliveStatus(mob, array) {
-    //     var result = 0;
-    //     for(var i = 0; i < array.children.size; i++) {
-    //         if(mob === array.children.entries[i].texture.key && array.children.entries[i].active)
-    //             result++;
-    //     }
-    //     return result;
-    // }
-    handleMobPlayerCollision(player, monster) {
+
+    handleMobPlayerCollision(none, monster) {
         if (this.player.alpha == 0.5) return;
-        // console.log("hello")
         if (monster.active) {
             this.player.status.hp = this.player.status.hp - monster.getDamage();
-            // this.sound.play("playerTakeDamageSound");
-            // console.log(monster)
-            // console.log(player)
             if (this.player.status.hp <= 0) {
                 this.player.killplayer();
+                this.player = new player(this);
+                this.userCamera.setFollow(this.player);
+                this.player.respawn(50, 100);
+                this.player.updateScene(this);
+                this.mobManager.addOverlapAll(this.player.hitbox.sprite, this.handleMobPlayerCollision);
+                let gunDict = this.player.gunController.getGunDict();
+                for (let key in gunDict)
+                    this.mobManager.addOverlapAll(gunDict[key].getBulletArray(), this.handleMobBulletCollision);
                 this.ak = null
             }
             this.invulnerable()
@@ -413,10 +341,6 @@ export class play extends Phaser.Scene {
             obj2.active = false;
             obj1.setHealth(obj1.getHealth() - obj2.damage);
             this.floatText.showText(obj1.x - obj1.width / 4, obj1.y - obj1.height / 2, `${obj2.damage}`);
-            // this.particleManager.sprayParticle("BulletSpark", obj2.x, obj2.y, Math.log10(obj2.damage), {
-            //     x: -obj2.body.velocity.x,
-            //     y: -obj2.body.velocity.y,
-            // }, 30, 80);
             this.particleManager.sprayParticle("BulletSpark", obj2.x, obj2.y, {
                 amount: Math.log10(obj2.damage),
                 directionVector: {
@@ -450,31 +374,20 @@ export class play extends Phaser.Scene {
                 this.totalKillCount += 1;
                 console.log("Killcount is:" + this.totalKillCount);
                 console.log(obj1.getCoinValue());
-                // if (obj1.getCoinValue === 1000) {
-                //     this.bossKillCount += 1;
-                //     console.log("Boss Kill Count is:" + this.bossKillCount);
-                // }
-                //this.textBox.showFor("mob was killed, \n good job!!!!", 1000);
-                // obj1.destroy();
             }
         }
     }
+
     createNewPlayer() {
         return new player(this);
     }
+
     update(time, delta) {
         this.keyboard.update();
         this.player.update(delta);
-        this.StatusBar.health = this.player.status.health
+        if(this.player.active) {
+            this.StatusBar.health = this.player.status.health;
+        }
         this.StatusBar.update()
-        // if (this.ak != null) {
-        //     this.ak.update(time, delta);
-        // }
-        // this.mobArray.children.iterate(child => {
-        //     if(child.active)
-        //         child.update();
-        // })
     }
-
-
 }
