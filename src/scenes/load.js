@@ -1,4 +1,3 @@
-import Phaser from 'phaser';
 import { final } from "../final.js";
 export class load extends Phaser.Scene {
     constructor() {
