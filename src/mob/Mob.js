@@ -38,8 +38,15 @@ export default class Mob extends Phaser.Physics.Arcade.Sprite {
         this.#mobAlive = true;
         this.#healthBar.follow(this);
         //this.setBounce(0.5, 0.5);
+        this.self_config(scene);
     }
-
+    self_config(scene) {
+        if(scene.terrain != null)
+        this.collidablesTerrain(scene, scene.terrain.getMapColliables());
+    else {
+        this.collidablesTerrain(scene, [scene.colliables]);
+    }
+    }
     /**
      * A all in one setter for the mob. Used to change the properties on the mob.
      * @param {Object} config - The configuation object for the mob.
@@ -181,6 +188,13 @@ export default class Mob extends Phaser.Physics.Arcade.Sprite {
         this.setScale(1);
         if(this.ai && this.ai.reset)
             this.ai.reset();
+    }
+    collidablesTerrain(scene, collidables) {
+        //console.log(collidables);
+        for (var i = 0; i < collidables.length; i++) {
+            scene.physics.add.collider(this, collidables[i]);
+            collidables[i].setCollisionByProperty({ collides: true });
+        }
     }
 
     preUpdate(time, deltaT) 
