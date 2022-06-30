@@ -298,7 +298,7 @@ export class play extends Phaser.Scene {
     }
 
     handleMobPlayerCollision(none, monster) {
-        // if (this.player.alpha == 0.5) return;
+        if (this.Player.alpha == 0.5) return;
         if (monster.active) {
             this.Player.status.hp = this.Player.status.hp - monster.getDamage();
             if (this.Player.status.hp <= 0) {

@@ -42,10 +42,10 @@ export default class Mob extends Phaser.Physics.Arcade.Sprite {
     }
     self_config(scene) {
         if(scene.terrain != null)
-        this.collidablesTerrain(scene, scene.terrain.getMapColliables());
-    else {
-        this.collidablesTerrain(scene, [scene.colliables]);
-    }
+            this.collidablesTerrain(scene, scene.terrain.getMapColliables());
+        else {
+            this.collidablesTerrain(scene, [scene.colliables]);
+        }
     }
     /**
      * A all in one setter for the mob. Used to change the properties on the mob.
