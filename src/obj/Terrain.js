@@ -73,7 +73,7 @@ export class Terrain {
         if(this.#map != null)
             for(let i = 0; i < this.#map.layers.length; i++) {
                 this.#terrainLayer.push(this.#map.createLayer(this.#map.layers[i].name, this.#tileset, 0, 0));
-                if(this.#terrainLayer[i].layer.name === "Above")
+                if(this.#terrainLayer[i].layer.name.includes("Above"))
                     this.#terrainLayer[i].setDepth(2);
             }
         else
